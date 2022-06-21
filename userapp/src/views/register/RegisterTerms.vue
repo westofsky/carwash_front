@@ -3,7 +3,7 @@
     <div id="content_wrap" class="register_terms">
       <div id="top">
         <div id="nav">
-          <a class="btn_back" href="#"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a>
+          <a class="btn_back" @click="$router.go(-1)"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a>
           <p class="current">서비스 이용약관</p>
           <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
         </div>
@@ -32,7 +32,7 @@
     <aside>
       <div class="btn_cancel2">
         <!-- <a href="./register_basic02.html">취소</a> -->
-        <router-link to="'/registerBasic0201'">취소</router-link>
+        <a @click="$router.go(-1)">취소</a>
       </div>
       <div class="btn_next2">
         <!-- <a href="./register_basic04.html">회원가입 완료</a> -->
@@ -44,11 +44,7 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
 
 export default {
-  components: {
-    FooterVue
-  }
 };
 </script>

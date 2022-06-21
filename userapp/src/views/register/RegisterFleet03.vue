@@ -16,8 +16,8 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title"><span class="red fontBold">DGB1234</span>님,<br>
-            FLEET 회원가입<span class="skyblue">(선불전용)</span><br>
+          <p class="title"><span class="red fontBold">{{fleet_id}}</span>님,<br>
+            FLEET 회원가입<span class="skyblue">{{fleet_usage}}</span><br>
             신청이 완료되었습니다.
           </p>
           <div class="user_info">
@@ -43,11 +43,24 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
 
-export default {
-  components: {
-    FooterVue
-  }
-};
+	export default{
+		props : {
+			test : Boolean,
+			fleet_id : {
+				type: String,
+				default : 'Test01',
+			},
+			fleet_usage : {
+				type: String,
+				default : '선불전용',
+			},
+		},
+		methods : {
+
+		},
+		mounted (){
+      
+		}
+	}
 </script>

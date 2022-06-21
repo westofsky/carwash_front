@@ -19,47 +19,44 @@
           <ul>
             <li>
               <label for="fleetName" class="title">FLEET 이름<span class="required">*</span></label>
-              <input type="text" class="fleet_name" id="fleetName" placeholder="예) 가나다라기업, 가나다라동호회">
-              <p class="warn">오류 메세지 출력할 곳</p>
+              <input type="text" class="fleet_name" id="fleetName" placeholder="예) 가나다라기업, 가나다라동호회" v-model = "fleet_name">
             </li>
             <li>
               <label for="fleetID" class="title">아이디<span class="required">*</span></label>
               <span class="guide">영문, 숫자, 특수문자 혼용하여 10~12자리 이내</span>
               <div>
-                <input type="text" id="fleetID" class="fleet_ID" placeholder="abcd1234@">
+                <input type="text" id="fleetID" class="fleet_ID" placeholder="abcd1234@" @input="warn_check_id">
                 <button class="check">중복등록 확인</button>
               </div>
-              <p class="warn">10~12자리 이내로 작성해주세요. 오류 메세지 출력할 곳</p>
+						  <p class="warn">{{warning.id}}</p>
             </li>
             <li>
               <label for="fleetPW" class="title">비밀번호<span class="required">*</span></label>
               <span class="guide">영문, 숫자, 특수문자 혼용하여 10~12자리 이내</span>
-              <input type="password" class="fleet_PW" id="fleetPW" placeholder="********">
-              <p class="warn">10~12자리 이내로 작성해주세요. 오류 메세지 출력할 곳</p>
+              <input type="password" class="fleet_PW" id="fleetPW" placeholder="********" v-model = "fleet_pw" @input="warn_check_pw">
+					    <p class="warn">{{warning.pw}}</p>
             </li>
             <li>
               <label for="fleetPW2" class="title">비밀번호 확인<span class="required">*</span></label>
-              <input type="password" class="fleet_PW" id="fleetPW2" placeholder="********">
-              <p class="warn">비밀번호가 일치하지 않습니다.</p>
+              <input type="password" class="fleet_PW" id="fleetPW2" placeholder="********" v-model = "fleet_pw_chk" @input="warn_check_pw_chk">
+  						<p class="warn">{{warning.pw_chk}}</p>
             </li>
             <li>
               <p class="title">이용구분<span class="required">*</span></p>
-              <input type="radio" name="fleetUsage" id="fleetUsagePrepay" class="fleet_usage" checked><label
-                for="fleetUsagePrepay">선불 전용</label>
-              <input type="radio" name="fleetUsage" id="fleetUsageDiscount" class="fleet_usage"><label
-                for="fleetUsageDiscount">할인 전용</label>
-            </li>
+              <input type="radio" name="fleetUsage" id="fleetUsagePrepay" class="fleet_usage" value="prepay" v-model="fleet_usage"><label for="fleetUsagePrepay">선불 전용</label>
+              <input type="radio" name="fleetUsage" id="fleetUsageDiscount" class="fleet_usage" value="discount" v-model="fleet_usage"><label for="fleetUsageDiscount">할인 전용</label>
+					  </li>
             <li>
               <label for="fleetPhone" class="title">담당자 연락처<span class="required">*</span></label>
               <div>
-                <input type="number" class="fleet_phone inputA" id="fleetPhone" placeholder="01012345678">
+                <input type="number" class="fleet_phone inputA" id="fleetPhone" placeholder="01012345678" v-model = "fleet_phone">
                 <button class="check2">인증번호 요청</button>
               </div>
               <p class="warn">인증번호 요청을 눌러, 인증을 완료해주세요.</p>
             </li>
             <li>
               <div>
-                <input type="number" class="fleet_phone_check" placeholder="01012345678">
+                <input type="number" class="fleet_phone_check" placeholder="01012345678" v-model = "fleet_phone_chk">
                 <button class="check">인증번호 확인</button>
               </div>
               <div class="time">
@@ -70,7 +67,7 @@
             <li>
               <label for="fleetEmail" class="title">담당자 이메일</label>
               <div class="email_wrap">
-                <input type="text" class="fleet_email" id="fleetEmail" placeholder="abcd1234">
+                <input type="text" class="fleet_email" id="fleetEmail" placeholder="abcd1234" v-model = "fleet_email">
                 <p>@</p>
                 <select name="" id="">
                   <option value="naver.com">naver.com</option>
@@ -89,7 +86,7 @@
             </li>
             <li>
               <label for="fleetBusiness" class="title">사업자등록번호</label>
-              <input type="number" id="fleetBusiness" class="fleet_business" placeholder="예) 1100000000 숫자만 입력">
+              <input type="number" id="fleetBusiness" class="fleet_business" placeholder="예) 1100000000 숫자만 입력" v-model = "fleet_business">
               <p class="warn">이미 가입된 사업자등록번호 입니다</p>
             </li>
             <li class="required_guide">
@@ -109,16 +106,178 @@
         <router-link to="/registerFleet02">FLEET 등록</router-link>
       </div>
     </aside>
-    <FooterVue></FooterVue>
   </div>
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
+
 
 export default {
-  components: {
-    FooterVue
-  }
-};
+		data (){
+			return {
+				fleet_name : '',
+				fleet_id : '',
+				fleet_pw : '',
+				fleet_pw_chk : '',
+				fleet_usage : '',
+				fleet_phone : '',
+				fleet_phone_chk : '',
+				fleet_email : '',
+				fleet_business : '',
+				warning : {
+					id : '',
+					pw : '',
+					pw_chk : '',
+					business : '',
+				},
+				check : {
+					id : false,
+					pw : false,
+					business : false,
+				},
+			}
+		},
+		mounted(){
+			let fleetInput = document.querySelectorAll('input');
+				for(let i =0; i<fleetInput.length; i++){
+				fleetInput[i].onfocus = function(){
+					let id = this.getAttribute('id');
+					let label = document.querySelector(`label[for="${id}"]`);
+					if(label){
+						label.style.color = "var(--mainColor)";
+						label.style.fontWeight = "600";
+					}
+				}
+				fleetInput[i].onblur = function(){
+					let id = this.getAttribute('id');
+					let label = document.querySelector(`label[for="${id}"]`);
+					if(label){
+						label.style.color = "#000";
+						label.style.fontWeight = "400";
+					}
+				}
+			}
+		},
+		methods:{
+			chk_id_duplicate(){
+				// this.$http.post('/api/users/dupidcheck', {
+				// 	fleet_id : this.fleet_id
+				// }).then(
+				// (res) => {  //아이디 중복 확인 
+				// 	if (res.data.success == true){
+				// 		console.log(res.data.message);
+				// 	}
+				// 	else{
+				// 		console.log(res.data.message);
+				// 	}	
+				// },
+				// (err) => { // error 를 보여줌
+				// 	console.log(err);
+				// }).catch((err) => {
+				// 	console.log(err);
+				// })
+			},
+			warn_check_id(){
+				if(!this.fleet_id)
+					this.warning.id = "이름을 입력해주세요.";
+				else{
+					if(!(this.fleet_id.length>=10 && this.fleet_id.length<=12)){
+						this.warning.id = "10~12자리 이내로 작성해주세요.";
+					}
+					else{
+						this.warning.id = "";
+					}
+				}
+			},
+			warn_check_pw(){
+				if(!this.fleet_pw)
+					this.warning.pw = "비밀번호를 입력해주세요.";
+				else{
+					if(!(this.fleet_pw.length>=10 && this.fleet_pw.length<=12)){
+						this.warning.pw = "10~12자리 이내로 작성해주세요.";
+					}
+					else{
+						this.warning.pw = "";
+						if(this.fleet_pw != this.fleet_pw_chk){
+							if(!this.fleet_pw_chk)
+								this.warning.pw_chk = "";
+							else
+								this.warning.pw_chk = "비밀번호가 일치하지 않습니다.";
+						}
+						else{
+							this.warning.pw_chk = "";
+							this.warning.pw = "";
+						}
+					}	
+				}
+			},
+			warn_check_pw_chk(){
+				if(this.fleet_pw != this.fleet_pw_chk){
+					this.warning.pw_chk = "비밀번호가 일치하지 않습니다.";
+				}
+				else{
+					this.warning.pw_chk = "";
+				}
+			},
+			certification_phone(){
+				
+			},
+			certification_phone_chk(){
+				
+			},
+			
+			fleet_register(){
+				if(!this.fleet_name){
+					alert("이름을 입력해주세요");
+					return false;
+				}
+				if(!this.fleet_id){
+					alert("아이디를 입력해주세요");
+					return false;
+				}
+				if(!this.fleet_pw){
+					alert("비밀번호를 입력해주세요");
+					return false;
+				}
+				if(!this.fleet_phone){
+					alert("핸드폰을 입력해주세요");
+					return false;
+				}
+				if(!this.fleet_email){
+					alert("이메일을 입력해주세요");
+					return false;
+				}
+					
+				this.$router.push({name : 'RegisterFleet02',params : {
+					fleet_name : this.fleet_name,
+					fleet_id : this.fleet_id,
+					fleet_pw : this.fleet_pw,
+					fleet_usage : this.fleet_usage,
+					fleet_phone : this.fleet_phone,
+					fleet_email : this.fleet_email,
+					fleet_business : this.fleet_business,
+				}});
+				/*
+				this.$http.post('api주소', {
+					fleet_business : this.fleet_business
+				}).then(
+				(res) => {  //아이디 중복 확인 
+					if (res.data.success == true){
+						
+					}
+					else{
+						this.warning.business = "이미 가입된 사업자등록번호입니다.";
+					}	
+				},
+				(err) => { // error 를 보여줌
+					alert('Login failed! please check your id or password');
+					console.log(err);
+				}).catch((err) => {
+					console.log(err);
+				})
+				*/
+				
+			},
+		}
+	}
 </script>
