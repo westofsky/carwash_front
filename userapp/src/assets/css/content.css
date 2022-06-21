@@ -1,0 +1,635 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*서브 공통*/
+.con_info { margin-bottom: 40px; }
+.sec_txt { font-size: 1rem; }
+.sec_txt .mainColor { color:var(--mainColor-blue); }
+.sec_txt .red { color:var(--mainColor-blue); }
+.sec_txt .black { color:#010101; }
+.fontBold { font-weight: 600;}
+
+
+.mainColor { color:var(--mainColor-blue); }
+.skyblue { color:var(--mainColor-blue); }
+.warn { color: var(--warnColor); position:absolute; display: flex; align-items: center; font-size: 0.75rem; }
+.warn > img { width: 0.87rem; margin-right: 3px; }
+.guide { font-size: 0.68rem; color: #8f8f8f; position: absolute; }
+
+/*.scontainer > section { height: 100%; }*/
+
+section.how_use { padding: 25px 1.31rem!important; background: transparent!important; box-shadow: none!important; border-radius: 0!important; margin-top: -1.06rem; }
+section.how_use .title { color: #333; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.94rem; }
+section.how_use ul li {position: relative; padding-left:8px; margin-bottom: 8px; }
+section.how_use ul li:after { content:""; display: block; width: 3px; height: 3px; border-radius: 100%; background: #333; position: absolute; left: 0; top: 8px; }
+section.how_use ul li p { font-size: 0.81rem; color: #333; line-height: 1.3; }
+
+button { cursor: pointer; }
+input[type='text'],input[type='number'] { border: 2px solid var(--inputColor); display: flex; justify-content: space-between; border-radius: 4px; font-size: 1rem; height: 46px; width: 100%; padding: 2px 10px; text-align: center; outline: 0; }
+input[type='text']::placeholder,input[type='number']::placeholder { color: var(--exColor); }
+input[type='text']:focus,input[type='number']:focus { border-color: var(--mainColor2) }
+input[type='password'] { border: 2px solid var(--inputColor); display: flex; justify-content: space-between; border-radius: 4px; font-size: 1rem; height: 46px; width: 100%; padding: 2px 10px; }
+input[type='password']::placeholder { color: var(--exColor); }
+input[type='password']:focus { border-color: var(--mainColor2) }
+a.inputA { border: 2px solid var(--inputColor); color: var(--exColor); display: flex; justify-content: space-between; border-radius: 4px; font-size: 1rem; height: 46px; width: 100%; padding: 2px 10px; line-height: 38px; }
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0;}
+input[type="radio"] { display: none; }
+input[type="radio"] + label { position: relative; padding-left: 28px; font-size:1rem; margin-right: 30px; line-height: 2; }
+input[type="radio"] + label:before { content:""; display: block; position: absolute; left:0; top: 50%; transform: translateY(-50%); width:21px; height: 21px; border-radius: 100%; border: 1px solid #cbd6e4; background: #e3e8ee; }
+input[type="radio"]:checked + label:before { background:#5191f3; border-color: #4387f0; }
+input[type="radio"]:checked + label:after { content:""; display: block; position: absolute; width:10px; height: 10px; background: #fff; left: 6px; top: 50%; transform: translateY(-50%); border-radius: 100%; }
+
+/* 체크박스 공통 */
+.check_list { position: relative; }
+.check_list input[type="checkbox"] { display: none}
+.check_list input[type="checkbox"] + .check { position: absolute; right:0.5rem; top: 50%; transform: translateY(-50%); width:1.31rem; height: 1.31rem; border-radius: 100%; z-index: 0; background:url('../img/content/check01_off.svg') no-repeat center 60% #e1e1e1; background-size: 70%; cursor: pointer;}
+.check_list input[type="checkbox"]:checked + .check { background:url('../img/content/check01_on.svg') no-repeat center 60% var(--mainColor-blue); background-size: 70%; }
+.check_list2 { position: relative; }
+.check_list2 input[type="checkbox"] { display: none}
+.check_list2 input[type="checkbox"] + .check { width:1.31rem; height: 1.31rem;  border-radius: 100%; background:url('../img/content/check01_off.svg') no-repeat center 60% #e1e1e1; background-size: 70%; margin-right: 0.4rem; position: absolute; left:0; z-index: 0;}
+.check_list2 input[type="checkbox"]:checked + .check { width:1.31rem; height: 1.31rem;  border-radius: 100%; background:url('../img/content/check01_on.svg') no-repeat center 60% var(--mainColor-blue); background-size: 70%; }
+.check_list2 label { padding-left: 1.6rem; position: relative; z-index: 1; cursor: pointer; }
+
+/*다음 버튼 공통*/
+.btn_next { position: fixed; width: 100%; text-align: center; bottom: 56px;  background: #c1c1c1; z-index: 9; }
+.btn_next.active { bottom: 107px; background: var(--mainColor-chachol); }
+.btn_next a { position: relative; display: block; font-weight: 600; font-size: 1.125rem; color: #fff; line-height: 51px; }
+.btn_next a:after { content:""; display: block; height: 1.13rem; width: 0.63rem; background: url('../img/content/arrow03.svg') no-repeat center center; background-size: contain; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
+.btn_next a img { position: absolute; left: 3%; top: 50%; transform: translateY(-50%); width: 48px; }
+
+/*다음 버튼 공통 ver02*/
+.btn_next2 { position: fixed; right: 0; width: 72%; text-align: center; bottom: 56px; background: var(--mainColor-chachol);  z-index: 9; }
+.btn_next2 a { position: relative; display: block; font-weight: 600; font-size: 1.125rem; color: #fff; line-height: 51px; }
+.btn_next2 a:after { content:""; display: block; height: 1.13rem; width: 0.63rem; background: url('../img/content/arrow03.svg') no-repeat center center; background-size: contain; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
+.btn_cancel2 { position: fixed; width: 28%; text-align: center; bottom: 56px; background: #c1c1c1; z-index: 9; }
+.btn_cancel2 a { position: relative; display: block; font-weight: 600; font-size: 1.125rem; color: #fff; line-height: 51px; }
+
+/*다음 버튼 공통 ver03 - half */
+.btn_next3_left { position: fixed; left: 0; width: 50%; text-align: center; bottom: 56px; z-index: 9; background:var(--mainColor-chachol); }
+.btn_next3_left a { position: relative; display: block; font-weight: 600; font-size: 1.125rem; color: #fff; line-height: 51px; vertical-align: middle; }
+.btn_next3_right { position: fixed; right: 0; width: 50%; text-align: center; bottom: 56px; z-index: 9; background:var(--mainColor); }
+.btn_next3_right a { position: relative; display: block; font-weight: 600; font-size: 1.125rem; color: #fff; line-height: 51px; vertical-align: middle; }
+.btn_next3_left img,.btn_next3_right img { max-width: 34px; vertical-align: middle; margin-right: 1rem; }
+
+.bubble_say { position: fixed; bottom: 130px; left: 50%; transform: translateX(-50%); width:100%; max-width: 90%; padding: 10px; border-radius: 4px; background:#fff; filter: drop-shadow(0px 0px 1px #cfcfcf) drop-shadow(0px 2px 2px rgba(0,0,0,0.06)); }
+.bubble_say p { font-size: 0.875rem; }
+.bubble_say p:after { content: ""; position: absolute; bottom: -15px; left:60px; border-right: 15px solid transparent; border-bottom: 0px solid transparent; border-top: 15px solid #fff; border-left: 15px solid transparent; }
+.bubble_say .warn { position: static; font-size: 0.875rem; display: inline; }
+
+.btn_arrow { display: inline-block; position:relative; height:48px; line-height: 48px; border-radius: 10px; border:0; background: var(--mainColor-chachol); color:#fff; font-size: 1rem; font-weight: 500; text-align: center; }
+.btn_arrow:after { content:""; display: block; height: 1.13rem; width: 0.63rem; background: url('../img/content/arrow03.svg') no-repeat center center; background-size: contain; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
+
+.btn_basic { display: inline-block; border:0; color: #fff; border-radius: 10px; height: 48px; line-height: 48px; cursor: pointer; font-size: 1rem; font-weight: 500; text-align: center; }
+
+
+/*테이블 공통*/
+.info_table { margin-top: 1.125rem; border-top: 1px solid #afafaf; }
+.info_table table { width:100%; color: #666666; font-size: 1.125rem; border-collapse: collapse; font-weight: 500; }
+.info_table tr { border-bottom: 1px dashed #afafaf; }
+.info_table td { padding: 10px 11px;  }
+.info_table td.table_name { position: relative; text-align: left;  }
+.info_table td.table_name:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.info_table td.table_price { text-align: right; }
+.info_table .total_price {background: #f4f4f4; border-bottom: 0; border-top:1px solid #afafaf;  }
+.info_table .total_price td:first-of-type { font-size: 0.875rem; color: #000; }
+.info_table .total_price td:last-of-type { color: #000; text-align: right; }
+.info_table tr:last-of-type:not(.total_price) { border-bottom: 1px solid #afafaf; }
+
+/* 결제등록 */
+.payment .con1 .card { position: relative; display: block; padding: 0.94rem; background: var(--mainColor-purple); text-align: center; border-radius: 9px; color: #fff; font-size: 0.94rem; font-weight: 600; }
+.payment .con1 .card > img { position: absolute; left: 22px; top: 55%; transform: translateY(-50%); width: 37px; }
+.payment .con2 .pay_register { display: flex; justify-content: space-between;}
+.payment .con2 .pay_register a { display: block; width: 100%; padding: 0.94rem; border-radius: 9px; font-size: 0.94rem; font-weight: 600; }
+.payment .con2 .pay_register a > img { width: 1.44rem; margin-right: 4%; vertical-align: middle;}
+.payment .con2 .pay_register a.naverpay { color: #fff; background-color: #5ec43a; margin-right: 4.3%;  }
+.payment .con2 .pay_register a.kakaopay { color: #1e1e1e; background-color: #f9e04b; }
+
+/*1회권 세차요금 결제*/
+.pay .con1 .one_time { position: relative; display: block; padding: 0.94rem; background: var(--mainColor-purple); text-align: center; border-radius: 9px; color: #fff; font-size: 0.94rem; font-weight: 600; }
+.pay .con1 .one_time img { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); width: 45px; }
+.pay .con2 .membership { position: relative; display: block; padding: 0.94rem; background:var(--mainColor-purple); text-align: center; border-radius: 9px; color: #fff; font-size: 0.94rem; font-weight: 600; }
+.pay .con2 .membership img { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); width: 45px; }
+
+/*1회권 세차상품*/
+.pay_onetime .arrow { width: 1.31rem; margin: -7px auto 0.625rem; }
+.pay_onetime .con_info { margin-bottom: 1.06rem; }
+.pay_onetime .oneType_wrap input[type="radio"] { display: none; }
+.pay_onetime .oneType_wrap li { border-radius: 0.625rem; border: 2px solid; margin-bottom: 4px; }
+.pay_onetime .oneType_wrap li:nth-of-type(1) { border-color: #a734a2; }
+.pay_onetime .oneType_wrap li:nth-of-type(2) { border-color: #a540fb; }
+.pay_onetime .oneType_wrap li:nth-of-type(3) { border-color: #5c37fb; }
+.pay_onetime .oneType_wrap li:nth-of-type(4) { border-color: #3693fb; margin-bottom: 0; }
+.pay_onetime .oneType_wrap a { position: relative; display: flex; padding: 0.81rem 7px; justify-content: space-between; align-items: center; }
+.pay_onetime .oneType_wrap a .img { width: 25%; }
+.pay_onetime .oneType_wrap a .img > img { height: 100%; vertical-align: top; }
+.pay_onetime .oneType_wrap a .img > img.on { display: none; }
+.pay_onetime .oneType_wrap a .info { width: 54%; padding: 0 6px; font-weight: 500; line-height: 1; font-size: 0.75rem; color: #7b7b7b; letter-spacing: -0.1em; }
+.pay_onetime .oneType_wrap a .info .fontBold {display: block; color: #000; font-family: 'Montserrat', 'SpoqaHanSansNeo', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; }
+.pay_onetime .oneType_wrap a .price { width: 26%; font-size: 1rem; font-weight: 500; color: #000; }
+.pay_onetime .oneType_wrap a .check { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); width: 1.31rem; height: 1.31rem; padding: 0 3px; border-radius: 100%; opacity: 0; background:url('../img/content/check02.svg') no-repeat center 60% #fff; background-size: 80%; }
+
+.pay_onetime .oneType_wrap li:hover { border-color: var(--mainColor-blue); background: #89b6f5; }
+.pay_onetime .oneType_wrap li:hover a .img > img.on { display: block; }
+.pay_onetime .oneType_wrap li:hover a .img > img.off { display: none; }
+.pay_onetime .oneType_wrap li:hover a .info { color: #fff; }
+.pay_onetime .oneType_wrap li:hover a .info .fontBold { color: #fff; }
+.pay_onetime .oneType_wrap li:hover a .price { color: #fff; }
+.pay_onetime .oneType_wrap li:hover a .check { opacity: 0; }
+
+.pay_onetime .oneType_wrap li.active { border-color: var(--mainColor-blue); background: var(--mainColor-blue); }
+.pay_onetime .oneType_wrap li.active a .img > img.on { display: block; }
+.pay_onetime .oneType_wrap li.active a .img > img.off { display: none; }
+.pay_onetime .oneType_wrap li.active a .info { color: #fff; }
+.pay_onetime .oneType_wrap li.active a .info .fontBold { color: #fff; }
+.pay_onetime .oneType_wrap li.active a .price { color: #fff; }
+.pay_onetime .oneType_wrap li.active a .check { opacity: 1; }
+.pay_onetime .how_use { padding: 10px 1.31rem;  }
+
+
+/*1회권 세차 옵션*/
+.pay_onetime .oneOption_wrap { border-radius: 0.625rem; border: 2px solid #c5c5c5; }
+.pay_onetime .oneOption_wrap>li { position: relative; display: flex; justify-content: space-between;padding: 0.625rem 0.75rem; border-bottom: 1px solid #dddddd; cursor: pointer}
+
+.pay_onetime .oneOption_wrap .option_img { width: 20%; }
+.pay_onetime .oneOption_wrap label { display: flex; width: 90%; justify-content: space-between; align-items: center; position: relative; z-index: 1; font-weight: 500; }
+.pay_onetime .oneOption_wrap .option_name { display: block; width:70%; padding-left: 8.5%; }
+.pay_onetime .oneOption_wrap .option_price { display: block; width:30%; }
+.pay_onetime .oneOption_no { display: flex; margin: 0.75rem 0; position: relative; }
+.pay_onetime .oneOption_no input[type="checkbox"] { display: none; }
+.pay_onetime .oneOption_no label span { font-weight: 600; font-size: 1.125rem; }
+
+
+/*1회권 세차 구매내역*/
+.pay_onetime_order_01 {}
+
+/*1회권 세차 구매내역 - 영수증*/
+.pay_onetime_order_02 {}
+.pay_onetime_order_02 section > div { margin:1rem 0 2rem; }
+.pay_onetime_order_02 section .title { color:#373f60; font-weight: 600; }
+.pay_onetime_order_02 .coupon_use { display: flex; justify-content: center; align-items: center; margin-bottom: 8px; border-radius: 4px; border: 1px solid #cfcfcf;  }
+.pay_onetime_order_02 .coupon_use > img { width: 33px; }
+.pay_onetime_order_02 .coupon_use > p { margin-left: 10px; color:#2c2c2c; line-height: 2.875rem; font-weight: 500; font-size: 1.125rem; }
+.pay_onetime_order_02 section > div ul li { position:relative; padding: 3px 11px; color: #666666; font-size: 1rem; font-weight: 500; }
+.pay_onetime_order_02 section > div ul li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.pay_onetime_order_02 .onetime_pay_info { border-top: 1px solid #afafaf; padding-top: 5px; }
+.pay_onetime_order_02 .onetime_pay_info.BRT_none { border-top: 0; }
+.pay_onetime_order_02 .info_QR_wrap { text-align: center; }
+.pay_onetime_order_02 .info_QR { margin: 25px auto 14px; width: 105px; }
+.pay_onetime_order_02 .info_QR_wrap > p { font-size: 0.9rem; color:#666666; line-height: 1.5; }
+.pay_onetime_order_02 + aside .btn_next { bottom:56px; }
+
+
+/* 회원가입(개인) 01 - 약관동의 */
+.register_basic01 .con1 { height: 100%; } 
+.register_basic01 .agree_wrap { margin-top: 27px; }
+.register_basic01 .agree_all_wrap { display: flex; position: relative; margin-bottom: 1.13rem;  }
+.register_basic01 .agree_all_wrap .warn { position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-size: 0.75rem; vertical-align: middle; }
+.register_basic01 .agree_all_wrap .warn > img { width: 14px; margin-right: 4px;vertical-align: middle;  }
+.register_basic01 .agree_list { width: 100%; border-radius: 10px; border: 2px solid #dddddd; }
+.register_basic01 .agree_list li { position:relative; border-bottom: 1px solid #dddddd; padding: 0.625rem 0.75rem; width: 100%; }
+.register_basic01 .agree_list li a { position: relative; }
+.register_basic01 .agree_list li a:after { content:""; display: inline-block; width: 7px; height: 12px; padding: 0 8px; background: url('../img/content/arrow02.svg') no-repeat center center; background-size: contain; }
+.register_basic01 .agree_list li p { display: inline-block; font-size: 1rem; font-weight: 500; color:#000; }
+.register_basic01 .agree_list li span { font-size: 0.75rem; color:#777777; }
+.register_basic01 .agree_list li span.warn { font-size: 0.75rem; color:var(--warnColor); display: inline-block; margin-top: 3px;}
+
+/* 회원가입(개인) 02 - 차량번호 */
+.register_basic02 .con1 { height: 100%; }  
+.register_basic02 .con1 .ex { font-size: 1rem; color: var(--exColor); margin: 0.75rem 0; } 
+.register_basic02 .car_number_wrap { display: flex; justify-content: space-between; } 
+.register_basic02 .car_number_wrap > * { position: relative;  } 
+.register_basic02 .car_number_wrap > input::placeholder { color: var(--exColor); }
+.register_basic02 .car_number_wrap > input:focus { border-color: var(--mainColor2); outline: 0; }
+.register_basic02 .car_number_wrap a::after { content:""; display: block; position: absolute; top: 50%; right: 0.5rem; transform: translateY(-50%); width: 0; height:0; border-top: 5px solid var(--exColor);
+  border-left: 6px solid transparent; border-right: 6px solid transparent; } 
+.register_basic02 .car_number_wrap .car_num01 { width: 23%; margin-right: 2%; } 
+.register_basic02 .car_number_wrap .car_num02 { width: 19%; margin-right: 2%; } 
+.register_basic02 .car_number_wrap .car_num03 { width: 18%; margin-right: 2%; } 
+.register_basic02 .car_number_wrap .car_num04 { width: 34%; } 
+.register_basic02 .warn { font-size: 0.75rem; display: flex; align-items: center; margin-top: 0.44rem; }
+.register_basic02 .warn>img { width: 1rem; margin-right: 3px; }
+
+/* 회원가입(개인) 03 - 핸드폰번호 */
+.register_basic03 .con1 { height:100%; } 
+.register_basic03 .con1 .title { margin-bottom:0.75rem; } 
+.register_basic03 .phone_num { margin: 42px 0 7px; }
+.register_basic03 .warn { font-size: 0.75rem; display: flex; align-items: center; margin-top: 0.44rem;}
+.register_basic03 .warn>img { width: 0.87rem; margin-right: 3px; }
+.register_basic03 .agree_privacy_wrap { margin-top: 50px; }
+
+/* 회원가입(개인) 04 - 가입완료 */
+.register_basic04 .con1 { height: 100%; }
+.register_basic04 .title { font-size: 1.25rem!important; }
+.register_basic04 .user_info ul { margin: 42px 0 7px; width: 100%; border-radius: 10px; border: 2px solid #dddddd;  }
+.register_basic04 .user_info li {position:relative; border-bottom: 1px solid #dddddd; padding: 0.625rem 0.75rem; width: 100%; display: flex; align-items: center; }
+.register_basic04 .user_info li p { font-size: 1rem;  }
+.register_basic04 .user_info li .info_title { width: 38%; font-weight: 600; }
+.register_basic04 .user_info li .info_txt { width: 62%; }
+.register_basic04 .user_info li .info_txt.user_num { color: #ff6600; }
+.register_basic04 .etc { font-size: 0.75rem; width: 100%;  margin-left: 3px;}
+.register_basic04 + aside .btn_next a { background: var(--mainColor-chachol); }
+
+/* 회원가입(개인) - 서비스 이용약관 */
+.register_terms .con1 { height: 100%; }
+.register_terms #top_info { padding: 70px 0 0 0; }
+.register_terms .con1 .title { color: #666; margin-bottom: 1.6rem; font-size: 0.87rem; }
+.register_terms .con1 p { color: #666; margin-bottom: 1.6rem; font-size: 0.87rem; word-break: keep-all; line-height: 150%; }
+.register_terms .con1 p>span { display: block; }
+
+
+/* 회원가입(기업) 01 - 정보입력 */
+.register_fleet01 ul { position: relative;}
+.register_fleet01 .required { color: var(--mainColor); vertical-align: sub; padding: 0 3px; line-height: 0;}
+.register_fleet01 li { margin-bottom: 2rem; position: relative;}
+.register_fleet01 li:first-of-type { padding-top: 1.19rem; }
+.register_fleet01 li .title { display: block; font-size: 0.875rem; margin-bottom: 5px }
+.register_fleet01 li .guide { font-size: 0.68rem; color:#8f8f8f; position: absolute; top: 0; right: 0;}
+.register_fleet01 li .warn { position: absolute; font-size: 0.625rem; margin-top: 3px; }
+.register_fleet01 li > div { display: flex; justify-content: space-between; }
+.register_fleet01 li label {cursor: pointer}
+.register_fleet01 li input[type="text"] {text-align: left;}
+.register_fleet01 li input[type="number"] {text-align: left;}
+.register_fleet01 li input[type="number"]:focus ~ label {color: var(--mainColor); }
+.register_fleet01 li > div input[type="text"] { width: 75%; text-align: left; }
+.register_fleet01 li > div input[type="number"] { width: 75%; text-align: left; }
+.register_fleet01 li > div .check { margin-left: -5%; color: #fff; background: #6a7196; border: 0; width: 31%; border-radius: 4px; cursor: pointer; }
+.register_fleet01 li > div .check2 { margin-left: -5%; color: #fff; background: #6a7196; border: 0; width: 31%; border-radius: 4px;  cursor: pointer;  }
+.register_fleet01 li .email_wrap > p { line-height: 34px; padding: 4px; color:var(--inputColor); }
+.register_fleet01 li .email_wrap > input:nth-of-type(1) { width: 48%; text-align: left; }
+.register_fleet01 li .email_wrap > input:nth-of-type(2) { width: 48%;text-align: left;  }
+.register_fleet01 li .email_wrap > select { width: 48%; border: 2px solid var(--inputColor); display: flex; justify-content: space-between; border-radius: 4px; font-size: 1rem; height: 46px; padding: 2px 10px; outline: 0; background: url('../img/content/arrow04.png') no-repeat 90% center; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-size: 0.75rem; }
+.register_fleet01 li .email_wrap > select::-ms-expand { display: none;}
+.register_fleet01 li .email_wrap > select:focus { border-color: var(--mainColor2) }
+.register_fleet01 li .time { position: absolute; margin-top: 3px; align-items: center; }
+.register_fleet01 li .time .check_time { font-size: 0.87rem; display: inline-block; margin-right: 1.4rem; color: #ff4c15; }
+.register_fleet01 li .time .check_timemore { font-size: 0.75rem; display: inline-block; color: #000; }
+.register_fleet01 .required_guide { position: absolute; right: 0; top:0;  }
+.register_fleet01 .required_guide > p { font-size: 0.69rem; color:#8f8f8f; }
+
+/* 회원가입(기업) 02 - 약관동의 */
+.register_fleet02 .con1 { height: 100%; } 
+.register_fleet02 .agree_wrap { margin-top: 27px; }
+.register_fleet02 .agree_all_wrap { display: flex; position: relative; margin-bottom: 1.13rem;  }
+.register_fleet02 .agree_all_wrap .warn { position: absolute; top: 50%; right: 0; transform: translateY(-50%); font-size: 0.75rem; vertical-align: middle; }
+.register_fleet02 .agree_all_wrap .warn > img { width: 14px; margin-right: 4px;vertical-align: middle;  }
+.register_fleet02 .agree_list { width: 100%; border-radius: 10px; border: 2px solid #dddddd; }
+.register_fleet02 .agree_list li { position:relative; border-bottom: 1px solid #dddddd; padding: 0.625rem 0.75rem; width: 100%; }
+.register_fleet02 .agree_list li a { position: relative; }
+.register_fleet02 .agree_list li a:after { content:""; display: inline-block; width: 7px; height: 12px; padding: 0 8px; background: url('../img/content/arrow02.svg') no-repeat center center; background-size: contain; }
+.register_fleet02 .agree_list li p { display: inline-block; font-size: 1rem; font-weight: 500; color:#000; }
+.register_fleet02 .agree_list li span { font-size: 0.75rem; color:#777777; }
+.register_fleet02 .agree_list li span.warn { font-size: 0.75rem; color:var(--warnColor);  display: inline-block; margin-top: 3px; }
+
+/* 회원가입(기업) 03 - 가입완료 */
+.register_fleet03 .con1 { height: 100%; }
+.register_fleet03 .title { font-size: 1.25rem!important; }
+.register_fleet03 .user_info { text-align: center; border-radius: 10px; border: 1px solid #dddddd; margin: 1.5rem 0; padding: 1.37rem 0.9rem;  }
+.register_fleet03 .user_info p { font-size: 0.875rem; }
+.register_fleet03 .user_info .alarm_img { width:42px; text-align: center; }
+.register_fleet03 .user_info .alarm_txt { text-align: center; margin-top: 0.6rem; font-weight: 500; }
+.register_fleet03 .user_info .etc { position: relative; margin-top:1.125rem; padding-left: 10px; font-weight: 500; text-align: left; }
+.register_fleet03 .user_info .etc:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: var(--mainColor-light-blue); left:0; top: 6px; }
+.register_fleet03 + aside .btn_next a { background: var(--mainColor-chachol); }
+
+
+/* 공지사항 - 리스트 */
+.notice_list #top_info { padding: 70px 0 0 0; }
+.notice_list .con1 { height:110%; }
+.notice_list .list { min-height:90%; padding-bottom:10px; }
+.notice_list .list li { border-bottom:1px solid #e2e2e2; }
+.notice_list .list li a { position:relative; display:block; padding: 0.7rem 1.8rem 0.7rem 0; font-size:1rem; color:#555; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.notice_list .list li a:after { position:absolute; right: 10px; top:56%; content:""; display:block; width: 7px; height: 7px; border-top: 2px solid #c5c5c5; border-right: 2px solid #c5c5c5; transform: translateY(-50%) rotate(45deg); transform-origin: right center;}
+
+.notice_list .list li a:hover {color:#000;}
+.notice_list .list li a:hover:after {border-top: 2px solid #000; border-right: 2px solid #000;}
+
+.notice_list .notice_paging { display:flex; justify-content: center; align-items: center; text-align:center; font-size:0.8rem; }
+.notice_list .notice_paging em {position:relative; display:inline-block; width:10px; height:10px; padding:3px; font-size:0; cursor: pointer; box-sizing: content-box;}
+.notice_list .notice_paging em.link_prev { margin-right:1rem; }
+.notice_list .notice_paging em.link_prev:after { content:""; position:absolute; top:0; left: 0; display:block; width:10px; height: 10px; border-top: 2px solid #cfcfcf; border-right: 2px solid #cfcfcf; transform: rotate(-135deg); transform-origin: right center;  box-sizing: border-box; }
+.notice_list .notice_paging em.link_next { margin-left:1rem; }
+.notice_list .notice_paging em.link_next:after { content:""; position:absolute; top:0; left: 0; display:block; width:10px; height: 10px; border-top: 2px solid #cfcfcf; border-right: 2px solid #cfcfcf; transform: rotate(45deg); transform-origin: left center;  box-sizing: border-box; }
+.notice_list .notice_paging .link_page { margin: 0 2px; padding:0 3px; color:#808080; font-weight: 400; }
+.notice_list .notice_paging .link_page.active {color:#000; font-weight: 600; }
+
+/* 공지사항 - 디테일 */
+.notice_detail #top_info { padding: 70px 0 0 0; }
+.notice_detail .con1 { height:110%; }
+.notice_detail .notice_content { width:100%; height:100%; }
+.notice_detail .notice_content .top { border-bottom: 1px solid #e2e2e2; padding:10px 0; }
+.notice_detail .notice_content .subject { font-size: 1rem; margin: 0 0 10px 0; }
+.notice_detail .notice_content .date { font-size: 0.7rem; color:#898989; }
+.notice_detail .notice_content .scontent { font-size: 0.8rem; padding:10px 0; }
+
+/* 쿠폰관련 상단탭 */
+.section_tab { width: 100%; display: flex; justify-content: center; align-items: center; text-align: center; margin-bottom: 1.25rem; }
+.section_tab a { flex:1; border-bottom: 2px solid #e7e7e7; color: #999999; font-weight: 500; padding-bottom: 1rem; }
+.section_tab a.active { color: #111111; border-bottom: 2px solid #da181d; }
+
+/* 쿠폰리스트 */
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_list { border-radius: 18px; border: 2px solid #dddddd; margin-bottom: 1.25rem; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_list .coupon_name { display: flex; align-items: center; border-bottom: 1px dashed #afafaf; padding: 12px 15px; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_list .coupon_name > p { font-weight: 500; width:100%; letter-spacing: -0.5px; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_list .coupon_name>img { width: 30px; margin-right: 8px; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_info { padding: 12px 15px; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_info ul { margin-bottom: 0.93rem; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 0.875rem; font-weight: 500; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_info button {width:100%; }
+
+
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_list:hover { border-color: #000; }
+.pay_onetime_coupon_01 .coupon_list_wrap .coupon_list:hover .coupon_name{ color:#da181d; }
+
+
+/* 결제리스트 - 사용 */
+.order_list_01 .coupon_list_wrap .coupon_list { border-radius: 18px; border: 2px solid #dddddd; margin-bottom: 1.25rem; }
+.order_list_01 .coupon_list_wrap .coupon_list .coupon_name { display: flex; align-items: center; border-bottom: 1px dashed #afafaf; padding: 12px 15px; }
+.order_list_01 .coupon_list_wrap .coupon_list .coupon_name > p { font-weight: 500; letter-spacing: -0.5px; width:100%; }
+.order_list_01 .coupon_list_wrap .coupon_list .coupon_name>img { width: 65px; margin-right: 3px; }
+.order_list_01 .coupon_list_wrap .coupon_info { padding: 12px 15px; }
+.order_list_01 .coupon_list_wrap .coupon_info ul { margin-bottom: 0.93rem; }
+.order_list_01 .coupon_list_wrap .coupon_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 0.875rem; font-weight: 500; }
+.order_list_01 .coupon_list_wrap .coupon_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.order_list_01 .coupon_list_wrap .coupon_info button {width:100%; }
+
+.order_list_01 .coupon_list_wrap .coupon_list:hover { border-color: #000; }
+
+
+/* 결제리스트 - 미사용 */
+.order_list_02 .coupon_list_wrap .coupon_list { border-radius: 18px; border: 2px solid #dddddd; margin-bottom: 1.25rem; }
+.order_list_02 .coupon_list_wrap .coupon_list .coupon_name { display: flex; align-items: center; border-bottom: 1px dashed #afafaf; padding: 12px 15px; }
+.order_list_02 .coupon_list_wrap .coupon_list .coupon_name > p { font-weight: 500; letter-spacing: -0.5px; width:100%; }
+.order_list_02 .coupon_list_wrap .coupon_list .coupon_name>img { width: 65px; margin-right: 3px; }
+.order_list_02 .coupon_list_wrap .coupon_info { padding: 12px 15px; }
+.order_list_02 .coupon_list_wrap .coupon_info ul { margin-bottom: 0.93rem; }
+.order_list_02 .coupon_list_wrap .coupon_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 0.875rem; font-weight: 500; }
+.order_list_02 .coupon_list_wrap .coupon_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+
+.order_list_02 .coupon_list_wrap .coupon_info button {border:1px solid #373f60; width: 100%; background: #edeff8; color:#373f60; }
+.order_list_02 .coupon_list_wrap .coupon_info button:after {  background:url('../img/content/arrow03_dark.svg') no-repeat center center; background-size: contain; }
+
+.order_list_02 .coupon_list_wrap .coupon_list:hover { border-color: #000; }
+
+
+/* QR _ 스캔 */
+.error_qr_01 article.scontainer section { padding:0; }
+.error_qr_01 .desc { text-align: center; padding:20px 0 15px; }
+.error_qr_01 .desc > img { width: 42px; }
+.error_qr_01 .desc > p { font-size: 1.125rem; }
+.error_qr_01 .qr_scan > img { font-size: 1.125rem; }
+
+
+
+/* 쿠폰 구매 사용 _ 미사용 리스트 */
+.pay_coupon_01 .coupon_list_wrap .coupon_list { border-radius: 18px; border: 2px solid #dddddd; margin-bottom: 1.25rem; }
+.pay_coupon_01 .coupon_list_wrap .coupon_list .coupon_name { display: flex; align-items: center; border-bottom: 1px dashed #afafaf; padding: 12px 15px; }
+.pay_coupon_01 .coupon_list_wrap .coupon_list .coupon_name > p { font-weight: 500; width:100%; letter-spacing: -0.5px; }
+.pay_coupon_01 .coupon_list_wrap .coupon_list .coupon_name>img { width: 30px; margin-right: 8px; }
+.pay_coupon_01 .coupon_list_wrap .coupon_info { padding: 12px 15px; }
+.pay_coupon_01 .coupon_list_wrap .coupon_info:after { content:""; display: block; clear: both; }
+.pay_coupon_01 .coupon_list_wrap .coupon_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 0.875rem; font-weight: 500; }
+.pay_coupon_01 .coupon_list_wrap .coupon_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.pay_coupon_01 .coupon_list_wrap .coupon_info .gift_coupon { width: 35%; float: left; margin-top: 0.93rem; background: #e3ab00; }
+.pay_coupon_01 .coupon_list_wrap .coupon_info .using_coupon {  width: 63%; float: right; margin-top:0.93rem; padding-right:12px; }
+
+
+/* content_pop 공통 css */
+.content_pop { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; background: #f3f3f3; z-index: 11; max-width: 900px; border-radius: 18px; overflow: hidden; }
+.content_pop .pop_title { width: 100%; display: flex; justify-content: center; align-items: center; background: #ffffff; height: 48px;  }
+.content_pop .pop_title > img { width: 20px; margin-right: 5px; }
+.content_pop .pop_title > p { color: #000; font-size: 1.125rem; }
+.content_pop_bg { position: fixed; display: block; width:100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 10; }
+.content_pop .pop_cont { padding: 17px 14px; }
+.content_pop .pop_close { position: absolute; top: 10px; right: 10px; border:0; background: transparent; }
+.content_pop .pop_close > img { width: 14px; }
+
+/* 쿠폰 구매 사용 _ 미사용 리스트 _ 선물하기 */
+.pay_coupon_01 .content_pop .pop_cont .coupon_name { display: flex; justify-content: center; align-items: center; height: 47px; border-radius: 4px; border: 1px solid #cfcfcf; background: #fff;  }
+.pay_coupon_01 .content_pop .pop_cont .coupon_name > img { width: 24px; margin-right: 6px; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_name > p { color: #2c2c2c; font-size: 1.06rem; font-weight: 500;  }
+.pay_coupon_01 .content_pop .pop_cont .coupon_info { padding: 10px 13px;  }
+.pay_coupon_01 .content_pop .pop_cont .coupon_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 1rem; font-weight: 500; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.pay_coupon_01 .content_pop .pop_cont .coupon_QR { text-align: center;  padding-bottom:1rem; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_QR > img { width: 105px; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_gift_who { padding-top:0.9rem; border-top: 1px solid #d8d8d8; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_gift_who > p { position: relative;  display: inline-block; font-size: 0.875rem; color:#0a0a0a; font-weight: 500; margin-bottom: 6px; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_gift_who > p > .required { color:#da181d; position:absolute; top: 3px; right: -10px; font-size: 1rem; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_gift_text { margin-top: 3px; display: flex; justify-content: space-between; }
+.pay_coupon_01 .content_pop .pop_cont .coupon_gift_text .gift_who_number { width: 58%; border: 1px solid #d8dfe6; background: #fff; border-radius: 4px; text-align: left;  }
+.pay_coupon_01 .content_pop .pop_cont .coupon_gift_text .gift_who_number + button { width: 39%; background: #e3ab00; padding-right: 5%; }
+
+
+.pay_coupon_01 .content_pop .pop_cont .coupon_change_btn > button { width:100%; background: var(--mainColor-chachol); }
+
+/* 쿠폰 구매 */
+.pay_coupon_buy { width: 1.31rem; margin: -7px auto 0.625rem; }
+.pay_coupon_buy .arrow { width: 1.31rem; margin: -7px auto 0.625rem; }
+.pay_coupon_buy .con_info { margin-bottom: 1.06rem; }
+.pay_coupon_buy .oneType_wrap input[type="radio"] { display: none; }
+.pay_coupon_buy .oneType_wrap li { border-radius: 0.625rem; border: 2px solid; margin-bottom: 4px; }
+.pay_coupon_buy .oneType_wrap li:nth-of-type(1) { border-color: #a734a2; }
+.pay_coupon_buy .oneType_wrap li:nth-of-type(2) { border-color: #a540fb; }
+.pay_coupon_buy .oneType_wrap li:nth-of-type(3) { border-color: #5c37fb; }
+.pay_coupon_buy .oneType_wrap li:nth-of-type(4) { border-color: #3693fb; margin-bottom: 0; }
+.pay_coupon_buy .oneType_wrap a { position: relative; display: flex; padding: 0.81rem 7px; justify-content: space-between; align-items: center; }
+.pay_coupon_buy .oneType_wrap a .img { width: 20%; }
+.pay_coupon_buy .oneType_wrap a .img > img { height: 100%; vertical-align: top; }
+.pay_coupon_buy .oneType_wrap a .img > img.on { display: none; }
+.pay_coupon_buy .oneType_wrap a .info { width: 54%; padding: 0 6px; font-weight: 500; line-height: 1; font-size: 0.75rem; color: #7b7b7b; letter-spacing: -0.1em; }
+.pay_coupon_buy .oneType_wrap a .info .fontBold {display: block; color: #000; font-family: 'Montserrat', 'SpoqaHanSansNeo', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; }
+.pay_coupon_buy .oneType_wrap a .price { width: 26%; font-size: 1rem; font-weight: 500; color: #000; }
+.pay_coupon_buy .oneType_wrap a .check { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); width: 1.31rem; height: 1.31rem; padding: 0 3px; border-radius: 100%; opacity: 0; background:url('../img/content/check02.svg') no-repeat center 60% #fff; background-size: 80%; }
+
+.pay_coupon_buy .oneType_wrap li:hover { border-color: var(--mainColor-blue); background: #89b6f5; }
+.pay_coupon_buy .oneType_wrap li:hover a .img > img.on { display: block; }
+.pay_coupon_buy .oneType_wrap li:hover a .img > img.off { display: none; }
+.pay_coupon_buy .oneType_wrap li:hover a .info { color: #fff; }
+.pay_coupon_buy .oneType_wrap li:hover a .info .fontBold { color: #fff; }
+.pay_coupon_buy .oneType_wrap li:hover a .price { color: #fff; }
+.pay_coupon_buy .oneType_wrap li:hover a .check { opacity: 0; }
+
+.pay_coupon_buy .oneType_wrap li.active { border-color: var(--mainColor-blue); background: var(--mainColor-blue); }
+.pay_coupon_buy .oneType_wrap li.active a .img > img.on { display: block; }
+.pay_coupon_buy .oneType_wrap li.active a .img > img.off { display: none; }
+.pay_coupon_buy .oneType_wrap li.active a .info { color: #fff; }
+.pay_coupon_buy .oneType_wrap li.active a .info .fontBold { color: #fff; }
+.pay_coupon_buy .oneType_wrap li.active a .price { color: #fff; }
+.pay_coupon_buy .oneType_wrap li.active a .check { opacity: 1; }
+.pay_coupon_buy .how_use { padding: 10px 1.31rem;  }
+
+
+/* 쿠폰 추가 */
+.pay_coupon_add .con1 .title { margin-bottom: 0.75rem; }
+.pay_coupon_add + aside .btn_next { background: var(--mainColor-chachol); }
+
+
+
+/* 세차장 찾기 */
+.shop_list .shop_list_wrap .shop_spot { border-radius: 12px; border: 2px solid #dddddd; margin-bottom: 7px; }
+.shop_list .shop_list_wrap .shop_spot .shop_name { display: flex; align-items: center;  padding: 12px 15px; cursor: pointer; }
+.shop_list .shop_list_wrap .shop_spot .shop_name > p { font-weight: 500; width:100%; letter-spacing: -0.5px; position: relative; }
+.shop_list .shop_list_wrap .shop_spot .shop_name > p:after { content:""; display: block; clear: both; position: absolute; right: 0; top: 0; height: 18px; width: 18px; background: url('../img/content/btn_arrow_chacol.svg') no-repeat center center; background-size: contain; transform: rotate(180deg); transform-origin: center center;background-size: 80%;  }
+.shop_list .shop_list_wrap .shop_spot .shop_name>img { width: 30px; margin-right: 8px; }
+.shop_list .shop_list_wrap .shop_info { padding: 12px 15px; border-top: 1px dashed #afafaf; display: none; }
+.shop_list .shop_list_wrap .shop_info:after { content:""; display: block; clear: both; }
+.shop_list .shop_list_wrap .shop_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 0.875rem; font-weight: 500; }
+.shop_list .shop_list_wrap .shop_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.shop_list .shop_list_wrap .shop_info .shop_map { width: 56%; float: left; background:#e3ab00; margin-top: 0.93rem; }
+.shop_list .shop_list_wrap .shop_info .shop_map > img { width: 15px; margin-right: 6px; vertical-align: sub; }
+.shop_list .shop_list_wrap .shop_info .shop_close { width: 41%; float: right; background: #c6c5c4;  margin-top: 0.93rem; }
+
+.shop_list .shop_list_wrap .shop_spot.active .shop_info { display: block; }
+.shop_list .shop_list_wrap .shop_spot.active .shop_name > p:after { background: url('../img/content/btn_arrow_black.svg') no-repeat center center; transform: rotate(0); background-size: 80%; }
+
+
+
+/* 세차장 찾기 - 지도보기 */
+.shop_map .title { font-weight: 500; font-size: 1rem; }
+.shop_map #map { width: 100vw; height: 80%; margin: 0.785rem -21px 0;  }
+.shop_map #map .root_daum_roughmap .wrap_map { height:100%  }
+.shop_map + aside .btn_next { background: var(--mainColor-chachol); }
+
+
+/* 내정보 _ list */
+.myinfo_list #top_info { padding:70px 0 0 0; }
+.myinfo_list .myinfo_list_wrap { margin-top: 20px; }
+.myinfo_list .myinfo_list_wrap ul li { border: 1px solid #dddddd; border-radius: 10px; overflow: hidden; margin-bottom: 5px; }
+.myinfo_list .myinfo_list_wrap ul li a { position:relative; display: block; height: 3rem; line-height: 3rem; padding-left: 50px; background-size: 32px; background-position: 10px center; background-repeat: no-repeat; font-size: 1rem; color:#111111; font-weight: 500; }
+.myinfo_list .myinfo_list_wrap ul li a:after { content:""; display: block; position: absolute; right: 10px; top: 50%; transform: translateY(-50%) rotate(90deg); width: 20px; height: 20px;  background:url('../img/content/btn_arrow_chacol.svg') no-repeat center center; background-size: 80%; }
+.myinfo_list .myinfo_list_wrap ul li .user { background-image: url('../img/content/myinfo_user.svg'); }
+.myinfo_list .myinfo_list_wrap ul li .record { background-image: url('../img/content/myinfo_record.svg'); }
+.myinfo_list .myinfo_list_wrap ul li .membership { background-image: url('../img/content/myinfo_membership.svg'); }
+.myinfo_list .myinfo_list_wrap ul li .mem_cancel { background-image: url('../img/content/myinfo_mem_cancel.svg'); }
+.myinfo_list .myinfo_list_wrap ul li .user_cancel { background-image: url('../img/content/myinfo_user_cancel.svg'); }
+
+.myinfo_list .myinfo_list_wrap ul li:hover { border-color: #111111; }
+.myinfo_list .myinfo_list_wrap ul li:hover .user { background-image: url('../img/content/myinfo_user_on.svg'); }
+.myinfo_list .myinfo_list_wrap ul li:hover .record { background-image: url('../img/content/myinfo_record_on.svg'); }
+.myinfo_list .myinfo_list_wrap ul li:hover .membership { background-image: url('../img/content/myinfo_membership_on.svg'); }
+.myinfo_list .myinfo_list_wrap ul li:hover .mem_cancel { background-image: url('../img/content/myinfo_mem_cancel_on.svg'); }
+.myinfo_list .myinfo_list_wrap ul li:hover .user_cancel { background-image: url('../img/content/myinfo_user_cancel_on.svg'); }
+.myinfo_list .myinfo_list_wrap ul li:hover a:after { background:url('../img/content/btn_arrow_black.svg') no-repeat center center; background-size: 80%;  }
+
+
+
+/* 내정보 _ 내정보 */
+.myinfo_info #top_info { padding:70px 0 0 0; }
+.myinfo_info .myinfo_info_wrap li { margin-bottom:28px; }
+.myinfo_info .myinfo_info_wrap li label { font-size: 0.875rem; color:#0a0a0a; margin-bottom: 5px; display: block; }
+.myinfo_info .myinfo_info_wrap li input { text-align: left; }
+.myinfo_info .myinfo_info_wrap .basicPW { display: inline-block; width: 66%; }
+.myinfo_info .myinfo_info_wrap .basicPW + button { display: inline-block;  width: 31%; height: 46px; color: #fff; background: #69729b; font-size: 0.825rem; border-radius: 4px; border:0;  }
+.myinfo_info .myinfo_info_wrap .basicUserNum { color: #002dd4; }
+.myinfo_info .myinfo_info_wrap .basicUsergrade { color: #002dd4; }
+.myinfo_info + aside .btn_next { background: var(--mainColor-chachol); }
+.myinfo_info + aside .btn_next a:after { content: none; }
+
+.myinfo_info .myinfo_pop li { margin-bottom: 30px;  }
+.myinfo_info .myinfo_pop li .warn { margin-top: 5px; }
+.myinfo_info .myinfo_pop li label { font-size: 0.825rem; margin-bottom: 5px; position: relative; display: block; }
+.myinfo_info .myinfo_pop li label .required { position: absolute; top: 12px; transform: translateY(-50%); color: var(--mainColor-light-blue); font-weight: 600; margin-left: 2px; font-size: 0.625rem; }
+.myinfo_info .myinfo_pop li .guide { margin-top: 3px; }
+.myinfo_info .pop_cont .submit { width:100%; margin-top: 20px; }
+
+
+/* 내정보 _ 세차기록 */
+.myinfo_wash #top_info { padding:70px 0 0 0; }
+.myinfo_wash .title { font-weight: 600; color:#373f60; }
+.myinfo_wash .myinfo_wash_cal { margin: 0 0 15px;}
+.myinfo_wash .myinfo_wash_cal .title { margin-bottom: 5px;}
+.myinfo_wash .myinfo_wash_cal > span { padding: 0 3px;}
+.myinfo_wash .myinfo_wash_cal > input { width: 36%; display: inline-block; font-size:0.9rem; text-align: left; }
+.myinfo_wash .myinfo_wash_cal > button { width: 20%; float: right; height: 46px; border:0; background:#69729b; color:#fff; border-radius: 4px; }
+.myinfo_wash .myinfo_wash_empty {  border-top: 1px solid #dddddd; text-align: center;  }
+.myinfo_wash .myinfo_wash_empty > p { font-size: 0.825rem; color:#999999; margin: 32px 0; }
+
+.myinfo_wash .myinfo_wash_list .wash_list { border-radius: 18px; border: 2px solid #dddddd; margin-bottom: 1.25rem; }
+.myinfo_wash .myinfo_wash_list .wash_list .wash_list_name { display: flex; align-items: center; border-bottom: 1px dashed #afafaf; padding: 12px 15px; }
+.myinfo_wash .myinfo_wash_list .wash_list .wash_list_name > p { font-weight: 500; letter-spacing: -0.5px; width:100%; }
+.myinfo_wash .myinfo_wash_list .wash_list .wash_list_name>img { width: 65px; margin-right: 3px; }
+.myinfo_wash .myinfo_wash_list .wash_info { padding: 12px 15px; }
+.myinfo_wash .myinfo_wash_list .wash_info li { position:relative; padding: 3px 11px; color: #666666; font-size: 0.875rem; font-weight: 500; }
+.myinfo_wash .myinfo_wash_list .wash_info li:after { content:""; position: absolute; display: block; width: 4px; height: 4px; background: #afafaf; top: 50%; left: 0; transform: translateY(-50%); }
+.myinfo_wash + aside .btn_next { background: var(--mainColor-chachol); }
+.myinfo_wash + aside .btn_next a:after { content: none; }
+
+
+/* 내정보 _ 세멤버쉽결제 이용정보 */
+.myinfo_membership #top_info { padding: 70px 0 0 0; }
+.myinfo_membership section .title { font-weight: 600; color: #373f60; }
+.myinfo_membership .myinfo_membership_empty { text-align:center; }
+.myinfo_membership .myinfo_membership_empty > p { margin: 32px 0; font-size: 1.125rem; color:#999999; }
+.myinfo_membership + aside .btn_next { background: var(--mainColor-chachol); }
+.myinfo_membership + aside .btn_next a:after { content: none; }
+
+
+/* 내정보_멤버쉽해지 */
+.myinfo_membership_cancel #top_info { padding: 70px 0 0 0; }
+.myinfo_membership_cancel .membership_cancel_info > p { color:#111; font-size: 0.825rem; font-weight: 500; margin-top:1.4rem; }
+.myinfo_membership_cancel .membership_cancel_info > ul { margin-top:1.4rem; border-radius: 10px; border:1px solid #dddddd; padding: 1.125rem; }
+.myinfo_membership_cancel .membership_cancel_info > ul li { padding-left: 10px; position: relative; font-size: 0.875rem; margin-bottom: 15px; }
+.myinfo_membership_cancel .membership_cancel_info > ul li:last-of-type { margin-bottom: 0; }
+.myinfo_membership_cancel .membership_cancel_info > ul li:after { content:""; display: block; width:4px; height: 4px; position: absolute; left: 0; top: 6px; background: var(--mainColor); }
+.myinfo_membership_cancel + aside .btn_next { background: var(--mainColor-chachol); }
+.myinfo_membership_cancel + aside .btn_next a:after { content: none; }
+
+
+
+/* 내정보_회원탈퇴 */
+.myinfo_register_cancel #top_info { padding: 70px 0 0 0; }
+.myinfo_register_cancel .membership_cancel_info > p { color:#111; font-size: 0.825rem; font-weight: 500; margin-top:1.4rem; }
+.myinfo_register_cancel .membership_cancel_info > ul { margin-top:1.4rem; border-radius: 10px; border:1px solid #dddddd; padding: 1.125rem; }
+.myinfo_register_cancel .membership_cancel_info > ul li { padding-left: 10px; position: relative; font-size: 0.875rem; margin-bottom: 15px; }
+.myinfo_register_cancel .membership_cancel_info > ul li:last-of-type { margin-bottom: 0; }
+.myinfo_register_cancel .membership_cancel_info > ul li:after { content:""; display: block; width:4px; height: 4px; position: absolute; left: 0; top: 6px; background: var(--mainColor); }
+.myinfo_register_cancel + aside .btn_next { background: var(--mainColor-chachol); }
+.myinfo_register_cancel + aside .btn_next a:after { content: none; }
+
+
+/* fleet 차량등록 _ 목록 */
+.fleet_car_list .fleet_car_list_empty { text-align: center; margin-bottom: 80px; }
+.fleet_car_list .fleet_car_list_empty > p { color:#999999; font-size: 1.125rem; margin: 25px 10px; }
+.fleet_car_list .fleet_car_list_empty > a { width:100%; }
+
+.fleet_car_list .fleet_car_list_wrap li { position: relative; display: flex; justify-content: space-between;padding: 0.625rem 0.75rem; border: 1px solid #dddddd; cursor: pointer; border-radius: 10px; margin-bottom: 10px; }
+.fleet_car_list .fleet_car_list_wrap li .car_img { width: 42px; height: 42px; border-radius: 100%; overflow: hidden; }
+.fleet_car_list .fleet_car_list_wrap label { width: calc(100% - 42px); padding-left: 0.825rem; position: relative; z-index: 1; font-weight: 500; }
+.fleet_car_list .fleet_car_list_wrap label .car_num { font-weight: 500; font-size: 1rem; margin-bottom: 2px; }
+.fleet_car_list .fleet_car_list_wrap label .car_date { font-weight: 500; font-size: 0.8rem; color:#666666; }
+
+.fleet_car_list .fleet_car_list_wrap input[type="checkbox"] { display: none; }
+.fleet_car_list .fleet_car_list_wrap .fleet_car_btn { margin-top:22px; }
+.fleet_car_list .fleet_car_list_wrap .fleet_car_btn:after { display: block; content:""; clear: both; }
+.fleet_car_list .fleet_car_list_wrap .fleet_car_add { width:57%; float: left; }
+.fleet_car_list .fleet_car_list_wrap .fleet_car_delete { width:40%; float: right; background:#6a7196;}
+.fleet_car_list .fleet_car_list_wrap .fleet_car_delete > img { width: 17px; margin-left:3px; }
+
+
+
+/* prepay fleet 선불권 결제 */
+.pre_pay .con_info { margin-bottom: 20px; }
+.pre_pay .con1 .one_time { position: relative; display: block; padding: 0.94rem; background: var(--mainColor-purple); text-align: center; border-radius: 9px; color: #fff; font-size: 0.94rem; font-weight: 600; }
+.pre_pay .con1 .one_time img { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); width: 45px; }
+.pre_pay .item_info li { position: relative; display: flex; padding: 0.81rem 7px; justify-content: space-between; align-items: center; border-radius: 10px; margin-bottom: 4px; border: 1px solid #5c37fb; }
+.pre_pay .item_info li .img { width: 20%; }
+.pre_pay .item_info li .img > img { height: 100%; vertical-align: top; }
+
+.pre_pay .item_info li .img > img.on { display: none; }
+.pre_pay .item_info li .info { width: 54%; padding: 0 6px; font-weight: 500; line-height: 1; font-size: 0.75rem; color: #7b7b7b; letter-spacing: -0.1em; }
+.pre_pay .item_info li .info .fontBold {display: block; color: #000; font-family: 'Montserrat', 'SpoqaHanSansNeo', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0.1em; }
+.pre_pay .item_info li .price { width: 26%; font-size: 1rem; font-weight: 500; color: #000; }
+.pre_pay .item_count_wrap { display: flex; justify-content: space-between; margin-top: 1rem; }
+.pre_pay .item_count_wrap > button { position:relative; border: 1px solid #5e52d4; width: 17%; height: 3rem; background:#fff; border-radius: 10px;  }
+.pre_pay .item_count_wrap > button:hover,.pre_pay .item_count_wrap > button:active { background:#dcdbff; }
+.pre_pay .item_count_wrap > input { border: 1px solid #d8dfe6; width: 55%; height: 3rem; background:#fff; color:#000; }
+.pre_pay .item_count_wrap .down:after { content:""; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 1rem; height: 2px; background: #5e52d4;  }
+.pre_pay .item_count_wrap .up:before { content:""; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(90deg); width: 1rem; height: 2px; background: #5e52d4; }
+.pre_pay .item_count_wrap .up:after { content:""; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 1rem; height: 2px; background: #5e52d4; }
+.pre_pay .item_total { margin: 1rem 0 2rem; padding:0.875rem 0 0; display: flex; justify-content: space-between; border-top: 1px solid #dfdfdf; }
+.pre_pay .item_total > p { font-size: 1.125rem; color: #111; font-weight: 500; }
+.pre_pay .item_total > p:first-of-type { text-align:left; }
+.pre_pay .item_total > p:last-of-type { text-align:right; }
+
+
