@@ -3,8 +3,7 @@
     <div id="content_wrap" class="pay_onetime">
       <div id="top">
         <div id="nav">
-          <!-- <a class="btn_back" href="./pay.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/payVue" class="btn_back">
+          <router-link to="/PayVue" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">1회권 세차상품</p>
@@ -22,8 +21,7 @@
           <ul id="oneType_wrap" class="oneType_wrap">
             <li><input type="radio" name="oneType" value="onetimePremium" id="onetimePremium">
               <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime01.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime01_on.png" alt=""></span>
+                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime01.png" alt=""><img class="on" src="/img/content/pay_onetime01_on.png" alt=""></span>
                 <span class="info"><span class="fontBold">PREMIUM</span>기존세차 + 거품 + 왁스 + 하부</span>
                 <span class="price">28,000</span>
                 <span class="check"></span>
@@ -31,8 +29,7 @@
             </li>
             <li><input type="radio" name="oneType" value="onetimeBest" id="onetimeBest">
               <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime02.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime02_on.png" alt=""></span>
+                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime02.png" alt=""><img class="on" src="/img/content/pay_onetime02_on.png" alt=""></span>
                 <span class="info"><span class="fontBold">BEST</span>기존세차 + 거품 + 왁스</span>
                 <span class="price">21,000</span>
                 <span class="check"></span>
@@ -40,8 +37,7 @@
             </li>
             <li><input type="radio" name="oneType" value="onetimeBubble" id="onetimeBubble">
               <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime03.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime03_on.png" alt=""></span>
+                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime03.png" alt=""><img class="on" src="/img/content/pay_onetime03_on.png" alt=""></span>
                 <span class="info"><span class="fontBold">BUBBLE</span>기존세차 + 거품</span>
                 <span class="price">16,000</span>
                 <span class="check"></span>
@@ -49,8 +45,7 @@
             </li>
             <li><input type="radio" name="oneType" value="onetimeBasic" id="onetimeBasic">
               <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime04.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime04_on.png" alt=""></span>
+                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime04.png" alt=""><img class="on" src="/img/content/pay_onetime04_on.png" alt=""></span>
                 <span class="info"><span class="fontBold">BASIC</span>기존세차</span>
                 <span class="price">12,000</span>
                 <span class="check"></span>
@@ -58,86 +53,74 @@
             </li>
           </ul>
         </section>
-
+        
         <div class="arrow"><img src="../../assets/img/content/arrow01.svg" alt=""></div>
-
+        
         <section class="con2">
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">02 1회권 옵션 상품</span>을 선택해주세요</p>
           </div>
           <ul class="oneOption_wrap check_list" id="option01">
             <li>
-              <div class="option_img"><img src="../../assets/img/content/pay_oneOption0101.png" alt=""></div><label
-                for="oneOption0101"><span class="option_name">버블폼</span><span class="option_price">+2000</span></label>
+              <div class="option_img"><img src="../../assets/img/content/pay_optionicon01.png" alt=""></div><label for="oneOption0101"><span class="option_name">세라믹왁스</span><span class="option_price">+4000</span></label>
               <input type="checkbox" name="oneOption01" id="oneOption0101" value="oneOption0101" class="oneOption">
               <div class="check"></div>
             </li>
-
+            
+            
             <li>
-              <div class="option_img"><img src="../../assets/img/content/pay_oneOption0102.png" alt=""></div>
-              <label for="oneOption0102"><span class="option_name">타이어세차</span><span
-                  class="option_price">+3000</span></label>
+              <div class="option_img"><img src="../../assets/img/content/pay_optionicon03.png" alt=""></div>
+              <label for="oneOption0102"><span class="option_name">트리플폼</span><span class="option_price">+3000</span></label>
               <input type="checkbox" name="oneOption01" id="oneOption0102" value="oneOption0102" class="oneOption">
               <div class="check"></div>
             </li>
-
+            
             <li>
-              <div class="option_img"><img src="../../assets/img/content/pay_oneOption0103.png" alt=""></div>
-              <label for="oneOption0103"><span class="option_name">하부세차</span><span
-                  class="option_price">+3000</span></label>
+              <div class="option_img"><img src="../../assets/img/content/pay_optionicon04.png" alt=""></div>
+              <label for="oneOption0103"><span class="option_name">하부세차</span><span class="option_price">+3000</span></label>
               <input type="checkbox" name="oneOption01" id="oneOption0103" value="oneOption0103" class="oneOption">
               <div class="check"></div>
             </li>
-
+            
             <li>
-              <div class="option_img"><img src="../../assets/img/content/pay_oneOption0104.png" alt=""></div>
-              <label for="oneOption0104"><span class="option_name">컨디셔너(트리플폼)</span><span
-                  class="option_price">+3000</span></label>
+              <div class="option_img"><img src="../../assets/img/content/pay_optionicon05.png" alt=""></div>
+              <label for="oneOption0104"><span class="option_name">휠세척</span><span class="option_price">+3000</span></label>
               <input type="checkbox" name="oneOption01" id="oneOption0104" value="oneOption0104" class="oneOption">
               <div class="check"></div>
             </li>
-
+            
             <li>
-              <div class="option_img"><img src="../../assets/img/content/pay_oneOption0105.png" alt=""></div>
-              <label for="oneOption0105"><span class="option_name">세라믹광택</span><span
-                  class="option_price">+4000</span></label>
+              <div class="option_img"><img src="../../assets/img/content/pay_optionicon06.png" alt=""></div>
+              <label for="oneOption0105"><span class="option_name">버블폼</span><span class="option_price">+4000</span></label>
               <input type="checkbox" name="oneOption01" id="oneOption0105" value="oneOption0105" class="oneOption">
               <div class="check"></div>
             </li>
-
-            <li>
-              <div class="option_img"><img src="../../assets/img/content/pay_oneOption0106.png" alt=""></div>
-              <label for="oneOption0106"><span class="option_name">하부세차+세라믹광택</span><span
-                  class="option_price">+5000</span></label>
-              <input type="checkbox" name="oneOption01" id="oneOption0106" value="oneOption0106" class="oneOption">
-              <div class="check"></div>
-            </li>
+            
+            
           </ul>
           <div class="oneOption_no check_list2" id="noOption01">
-            <input type="checkbox" name="oneOption01" id="oneNoOption01" class="oneNoOption">
-            <div class="check"></div>
+            <input type="checkbox" name="oneOption01" id="oneNoOption01" class="oneNoOption"><div class="check"></div>
             <label for="oneNoOption01"><span class="option_name">세차옵션 선택 안함</span></label>
           </div>
         </section>
-
+        
         <div class="arrow"><img src="../../assets/img/content/arrow01.svg" alt=""></div>
-
+        
         <section class="con3">
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">03 세차 마지막 공정</span>을 선택해주세요</p>
           </div>
-          <!--
-				<ul class="oneOption_wrap check_list" id="option02">
-					<li>
-						<div class="option_img"><img src="./img/content/pay_oneOption0201.png" alt=""></div><label for="oneOption0201"><span class="option_name">브러시로 물기제거</span><span class="option_price">+2000</span></label>
-						<input type="checkbox" name="oneOption02" id="oneOption0201" value="oneOption0201" class="oneOption">
-						<div class="check"></div>
-					</li>
-				</ul>
--->
+  <!--
+          <ul class="oneOption_wrap check_list" id="option02">
+            <li>
+              <div class="option_img"><img src="/img/content/pay_oneOption0201.png" alt=""></div><label for="oneOption0201"><span class="option_name">브러시로 물기제거</span><span class="option_price">+2000</span></label>
+              <input type="checkbox" name="oneOption02" id="oneOption0201" value="oneOption0201" class="oneOption">
+              <div class="check"></div>
+            </li>
+          </ul>
+  -->
           <div class="oneOption_no check_list2" id="noOption02">
-            <input type="checkbox" name="oneOption02" id="oneNoOption02" class="oneNoOption">
-            <div class="check"></div>
+            <input type="checkbox" name="oneOption02" id="oneNoOption02" class="oneNoOption"><div class="check"></div>
             <label for="oneNoOption02"><span class="option_name">건조브러쉬 미사용</span></label>
           </div>
         </section>
@@ -145,16 +128,14 @@
           <p class="title">멤버쉽 세차상품을 선택 후, 결제하기 버튼을 눌러주세요</p>
         </section>
       </article>
-
+      
     </div>
     <aside>
       <div class="btn_next active">
-        <!-- <a href="#n">1회권 간편 결제(활성화)</a> -->
-        <router-link to="/payOnetimeOrder01">1회권 간편 결제(활성화)</router-link>
+        <a href="#n">1회권 간편 결제(활성화)</a>
       </div>
       <div class="btn_next">
-        <!-- <a href="#n">1회권 간편 결제(비활성화)</a> -->
-        <router-link to="/payVue">1회권 간편 결제(비활성화)</router-link>
+        <a href="#n">1회권 간편 결제(비활성화)</a>
       </div>
     </aside>
     <FooterVue></FooterVue>
