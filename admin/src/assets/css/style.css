@@ -443,7 +443,7 @@ section .contents_area-remote .remote_status { width: 100%; height: 10px; transi
 section .contents_area-remote .remote_status.remote_open { width: 10%; }
 
 section .contents_area-queue {margin: 0 auto; width:600px;}
-/* section .contents_area-queue > div { padding-top: 60px; margin-top: 40px; width: 600px; display: flex; align-items: center; justify-content: space-between; background-image: url("../images/arrow_up.png"); background-repeat: no-repeat; background-position: 260px 10px; } */
+section .contents_area-queue > div { padding-top: 60px; margin-top: 40px; width: 600px; display: flex; align-items: center; justify-content: space-between; background-image: url("../images/arrow_up.png"); background-repeat: no-repeat; background-position: 260px 10px; }
 
 section .contents_area-queue > div:last-child { justify-content: center; background: none; }
 

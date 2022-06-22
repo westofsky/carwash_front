@@ -20,8 +20,8 @@
                     <a href="#">고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer03">공지사항</router-link></li>
-                        <li><router-link to = "/Customer04">SNS관리</router-link></li>
+                        <li><router-link to = "/Customer02">공지사항</router-link></li>
+                        <li><router-link to = "/Customer03">SNS관리</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
@@ -79,9 +79,9 @@
                             <p class="fl_right"><button type="button" class="btn_red btn_red_mid">처리</button></p>
                             <div class="contents_area-remote MT20">
                                 <div class="MB40">
-                                    <img src="images/arrow_diagonal.png" alt="">
+                                    <img src="../../assets/images/arrow_diagonal.png" alt="">
                                     <ul>
-                                        <li><img src="images/carcam.png" class="carcam" alt=""></li>
+                                        <li><img src="../../assets/images/carcam.png" class="carcam" alt=""></li>
                                         <li>
                                             <input type="text" value="1234">
                                             <input type="text" value="1234">
@@ -90,18 +90,18 @@
                                         </li>
                                         <li><button type="button" class="btn_blue">수정</button></li>
                                     </ul>
-                                    <img src="images/arrow_diagonal.png" alt="" class="arrow_flip">
+                                    <img src="../../assets/images/arrow_diagonal.png" alt="" class="arrow_flip">
                                 </div>
                                 <div>
                                     <div class="MR40">
                                         <div>
-                                            <img src="images/camera_control_4.png" class="camequ" alt="camera panel">
+                                            <img src="../../assets/images/camera_control_4.png" class="camequ" alt="camera panel">
                                         </div>
                                         <ul>
                                             <li><p>1번(좌측) 차단기</p></li>
                                             <li><hr class="remote_status remote_open"></li>
                                             <li><button type="button" class="remote_btn btn_up MR10">UP</button><button type="button" class="remote_btn btn_down">DOWN</button></li>
-                                            <li><img src="images/carcam.png"  class="carcam" alt="car"></li>
+                                            <li><img src="../../assets/images/carcam.png"  class="carcam" alt="car"></li>
                                             <li>
                                                 <input type="text" value="1234">
                                                 <input type="text" value="1234">
@@ -113,13 +113,13 @@
                                     </div>
                                     <div>
                                         <div>
-                                            <img src="images/camera_control_4.png" class="camequ" alt="camera panel">
+                                            <img src="../../assets/images/camera_control_4.png" class="camequ" alt="camera panel">
                                         </div>
                                         <ul>
                                             <li><p>2번(우측) 차단기</p></li>
                                             <li><hr class="remote_status"></li>
                                             <li><button type="button" class="remote_btn btn_up MR10">UP</button><button type="button" class="remote_btn btn_down">DOWN</button></li>
-                                            <li><img src="images/carcam.png"  class="carcam" alt="car"></li>
+                                            <li><img src="../../assets/images/carcam.png"  class="carcam" alt="car"></li>
                                             <li>
                                                 <input type="text" value="1234">
                                                 <input type="text" value="1234">
