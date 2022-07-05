@@ -8,7 +8,9 @@ import './assets/css/main.css';
 import './assets/css/creditcard.css';
 import VueHead from 'vue-head';
 import FooterVue from "./views/footer/FooterVue.vue";
+import axios from 'axios';
 
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(VueHead)
 Vue.component('FooterVue',FooterVue);

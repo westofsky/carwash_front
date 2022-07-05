@@ -53,8 +53,8 @@
           쿠폰사용
         </router-link>
       </div>
-      <div class="btn_next3_right">
-        <a href="#"><img src="../../assets/img/content/btn_pay.svg">결제하기</a>
+      <div class="btn_next3_right" @click = "test">
+        <a href="#"><img src="../../assets/img/content/btn_pay.svg" >결제하기</a>
       </div>
     </aside>
     <FooterVue></FooterVue>
@@ -67,6 +67,33 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  methods : {
+    test(){
+      var data = {
+"mallId":"05546809",
+"shopTransactionId":"20210908101251",
+"amount":51004,
+"shopOrderNo" : "20210908102459",
+"approvalReqDate":"20210908",
+"payMethodInfo":{
+"billKeyMethodInfo":{
+"batchKey" : "546800000111BA212134"
+}
+},
+"orderInfo":{
+"goodsName" : "테스트상품명"
+}
+}
+
+      this.$axios.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', data,
+      {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
   }
 };
 </script>

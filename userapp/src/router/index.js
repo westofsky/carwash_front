@@ -213,19 +213,26 @@ const routes = [
   },
   {
     path: '/RegisterBasic01',
-    component: RegisterBasic01
+    component: RegisterBasic01,
+    name : 'RegisterBasic01'
   },
   {
     path: '/RegisterBasic03',
-    component: RegisterBasic03
+    component: RegisterBasic03,
+    name : 'RegisterBasic03',
+    props : true,
   },
   {
     path: '/RegisterBasic04',
-    component: RegisterBasic04
+    component: RegisterBasic04,
+    name : 'RegisterBasic04',
+    props : true,
   },
   {
     path: '/RegisterBasic0201',
-    component: RegisterBasic0201
+    component: RegisterBasic0201,
+    name : 'RegisterBasic0201',
+    props : true,
   },
   {
     path: '/RegisterBasic0202',
@@ -233,15 +240,21 @@ const routes = [
   },
   {
     path: '/RegisterFleet01',
-    component: RegisterFleet01
+    component: RegisterFleet01,
+    name : 'RegisterFleet01',
+    props : true,
   },
   {
     path: '/RegisterFleet02',
-    component: RegisterFleet02
+    component: RegisterFleet02,
+    name : 'RegisterFleet02',
+    props : true,
   },
   {
     path: '/RegisterFleet03',
-    component: RegisterFleet03
+    component: RegisterFleet03,
+    name : 'RegisterFleet03',
+    props : true,
   },
   {
     path: '/RegisterTerms',

@@ -20,6 +20,7 @@
             <li>
               <label for="fleetName" class="title">FLEET 이름<span class="required">*</span></label>
               <input type="text" class="fleet_name" id="fleetName" placeholder="예) 가나다라기업, 가나다라동호회" v-model = "fleet_name">
+					    <p class="warn">{{warning.name}}</p>
             </li>
             <li>
               <label for="fleetID" class="title">아이디<span class="required">*</span></label>
@@ -102,14 +103,16 @@
         <router-link to="/">취소</router-link>
       </div>
       <div class="btn_next2">
-        <!-- <a href="./register_fleet02.html">FLEET 등록</a> -->
-        <router-link to="/registerFleet02">FLEET 등록</router-link>
+        <a @click = "fleet_register">FLEET 등록</a>
+        <!-- <router-link to="/registerFleet02">FLEET 등록</router-link> -->
       </div>
     </aside>
   </div>
 </template>
 
 <script>
+import { TypedChainedSet } from 'webpack-chain';
+
 
 
 export default {
@@ -125,12 +128,14 @@ export default {
 				fleet_email : '',
 				fleet_business : '',
 				warning : {
+					name : '',
 					id : '',
 					pw : '',
 					pw_chk : '',
 					business : '',
 				},
 				check : {
+					name : false,
 					id : false,
 					pw : false,
 					business : false,
@@ -160,22 +165,28 @@ export default {
 		},
 		methods:{
 			chk_id_duplicate(){
-				// this.$http.post('/api/users/dupidcheck', {
-				// 	fleet_id : this.fleet_id
-				// }).then(
-				// (res) => {  //아이디 중복 확인 
-				// 	if (res.data.success == true){
-				// 		console.log(res.data.message);
-				// 	}
-				// 	else{
-				// 		console.log(res.data.message);
-				// 	}	
-				// },
-				// (err) => { // error 를 보여줌
-				// 	console.log(err);
-				// }).catch((err) => {
-				// 	console.log(err);
-				// })
+				if(this.warning.id == ""){
+					this.$http.post('/api/userapp/chkfleetid', {
+						fleet_id : this.fleet_id
+					}).then(
+					(res) => {  //아이디 중복 확인 
+						if (res.data.result_code == "Y"){
+							this.check.id = true;
+						}
+						else{
+
+						}	
+					},
+					(err) => { // error 를 보여줌
+						console.log(err);
+					}).catch((err) => {
+						console.log(err);
+					})
+				}
+				else{
+					alert("아이디를 확인해주세요.");
+				}
+				
 			},
 			warn_check_id(){
 				if(!this.fleet_id)
@@ -207,6 +218,7 @@ export default {
 						else{
 							this.warning.pw_chk = "";
 							this.warning.pw = "";
+							this.check.pw = true;
 						}
 					}	
 				}
@@ -248,34 +260,35 @@ export default {
 					return false;
 				}
 					
-				this.$router.push({name : 'RegisterFleet02',params : {
-					fleet_name : this.fleet_name,
-					fleet_id : this.fleet_id,
-					fleet_pw : this.fleet_pw,
-					fleet_usage : this.fleet_usage,
-					fleet_phone : this.fleet_phone,
-					fleet_email : this.fleet_email,
-					fleet_business : this.fleet_business,
-				}});
-				/*
-				this.$http.post('api주소', {
-					fleet_business : this.fleet_business
+				
+				this.$http.post('/api/userapp/chkfleetname', {
+					fleet_name : this.fleet_name
 				}).then(
-				(res) => {  //아이디 중복 확인 
-					if (res.data.success == true){
-						
+				(res) => {  //이름 중복확인 
+					if (res.data.result_code == "Y"){
+						this.check.name = true;
 					}
 					else{
-						this.warning.business = "이미 가입된 사업자등록번호입니다.";
+						this.warning.name = "이미 가입된 FLEET 이름입니다.";
 					}	
 				},
 				(err) => { // error 를 보여줌
-					alert('Login failed! please check your id or password');
 					console.log(err);
 				}).catch((err) => {
 					console.log(err);
-				})
-				*/
+				});
+				if(this.check.id && this.check.pw && this.check.name){
+					this.$router.push({name : 'RegisterFleet02',params : {
+						fleet_name : this.fleet_name,
+						fleet_id : this.fleet_id,
+						fleet_pw : this.fleet_pw,
+						fleet_usage : this.fleet_usage,
+						fleet_phone : this.fleet_phone,
+						fleet_email : this.fleet_email,
+						fleet_business : this.fleet_business,
+					}});
+				}
+				
 				
 			},
 		}

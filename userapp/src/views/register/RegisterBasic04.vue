@@ -16,7 +16,7 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title"><span class="red fontBold">서울 12가 3456</span>님,<br>
+          <p class="title"><span class="red fontBold">{{car_no}}</span>님,<br>
             회원가입을 축하드립니다!</p>
           <div class="user_info">
             <ul>
@@ -54,6 +54,9 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  props :{
+    car_no : String,
   }
 };
 </script>

@@ -16,25 +16,23 @@
             </div>
             <span class="login_slide"></span>
           </div>
-          <form class="login_form basic" action="">
-            <div class="input_id"><label>차량번호</label>
-              <a href="#" class="local inputA login_num01" id="input_local"
-                onclick="popOn(document.querySelector('.pop_local_wrap'))">지역</a>
-              <input type="text" class="login_num02" placeholder="123">
-              <a href="#" class="login_num03 inputA " onclick="popOn(document.querySelector('.pop_purpose_wrap'))">가</a>
-              <input type="text" class="login_num04" placeholder="4567">
+          <form class="login_form basic" action="" @submit.prevent = "onSubmit">
+           <div class="input_fleet_id"><label for="fleetID">차량번호</label><input type="text" name="fleetID" id="fleetID" v-model = "basicUser.car_no"
+                placeholder="예) 123가4567, 서울12가3456">
             </div>
-            <div class="input_pw"><label for="loginPW">비밀번호</label><input type="password" name="basicPW" id="loginPW"
+            <div class="input_pw"><label for="loginPW">비밀번호</label><input type="password" name="basicPW" id="loginPW" v-model = "basicUser.pw"
                 placeholder="*********"></div>
-            <router-link to="/homeBasic"><input type="submit" value="로그인"></router-link>
+            <!-- <router-link to="/homeBasic"><input type="submit" value="로그인"></router-link> -->
+            <input type = "submit" value="로그인" @click = "basic_login">
           </form>
-          <form class="login_form fleet" action="">
-            <div class="input_fleet_id"><label for="fleetID">차량번호</label><input type="text" name="fleetID" id="fleetID"
+          <form class="login_form fleet" action="" @submit.prevent = "onSubmit">
+            <div class="input_fleet_id"><label for="fleetID">아이디</label><input type="text" name="fleetID" id="fleetID" v-model = "fleetUser.id"
                 placeholder="FLEET 코드 예) C123456">
             </div>
-            <div class="input_fleet_pw"><label for="fleetPW">비밀번호</label><input type="password" name="fleetPW"
+            <div class="input_fleet_pw"><label for="fleetPW">비밀번호</label><input type="password" name="fleetPW" v-model = "fleetUser.pw"s
                 id="fleetPW" placeholder="*********"></div>
-            <router-link to="/homeFleet01"><input type="submit" value="로그인"></router-link>
+            <!-- <router-link to="/homeFleet01"><input type="submit" value="로그인"></router-link> -->
+            <input type = "submit" value="로그인" @click = "fleet_login">
           </form>
           <div class="login_auto"><input type="checkbox" id="login_auto" name="login_auto"><label
               for="login_auto">자동로그인</label></div>
@@ -50,97 +48,6 @@
         </section>
       </article>
       <p class="copy">@SPARKPLUS</p>
-
-      <div class="pop_local_wrap">
-        <div class="pop_local">
-          <a href="#" class="btn_close" onclick="closePop(document.querySelector('.pop_local_wrap'))"><img
-              src="../../assets/img/btn_close.svg" alt=""></a>
-          <div class="txt">
-            <h2>지역선택</h2>
-            <p>아래에서 자동차 앞 지역을 선택하세요</p>
-          </div>
-          <ul class="locals">
-            <li><a href="#" data-value="none">없음</a></li>
-            <li><a href="#" data-value="seoul">서울</a></li>
-            <li><a href="#" data-value="gyeongi">경기</a></li>
-            <li><a href="#" data-value="inchheon">인천</a></li>
-            <li><a href="#" data-value="busan">부산</a></li>
-            <li><a href="#" data-value="daegu">대구</a></li>
-            <li><a href="#" data-value="gwangju">광주</a></li>
-            <li><a href="#" data-value="daejeon">대전</a></li>
-            <li><a href="#" data-value="ulsan">울산</a></li>
-            <li><a href="#" data-value="gangwon">강원</a></li>
-            <li><a href="#" data-value="chungnam">충남</a></li>
-            <li><a href="#" data-value="chungbuk">충북</a></li>
-            <li><a href="#" data-value="jeonnam">전남</a></li>
-            <li><a href="#" data-value="jeonbuk">전북</a></li>
-            <li><a href="#" data-value="gyeongnam">경남</a></li>
-            <li><a href="#" data-value="gyeongbuk">경북</a></li>
-            <li><a href="#" data-value="jeju">제주</a></li>
-            <li><a href="#" data-value="dummy">임시</a></li>
-          </ul>
-        </div>
-        <span class="popbg" onclick="closePop(document.querySelector('.pop_local_wrap'))"></span>
-      </div>
-
-      <div class="pop_purpose_wrap">
-        <div class="pop_purpose">
-          <a href="#" class="btn_close" onclick="closePop(document.querySelector('.pop_purpose_wrap'))"><img
-              src="../../assets/img/btn_close.svg" alt=""></a>
-          <div class="txt">
-            <h2>한글 선택</h2>
-            <p>아래에서 자동차 번호 한글을 선택하세요</p>
-          </div>
-          <ul class="text pop">
-            <li><a href="#">가</a></li>
-            <li><a href="#">나</a></li>
-            <li><a href="#">다</a></li>
-            <li><a href="#">라</a></li>
-            <li><a href="#">마</a></li>
-            <li><a href="#">거</a></li>
-            <li><a href="#">너</a></li>
-            <li><a href="#">더</a></li>
-            <li><a href="#">러</a></li>
-            <li><a href="#">머</a></li>
-            <li><a href="#">버</a></li>
-            <li><a href="#">서</a></li>
-            <li><a href="#">어</a></li>
-            <li><a href="#">저</a></li>
-            <li><a href="#">고</a></li>
-            <li><a href="#">노</a></li>
-            <li><a href="#">도</a></li>
-            <li><a href="#">로</a></li>
-            <li><a href="#">모</a></li>
-            <li><a href="#">보</a></li>
-            <li><a href="#">소</a></li>
-            <li><a href="#">오</a></li>
-            <li><a href="#">조</a></li>
-            <li><a href="#">구</a></li>
-            <li><a href="#">누</a></li>
-            <li><a href="#">두</a></li>
-            <li><a href="#">루</a></li>
-            <li><a href="#">무</a></li>
-            <li><a href="#">부</a></li>
-            <li><a href="#">수</a></li>
-            <li><a href="#">우</a></li>
-            <li><a href="#">주</a></li>
-            <li><a href="#">아</a></li>
-            <li><a href="#">바</a></li>
-            <li><a href="#">사</a></li>
-            <li><a href="#">자</a></li>
-            <li><a href="#">하</a></li>
-            <li><a href="#">허</a></li>
-            <li><a href="#">호</a></li>
-            <li><a href="#">배</a></li>
-            <li><a href="#">육</a></li>
-            <li><a href="#">해</a></li>
-            <li><a href="#">공</a></li>
-            <li><a href="#">군</a></li>
-            <li><a href="#">합</a></li>
-          </ul>
-        </div>
-        <span class="popbg" onclick="closePop(document.querySelector('.pop_purpose_wrap'))"></span>
-      </div>
     </div>
   </div>
 </template>
@@ -165,26 +72,73 @@
               }
             });
           }
-				const locals = document.querySelectorAll('.locals li a'),
-        localValue = document.querySelector('#input_local'),
-        popLocal = document.querySelector('.pop_local_wrap');
-				for(let i=0; i<locals.length; i++){
-					locals[i].addEventListener('click', function(){
-						for(let x=0; x<locals.length; x++){
-							locals[x].parentNode.classList.remove('active');
-						}
-						this.parentNode.classList.add('active');
-						let value = this.textContent;
-						localValue.textContent = value;
-						localValue.style.color = "#000";
-						popLocal.classList.remove('active');
-					});
-				}
-				for(let i=0; i<loginForm.length; i++){
-					loginForm[i].style.display = 'none';
-				}
-				
 				document.querySelector('.tab_basic a').click();
 			},
+        data () {
+          return {
+            basicUser : {
+              car_no : '',
+              pw : '',              
+            },
+            fleetUser : {
+              id : '',
+              pw : '',
+            }
+          }
+        },
+        methods : {
+          basic_login(){
+            if(this.basicUser.car_no == '' || this.basicUser.pw == ''){
+              alert("차량번호(아이디) 또는 비밀번호를 입력해주세요.");
+            }
+            else{
+              this.$http.post('api주소', {
+                mem_type : "01",
+                car_no : this.basicUser.car_no,
+                pwd : this.basicUser.pw
+              }).then(
+              (res) => {  //아이디 중복 확인 
+                if (res.data.result_code == "Y"){
+                  
+                }
+                else{
+                  alert("차량번호(아이디) 또는 비밀번호 확인하세요.");
+                }	
+              },
+              (err) => { // error 를 보여줌
+                alert('Login failed! please check your id or password');
+                console.log(err);
+              }).catch((err) => {
+                console.log(err);
+              })
+            }
+          },
+          fleet_login(){
+            if(this.fleetUser.car_no == '' || this.fleetUser.pw == ''){
+              alert("차량번호(아이디) 또는 비밀번호를 입력해주세요.");
+            }
+            else{
+              this.$http.post('api주소', {
+                mem_type : "02",
+                fleet_id : this.fleetUser.id,
+                pwd : this.fleetUser.pw
+              }).then(
+              (res) => {  //아이디 중복 확인 
+                if (res.data.result_code == "Y"){
+                  
+                }
+                else{
+                  alert("차량번호(아이디) 또는 비밀번호 확인하세요.");
+                }	
+              },
+              (err) => { // error 를 보여줌
+                alert('Login failed! please check your id or password');
+                console.log(err);
+              }).catch((err) => {
+                console.log(err);
+              })
+            }
+          }
+        }
 		}
 </script>		
