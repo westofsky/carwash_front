@@ -22,7 +22,7 @@
             <ul>
               <li>
                 <p class="info_title">회원번호</p>
-                <p class="info_txt user_num">P22021600000001</p>
+                <p class="info_txt user_num">{{mem_no}}</p>
               </li>
               <li>
                 <p class="info_title">임시 비밀번호</p>
@@ -57,6 +57,7 @@ export default {
   },
   props :{
     car_no : String,
+    mem_no : String,
   }
 };
 </script>

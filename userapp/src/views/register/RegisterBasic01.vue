@@ -90,7 +90,7 @@
         </article>
       </div>
     <aside>
-      <div class="btn_next" v-bind:class = "{active : isActive}">
+      <div class="btn_next" v-bind:class = "{active : isActive}" style = "bottom : 56px;">
         <a @click = "registerbasic_carno">차량 번호 등록</a>
       </div>
       <!-- <div class="btn_next">
@@ -149,5 +149,8 @@ export default {
 <style>
   #wrapper { 
     height:100%;
+  }
+  .btn_next.active{
+    bottom : 56px;
   }
 </style>

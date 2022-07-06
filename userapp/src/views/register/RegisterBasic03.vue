@@ -84,8 +84,8 @@ export default {
                 this.agree_privacy = "Y";
               else
                 this.agree_privacy = "N";
-              this.$http.post('http://carwash.iptime.org:8000/userapp/setpmember', {
-                car_no : this.car_no,
+              this.$http.post('http://carwash.iptime.org:3000/userapp/setpmember', {
+                car_no : this.$route.query.car_no,
                 mem_tel : this.phone_no,
                 agree_age : this.$route.query.agree_age,
                 agree_service : this.$route.query.agree_service,
@@ -101,20 +101,29 @@ export default {
                   if(res.data.result_code == "Y"){
                     console.log("걸림3");
                     this.$router.push({name : 'RegisterBasic04',param : {
-                      car_no : this.car_no,
+                      car_no : this.$route.query.car_no,
+                      mem_no : res.data.mem_no,
                     }})
                   }
                   else if(res.data.result_code == "N"){
-                    // alert("회원가입 실패");
+                    alert("회원가입 실패");
                   }
-                }
-              )
-            }
+                },
+              (err) => { // error 를 보여줌
+                console.log(err);
+              }).catch((err) => {
+                console.log(err);
+              });
+                  }
             else if(res.data.result_code == "N"){
               alert("중복된 핸드폰 번호입니다.");
             }
-          }
-        )
+          },
+          (err) => { // error 를 보여줌
+            console.log(err);
+          }).catch((err) => {
+            console.log(err);
+          });
       }
     }
   }

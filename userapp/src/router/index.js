@@ -54,6 +54,14 @@ import MyInfoInfoContentPop from '../views/myInfo/MyInfoInfoContentPop';
 
 Vue.use(VueRouter)
 
+const requireAuth = () => (to, from, next) =>{
+	if (sessionStorage.getItem("mem_id")){
+		return next();
+	}
+	alert('잘못된 접근입니다. 로그인 해주세요');
+	next('/');
+}
+
 const routes = [
   {
     path: '/errorQr',
@@ -61,31 +69,40 @@ const routes = [
   },
   {
     path: '/fleetCarAdd',
-    component: FleetCarAdd
+    component: FleetCarAdd,
+    beforeEnter : requireAuth()
   },
   {
     path: '/fleetCarList',
-    component: FleetCarList
+    component: FleetCarList,
+    beforeEnter : requireAuth()
   },
   {
     path: '/fleetPrePay01',
-    component: FleetPrePay01
+    component: FleetPrePay01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/fleetPrePay02',
-    component: FleetPrePay02
+    component: FleetPrePay02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/homeBasic',
-    component: HomeBasic
+    component: HomeBasic,
+    name : 'HomeBasic',
+    beforeEnter : requireAuth()
   },
   {
     path: '/homeFleet01',
-    component: HomeFleet01
+    component: HomeFleet01,
+    name : 'HomeFleet01',
+    beforeEnter : requireAuth()
   },
   {
     path: '/homeFleet02',
-    component: HomeFleet02
+    component: HomeFleet02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/loginFindId',
@@ -97,124 +114,159 @@ const routes = [
   },
   {
     path: '/',
-    component: LoginVue
+    component: LoginVue,
+    name : 'LoginVue'
   },
   {
     path: '/myInfoInfo',
-    component: MyInfoInfo
+    component: MyInfoInfo,
+    beforeEnter : requireAuth()
   },
   {
     path: '/myInfoList',
-    component: MyInfoList
+    component: MyInfoList,
+    beforeEnter : requireAuth()
   },
   {
     path: '/myInfoMembership',
-    component: MyInfoMembership
+    component: MyInfoMembership,
+    beforeEnter : requireAuth()
   },
   {
     path: '/myInfoMembershipCancel',
-    component: MyInfoMembershipCancel
+    component: MyInfoMembershipCancel,
+    beforeEnter : requireAuth()
   },
   {
     path: '/myInfoRegisterCancel',
-    component: MyInfoRegisterCancel
+    component: MyInfoRegisterCancel,
+    beforeEnter : requireAuth()
   },
   {
     path: '/myInfoWash',
-    component: MyInfoWash
+    component: MyInfoWash,
+    beforeEnter : requireAuth()
   },
   {
     path: '/noticeDetail',
-    component: NoticeDetail
+    component: NoticeDetail,
+    beforeEnter : requireAuth()
   },
   {
     path: '/noticeList',
-    component: NoticeList
+    component: NoticeList,
+    beforeEnter : requireAuth()
   },
   {
     path: '/orderList01',
-    component: OrderList01
+    component: OrderList01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/OrderList02',
-    component: OrderList02
+    component: OrderList02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/payCoupon01',
-    component: PayCoupon01
+    component: PayCoupon01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayCoupon02',
-    component: PayCoupon02
+    component: PayCoupon02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayCoupon03',
-    component: PayCoupon03
+    component: PayCoupon03,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayCoupon04',
-    component: PayCoupon04
+    component: PayCoupon04,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayCoupon05',
-    component: PayCoupon05
+    component: PayCoupon05,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayCouponAdd',
-    component: PayCouponAdd
+    component: PayCouponAdd,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayCouponBuy',
-    component: PayCouponBuy
+    component: PayCouponBuy,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayMembership',
-    component: PayMembership
+    component: PayMembership,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayMembershipBk',
-    component: PayMembershipBk
+    component: PayMembershipBk,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayOnetime',
-    component: PayOnetime
+    component: PayOnetime,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayOnetimeCoupon01',
-    component: PayOnetimeCoupon01
+    component: PayOnetimeCoupon01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayOnetimeCoupon02',
-    component: PayOnetimeCoupon02
+    component: PayOnetimeCoupon02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayOnetimeOrder01',
-    component: PayOnetimeOrder01
+    component: PayOnetimeOrder01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayOnetimeOrder02',
-    component: PayOnetimeOrder02
+    component: PayOnetimeOrder02,
+    name : 'payOnetimeOrder02',
+    props: true,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PayVue',
-    component: PayVue
+    component: PayVue,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PaymentVue',
-    component: PaymentVue
+    component: PaymentVue,
+    name : 'PaymentVue',
+    beforeEnter : requireAuth()
   },
   {
     path : '/PaymentCard',
-    component : PaymentCard
+    component : PaymentCard,
+    name : 'PaymentCard',
+    props : true,
+    beforeEnter : requireAuth()
   },
   {
     path: '/PopUp',
-    component: PopUp
+    component: PopUp,
+    beforeEnter : requireAuth()
   },
   {
     path: '/RegisterBasic01',
     component: RegisterBasic01,
-    name : 'RegisterBasic01'
+    name : 'RegisterBasic01',
+    beforeEnter : requireAuth()
   },
   {
     path: '/RegisterBasic03',
@@ -262,15 +314,18 @@ const routes = [
   },
   {
     path: '/ShopList',
-    component: ShopList
+    component: ShopList,
+    beforeEnter : requireAuth()
   },
   {
     path: '/ShopMap',
-    component: ShopMap
+    component: ShopMap,
+    beforeEnter : requireAuth()
   },
   {
     path: '/myInfoInfoContentPop',
-    component: MyInfoInfoContentPop
+    component: MyInfoInfoContentPop,
+    beforeEnter : requireAuth()
   }
 ]
 

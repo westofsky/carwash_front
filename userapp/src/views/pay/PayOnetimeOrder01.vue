@@ -71,24 +71,26 @@ export default {
   methods : {
     test(){
       var data = {
-"mallId":"05546809",
-"shopTransactionId":"20210908101251",
-"amount":51004,
-"shopOrderNo" : "20210908102459",
-"approvalReqDate":"20210908",
-"payMethodInfo":{
-"billKeyMethodInfo":{
-"batchKey" : "546800000111BA212134"
-}
-},
-"orderInfo":{
-"goodsName" : "테스트상품명"
-}
-}
-
-      this.$axios.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', data,
+        "mallId": "T0001997",
+        "payMethodTypeCode": "81",
+        "currency": "00",
+        "clientTypeCode": "00",
+        "returnUrl": "localhost/payOnetimeOrder01",
+        "deviceTypeCode": "pc",
+        "shopOrderNo": "ORDER_12345678901234567890",
+        "amount":51004,
+        "orderInfo": {
+        "goodsName": "기본-최소 등록 테스트 1"
+        },
+        "payMethodInfo":{
+          "billKeyMethodInfo":{
+          "certType" : "1"
+          }
+        }
+      }
+      this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
       {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-        console.log(res);
+        console.log(res.data.authPageUrl);
       })
       .catch((error) => {
         console.log(error);

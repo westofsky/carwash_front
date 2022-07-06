@@ -19,11 +19,9 @@
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
           </div>
-          <router-link to="/PaymentCard">
-            <a class="card" href="#"><img src="../../assets/img/content/payment01.png" alt="">신용/체크 카드 등록</a>
-          </router-link>
+          <a class="card" href="#" @click = "card_option"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
         </section>
-        <section class="con2">
+        <!-- <section class="con2">
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">모바일 간편결제 등록 시<br></span>1회권 세차권만 결제 가능합니다.</p>
           </div>
@@ -31,7 +29,7 @@
             <a class="naverpay" href="#"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 등록</a>
             <a class="kakaopay" href="#"><img src="../../assets/img/content/payment03.png" alt="">카카오페이 등록</a>
           </div>
-        </section>
+        </section> -->
         <section class="how_use">
           <p class="title">이용방법 안내</p>
           <ul>
@@ -56,6 +54,40 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  mounted(){
+    this.$http.post('http://carwash.iptime.org:3000/userapp/ChkRegCard', {
+      mem_no : sessionStorage.getItem("mem_no"),
+    },{headers : {
+    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+    }
+    }).then(
+    (res) => {  // 
+      if (res.data.result_code == "Y"){
+        console.log("등록해야함");
+        this.card_state = "register";
+        this.card_state_notice = "신용/체크 카드 등록";
+      }
+      else{
+        console.log("변경해야함");
+        this.card_state = "change"; 
+        this.card_state_notice = "신용/체크 카드 변경";
+      }
+      
+    })
+  },
+  data(){
+    return {
+      card_state_notice : "신용/체크 카드 등록",
+      card_state : "register",
+    }
+  },
+  methods : {
+    card_option(){
+      this.$router.push({name : 'PaymentCard',query : {
+        card_state : this.card_state
+      }});
+    }
   }
 };
 </script>

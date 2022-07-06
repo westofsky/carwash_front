@@ -26,15 +26,24 @@
             1회권 간편 결제
           </router-link>
         </section>
-        <section class="con2">
+        <section class="con2" v-if="is_personal == 'MMT001'">
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">멤버쉽 세차</span>는<br>매월 정기적으로 구독결제하여 멤버쉽에 가입되어, 세차서비스를 무제한으로
               사용할 수 있는 서비스입니다.</p>
           </div>
-          <!-- <a class="membership" href="#"><img src="../../assets/img/content/pay02.png" alt="">멤버쉽 결제</a> -->
           <router-link to="/payMembership" class="membership">
             <img src="../../assets/img/content/pay02.png" alt="">
             멤버쉽 결제
+          </router-link>
+        </section>
+        <section class="con2" v-else>
+          <div class="con_info">
+            <p class="sec_txt"><span class="black fontBold">Fleet회원 선불제 횟수차감 방식</span>은<br>세차상품권을 미리 선불로 구매하여, 사용시마다 차감되는 방식으로
+            최소 50회권부터 구매 가능합니다.</p>
+          </div>
+          <router-link to="/payMembership" class="membership">
+            <img src="../../assets/img/content/pay02.png" alt="">
+            Fleet 선불권 결제
           </router-link>
         </section>
         <section class="how_use">
@@ -61,6 +70,11 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
-  }
+  },
+  data(){
+    return {
+      is_personal : sessionStorage.getItem("mem_type") == "MMT001"
+    }
+  },
 };
 </script>

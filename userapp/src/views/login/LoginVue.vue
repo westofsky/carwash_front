@@ -16,23 +16,23 @@
             </div>
             <span class="login_slide"></span>
           </div>
-          <form class="login_form basic" action="" @submit.prevent = "onSubmit">
-           <div class="input_fleet_id"><label for="fleetID">차량번호</label><input type="text" name="fleetID" id="fleetID" v-model = "basicUser.car_no"
+          <form class="login_form basic" action="">
+           <div class="input_fleet_id"><label for="fleetCarNo">차량번호</label><input type="text" name="fleetID" id="fleetCar_no" v-model = "basicUser.car_no"
                 placeholder="예) 123가4567, 서울12가3456">
             </div>
             <div class="input_pw"><label for="loginPW">비밀번호</label><input type="password" name="basicPW" id="loginPW" v-model = "basicUser.pw"
                 placeholder="*********"></div>
             <!-- <router-link to="/homeBasic"><input type="submit" value="로그인"></router-link> -->
-            <input type = "submit" value="로그인" @click = "basic_login">
+            <input type = "submit" value="로그인" @click.self.prevent = "basic_login">
           </form>
-          <form class="login_form fleet" action="" @submit.prevent = "onSubmit">
+          <form class="login_form fleet" action="">
             <div class="input_fleet_id"><label for="fleetID">아이디</label><input type="text" name="fleetID" id="fleetID" v-model = "fleetUser.id"
                 placeholder="FLEET 코드 예) C123456">
             </div>
-            <div class="input_fleet_pw"><label for="fleetPW">비밀번호</label><input type="password" name="fleetPW" v-model = "fleetUser.pw"s
+            <div class="input_fleet_pw"><label for="fleetPW">비밀번호</label><input type="password" name="fleetPW" v-model = "fleetUser.pw"
                 id="fleetPW" placeholder="*********"></div>
             <!-- <router-link to="/homeFleet01"><input type="submit" value="로그인"></router-link> -->
-            <input type = "submit" value="로그인" @click = "fleet_login">
+            <input type = "submit" value="로그인" @click.self.prevent = "fleet_login">
           </form>
           <div class="login_auto"><input type="checkbox" id="login_auto" name="login_auto"><label
               for="login_auto">자동로그인</label></div>
@@ -92,24 +92,36 @@
               alert("차량번호(아이디) 또는 비밀번호를 입력해주세요.");
             }
             else{
-              this.$http.post('api주소', {
+              this.$http.post('http://carwash.iptime.org:3000/userapp/chklogin', {
                 mem_type : "01",
                 car_no : this.basicUser.car_no,
                 pwd : this.basicUser.pw
+              },{headers : {
+              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+              }
               }).then(
-              (res) => {  //아이디 중복 확인 
+              (res) => {  //개인 로그인 
                 if (res.data.result_code == "Y"){
-                  
+                      console.log("개인회원로그인 성공");
+                      this.$http.post('http://carwash.iptime.org:3000/useapp/getlogininfo', {
+                        mem_type : "01",
+                        car_no : this.basicUser.car_no,
+                      },{headers : {
+                      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                      }
+                      }).then(
+                      (res) => {  //개인 회원 정보
+                        console.log(res.data.mem_no + "||" + res.data.mem_type + "||"+ res.data.mem_name+"||"+res.data.mem_id);
+                        sessionStorage.setItem("mem_no",res.data.mem_no);
+                        sessionStorage.setItem("mem_type",res.data.mem_type);
+                        sessionStorage.setItem("mem_name",res.data.mem_name);
+                        sessionStorage.setItem("mem_id",res.data.mem_id);
+                        this.$router.push({name : 'HomeBasic'});
+                      })
                 }
                 else{
-                  alert("차량번호(아이디) 또는 비밀번호 확인하세요.");
+                  alert("차량번호(아이디) 또는 비밀번호를 확인하세요.");
                 }	
-              },
-              (err) => { // error 를 보여줌
-                alert('Login failed! please check your id or password');
-                console.log(err);
-              }).catch((err) => {
-                console.log(err);
               })
             }
           },
@@ -118,24 +130,36 @@
               alert("차량번호(아이디) 또는 비밀번호를 입력해주세요.");
             }
             else{
-              this.$http.post('api주소', {
+              this.$http.post('http://carwash.iptime.org:3000/userapp/chklogin', {
                 mem_type : "02",
                 fleet_id : this.fleetUser.id,
                 pwd : this.fleetUser.pw
+              },{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+              }
               }).then(
-              (res) => {  //아이디 중복 확인 
+              (res) => {  //FLEET로그인
                 if (res.data.result_code == "Y"){
-                  
+                  console.log("fleet로그인 성공");
+                  this.$http.post('http://carwash.iptime.org:3000/useapp/getlogininfo', {
+                        mem_type : "02",
+                        fleet_id : this.fleetUser.id,
+                      },{headers : {
+                      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                      }
+                      }).then(
+                      (res) => {  //FLEET 회원 정보
+                        console.log(res.data.mem_no + "||" + res.data.mem_type + "||"+ res.data.mem_name+"||"+res.data.mem_id);
+                        sessionStorage.setItem("mem_no",res.data.mem_no);
+                        sessionStorage.setItem("mem_type",res.data.mem_type);
+                        sessionStorage.setItem("mem_name",res.data.mem_name);
+                        sessionStorage.setItem("mem_id",res.data.mem_id);
+                        this.$router.push({name : 'HomeFleet01'});
+                      })
                 }
                 else{
-                  alert("차량번호(아이디) 또는 비밀번호 확인하세요.");
+                  alert("차량번호(아이디) 또는 비밀번호를 확인하세요.");
                 }	
-              },
-              (err) => { // error 를 보여줌
-                alert('Login failed! please check your id or password');
-                console.log(err);
-              }).catch((err) => {
-                console.log(err);
               })
             }
           }

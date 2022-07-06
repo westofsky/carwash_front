@@ -19,9 +19,9 @@
 				<div class="wrapper" id="app">
 					<div class="card-form">
 					  <div class="card-list">
-						<div class="card-item" v-bind:class="{ '-active' : isCardFlipped }">
+						<div class="card-item">
 						  <div class="card-item__side -front">
-							<div class="card-item__focus" v-bind:class="{'-active' : focusElementStyle }" v-bind:style="focusElementStyle" ref="focusElement"></div>
+							<div class="card-item__focus" ref="focusElement"></div>
 							<div class="card-item__cover">
 							  <img src="../../assets/img/creditcard/creditcard_bg.jpg" class="card-item__bg">
 							</div>
@@ -38,44 +38,50 @@
 							  
 							  <!--S : 카드번호 -->	
 							  <label for="cardNumber" class="card-item__number" ref="cardNumber">
-							  <span><div class="card-item__numberItem">1</div></span>
-							  <span><div class="card-item__numberItem">2</div></span>
-							  <span><div class="card-item__numberItem">3</div></span>
-							  <span><div class="card-item__numberItem">4</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[0]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[1]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[2]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[3]}}</div></span>
 								  
 							  <span><div class="card-item__numberItem -active"> </div></span>
 								  
-							  <span><div class="card-item__numberItem">5</div></span>
-							  <span><div class="card-item__numberItem">6</div></span>
-							  <span><div class="card-item__numberItem">7</div></span>
-							  <span><div class="card-item__numberItem">8</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[4]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[5]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[6]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[7]}}</div></span>
 								  
 							  <span><div class="card-item__numberItem -active"> </div></span>
 								  
-							  <span><div class="card-item__numberItem">4</div></span>
-							  <span><div class="card-item__numberItem">5</div></span>
-							  <span><div class="card-item__numberItem">6</div></span>
-							  <span><div class="card-item__numberItem">7</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[8]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[9]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[10]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[11]}}</div></span>
+							  <span><div class="card-item__numberItem -active"> </div></span>
+
+							  <span><div class="card-item__numberItem">{{cardNumber[12]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[13]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[14]}}</div></span>
+							  <span><div class="card-item__numberItem">{{cardNumber[15]}}</div></span>
 							  </label>
 							  <!--E : 카드번호 -->	
 							  <div class="card-item__content">
 								<label for="cardName" class="card-item__info" ref="cardName">
 								  <div class="card-item__holder">소유자 이름</div>
 								  <transition name="slide-fade-up">
-									<div class="card-item__name">Full Name</div>
+									<div class="card-item__name">{{cardName}}</div>
 								  </transition>
 								</label>
 								<div class="card-item__date" ref="cardDate">
 								  <label for="cardMonth" class="card-item__dateTitle">유효기한</label>
 								  <label for="cardMonth" class="card-item__dateItem">
 									<transition name="slide-fade-up">
-									  <span else key="2"v->MM</span>
+									  <span else key="2">{{cardMonth}}</span>
 									</transition>
 								  </label>
 								   / 
 								  <label for="cardYear" class="card-item__dateItem">
 									<transition name="slide-fade-up">
-									  <span>YY</span>
+									  <span>{{cardYear}}</span>
 									</transition>
 								  </label>
 								</div>
@@ -86,9 +92,9 @@
 							
 							
 							<div class="card-item__cvv">
-								<div class="card-item__cvvTitle">CVV</div>
+								<div class="card-item__cvvTitle">CVC</div>
 								<div class="card-item__cvvBand">
-								  <span v-for="(n, $index) in cardCvv" :key="$index">
+								  <span v-for="(n, $index) in cardCVC" :key="$index">
 									*
 								  </span>
 
@@ -103,23 +109,23 @@
 					  <div class="card-form__inner">
 						<div class="card-input">
 						  <label for="cardNumber" class="card-input__label">카드번호</label>
-						  <input type="text" id="cardNumber" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardNumber" autocomplete="off">
+						  <input type="text" id="cardNumber" class="card-input__input" v-model="cardNumber" @input = "onlyNum" data-ref="cardNumber" autocomplete="off" maxlength="16">
 						</div>
 						<div class="card-input">
 						  <label for="cardName" class="card-input__label">소유자 이름</label>
-						  <input type="text" id="cardName" class="card-input__input" v-model="cardName" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardName" autocomplete="off">
+						  <input type="text" id="cardName" class="card-input__input" v-model="cardName" data-ref="cardName" autocomplete="off">
 						</div>
 						<div class="card-form__row">
 						  <div class="card-form__col">
 							<div class="card-form__group">
 							  <label for="cardMonth" class="card-input__label">유효기한</label>
-							  <select class="card-input__input -select" id="cardMonth" v-model="cardMonth" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
+							  <select class="card-input__input -select" id="cardMonth" v-model="cardMonth" data-ref="cardDate">
 								<option value="" disabled selected>Month</option>
 								<option v-bind:value="n < 10 ? '0' + n : n" v-for="n in 12" v-bind:disabled="n < minCardMonth" v-bind:key="n">
 									{{n < 10 ? '0' + n : n}}
 								</option>
 							  </select>
-							  <select class="card-input__input -select" id="cardYear" v-model="cardYear" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardDate">
+							  <select class="card-input__input -select" id="cardYear" v-model="cardYear" data-ref="cardDate">
 								<option value="" disabled selected>Year</option>
 								<option v-bind:value="$index + minCardYear" v-for="(n, $index) in 12" v-bind:key="n">
 									{{$index + minCardYear}}
@@ -129,16 +135,20 @@
 						  </div>
 						  <div class="card-form__col -cvv">
 							<div class="card-input">
-							  <label for="cardCvv" class="card-input__label">CVV</label>
-							  <input type="text" class="card-input__input" id="cardCvv" v-mask="'####'" maxlength="4" v-model="cardCvv" v-on:focus="flipCard(true)" v-on:blur="flipCard(false)" autocomplete="off">
+								<div style="width :45% ;float:left;">
+									<label for="cardCvv" class="card-input__label">CVC</label>
+									<input type="text" class="card-input__input" id="cardCvv" maxlength="4" v-model="cardCVC" autocomplete="off" @input="onlyNum">
+								</div>
+							  	<div style="width :45% ;float:right;">
+									<label for="cardCvv" class="card-input__label">카드 비밀번호 2자리</label>
+									<input type="text" class="card-input__input" id="cardCvv" maxlength="2" v-model="card_passno" autocomplete="off" @input="onlyNum">
+								</div>
 							</div>
 						  </div>
 						</div>
-						<router-link to="/PaymentVue" class="btn_back">
-							<button class="btn_arrow w100p">
-								등록
-							</button>
-						</router-link>
+						<button class="btn_arrow w100p MgT20" @click="card_update">
+							{{card_state_btn}}
+						</button>
 						
 					  </div>
 					</div>
@@ -170,6 +180,103 @@ import FooterVue from "../footer/FooterVue.vue";
 		data (){
 			return {
 				minCardYear : 2020,
+				card_state_btn : "등록",
+				cardCVC : '',
+				cardNumber : '',
+				cardName : '',
+				cardMonth : '',
+				cardYear : '',
+				minCardMonth : 1,
+				minCardYear : 2022,
+				card_passno : '',
+			}
+		},
+		props :{
+			card_state : String,
+		},
+		mounted(){
+			if(this.$route.query.card_state == "register"){
+				this.card_state_btn = "등록";
+			}
+			else if(this.$route.query.card_state == "change")
+				this.card_state_btn = "변경";
+		},
+		methods : {
+			onlyNum(){
+				this.cardNumber = this.cardNumber.replace(/[^0-9]/g, '');
+			},
+			card_update(){
+				if(!this.cardNumber){
+					alert("카드번호를 입력해주세요");
+					return false;
+				}
+				if(this.cardNumber.length != 16){
+					alert("카드번호 16자리 모두 입력해주세요.");
+					return false;
+				}
+				if(!this.cardName){
+					alert("소유자 이름을 입력해주세요.");
+					return false;
+				}
+				if(!this.cardMonth || !this.cardYear){
+					alert("유효기간을 선택해주세요.");
+					return false;
+				}
+				if(!this.cardCVC){
+					alert("CVC번호를 입력해주세요.");
+					return false;
+				}
+				if(!this.card_passno){
+					alert("카드 비밀번호 2자리를 입력해주세요.");
+					return false;
+				}
+				console.log(this.cardNumber + "||" + this.cardName + "||" + this.cardMonth +"||"+this.cardYear+"||"+this.cardCVC);
+				if(this.$route.query.card_state = "register"){
+					this.$http.post('http://carwash.iptime.org:3000/userapp/setRegCard', {
+						mem_no : sessionStorage.getItem("mem_no"),
+						card_no : this.cardNumber,
+						owner : this.cardName,
+						exp_mm : this.cardMonth,
+						exp_yy : this.cardYear,
+						cvc_no : this.cardCVC,
+						password_no : this.card_passno,
+
+					},{headers : {
+					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+					}
+					}).then(
+					(res) => {  // 
+						if (res.data.result_code == "Y"){
+							console.log("card등록 성공!!");
+							this.$router.push({name : 'PaymentVue'});
+						}
+						else{
+							
+						}   
+					})
+				}
+				else if(this.$router.query.card_state = "change"){
+					this.$http.post('http://carwash.iptime.org:3000/userapp/setUpdateCard', {
+						mem_no : sessionStorage.getItem("mem_no"),
+						card_no : this.cardNumber,
+						owner : this.cardName,
+						exp_mm : this.cardMonth,
+						exp_yy : this.cardYear,
+						cvc_no : this.cardCVC,
+						password_no : this.card_passno,
+					},{headers : {
+					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+					}
+					}).then(
+					(res) => {  // 
+						if (res.data.result_code == "Y"){
+							console.log("card변경 성공!!");
+						}
+						else{
+							
+						}   
+					})
+				}
 			}
 		}
     }

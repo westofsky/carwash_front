@@ -166,6 +166,7 @@ input[type="radio"]:checked + label:after { content:""; display: block; position
 .pay_onetime_order_02 {}
 .pay_onetime_order_02 section > div { margin:1rem 0 2rem; }
 .pay_onetime_order_02 section .title { color:#373f60; font-weight: 600; }
+.pay_onetime_order_02 section .subtitle { color:#373f60; font-weight: 300; }
 .pay_onetime_order_02 .coupon_use { display: flex; justify-content: center; align-items: center; margin-bottom: 8px; border-radius: 4px; border: 1px solid #cfcfcf;  }
 .pay_onetime_order_02 .coupon_use > img { width: 33px; }
 .pay_onetime_order_02 .coupon_use > p { margin-left: 10px; color:#2c2c2c; line-height: 2.875rem; font-weight: 500; font-size: 1.125rem; }

@@ -29,6 +29,20 @@
           </div>
           <div class="coupon_list_wrap">
             <ul>
+              <li class="coupon_list" v-for="(value, index) in this.coupon_list" :key="index">
+                <div class="coupon_name">
+                  <img v-if = "get_detail(value.coupon_code) == 1" src="../../assets/img/content/ico_coupon_percent.svg" alt="">
+                  <img v-else src="../../assets/img/content/ico_coupon_free.svg" alt="">
+                  <p>{{value.coupon_name}} {{value.rest_count}}</p>
+                </div>
+                <div class="coupon_info">
+                  <ul>
+                    <li>쿠폰번호 : <span class="coupon_num">{{value.coupon_code}}</span></li>
+                    <li>발급일자 : <span class="coupon_date">{{value.reg_date}}</span></li>
+                    <li>사용일시 : <span class="coupon_period">{{value.use_date}}</span></li>
+                  </ul>
+                </div>
+              </li>
               <li class="coupon_list">
                 <div class="coupon_name">
                   <img src="../../assets/img/content/ico_coupon_free.svg" alt="">
@@ -77,6 +91,45 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  data(){
+    return{
+      mem_no : sessionStorage.getItem('mem_no'),
+      mem_chk : sessionStorage.getItem('mem_type'),
+      mem_name : sessionStorage.getItem('mem_name'),
+      coupon_list : [],
+      coupon_detail : []
+    }
+  },
+  mounted(){
+    this.get_couponlist();
+  },
+  methods: {
+    async get_couponlist(){
+      this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList01', {
+      mem_no : 'WYP0000016',
+      is_use : 'N'
+      },{headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+        }
+      }).then((res) => {
+        this.coupon_list = res.data;
+      })
+    },
+    async get_detail(code){
+      this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList', {
+      coupon_code : code
+      },{headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+        }
+      }).then((res) => {
+        if(res.data[0].dc_percent > 0){
+          return 1
+        }else{
+          return 0
+        }
+      })
+    }
   }
 };
 </script>

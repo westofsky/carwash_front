@@ -4,15 +4,6 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     allowedHosts: "all",
-    // proxy : {
-    //   '/api' : {
-    //       target: target,
-    //         changeOrigin: true,
-    //         pathRewrite : {
-    //           '^/api' : ''
-    //         }
-    //    }
-    // }
   },
   chainWebpack: config => {
     config.module.rules.delete('eslint');

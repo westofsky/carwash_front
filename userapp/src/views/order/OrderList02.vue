@@ -19,34 +19,32 @@
           <div class="section_tab">
             <!-- <a href="#">미사용 리스트</a>
             <a class="active" href="#">사용 리스트</a> -->
-            <router-link to="/orderList01">미사용 리스트</router-link>
-            <router-link to="/orderList02" class="active">사용 리스트</router-link>
+            <router-link to="/orderList02" class="active">결제 리스트</router-link>
           </div>
           <div class="coupon_list_wrap">
             <ul>
-              <li class="coupon_list">
+              <li class="coupon_list" v-for="(pay_info , index) in pay_list" :key = "index">
                 <div class="coupon_name">
                   <img src="../../assets/img/content/pay_onetime04.png" alt="">
                   <p>결제상품 :
-                    <span class="order_unused_name">BASIC 1회권</span>
+                    <span class="order_unused_name">{{pay_info.prod_name}}</span>
                     <br>
-                    <!-- 옵션상품 :
-                    <span
-                      class="option_unused_name">타이어세차/하부세차</span> -->
+                    옵션상품 : 
+                    <span class="option_unused_name" v-if="pay_info.option_name">{{pay_info.option_name}}</span>
+                    <span class="option_unused_name" v-else>없음</span>
                   </p>
                 </div>
                 <div class="coupon_info">
                   <ul>
-                    <li>쿠폰번호 : <span class="order_unused_num">WD2022051401</span></li>
-                    <li>쿠폰번호 : <span class="order_unused_date">2022/05/14 14:26:35</span></li>
-                    <li>쿠폰번호 : <span class="order_unused_period">2022/12/31 24:00:00</span></li>
-                    <li>쿠폰번호 : <span class="order_unused_QRnum">WD2022051401</span></li>
+                    <!-- <li>결제일시 : <span class="order_unused_num">W0123156156</span></li> -->
+                    <li>결제일시 : <span class="order_unused_date">{{pay_info.pay_date}}</span></li>
+                    <li>결제금액 : <span class="order_unused_money">{{pay_info.pay_fee}}</span></li>
                   </ul>
-                  <button class="btn_arrow" type="button" @click="confirmReceipt()">영수증 확인</button>
+                  <button class="btn_arrow" type="button" @click="confirmReceipt(pay_info.pay_seq)">영수증 확인</button>
                 </div>
               </li>
 
-              <li class="coupon_list">
+              <!-- <li class="coupon_list">
                 <div class="coupon_name">
                   <img src="../../assets/img/content/pay_onetime03.png" alt="">
                   <p>결제상품 : <span class="order_unused_name">GIFT (BUBBLE x 5회)</span><br>옵션상품 : <span
@@ -95,7 +93,7 @@
                   </ul>
                   <button class="btn_arrow" type="button">영수증 확인</button>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
         </section>
@@ -112,10 +110,30 @@ export default {
   components: {
     FooterVue
   },
-
+  data(){
+    return{
+      pay_list : [],
+    }
+  },
+  mounted(){
+      this.$http.post('http://carwash.iptime.org:3000/userapp/getPayList', {
+        mem_no : sessionStorage.getItem("mem_no"),
+        // mem_no : "YGP220500000002"
+      },{headers : {
+      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+        console.log(res.data);
+        this.pay_list = res.data;
+      })
+  },
   methods: {
-    confirmReceipt() {
-      this.$router.push('/payOnetimeOrder02');
+    confirmReceipt(key) {
+      console.log(key); 
+      this.$router.push({name : 'payOnetimeOrder02',query :{
+        key : key,
+      }});
     }
   }
 };

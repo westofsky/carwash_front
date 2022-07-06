@@ -4,7 +4,7 @@
       <div id="top">
         <div id="nav">
           <router-link to="/" class="btn_back">
-            <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
+            
           </router-link>
           <!-- <a class="top_logo" href="#">
             <img src="../../assets/img/logo_top.svg" alt="SPARKPLUS">
@@ -17,7 +17,7 @@
         <div id="top_info">
           <div class="profile_img"><img src="../../assets/img/profile.jpg" alt="프로필 사진"></div>
           <p class="user_welcome">
-            <span class="user_name">C1234567</span>님,
+            <span class="user_name">{{mem_name}}</span>님,
             <br>스파크플러스와 함께 스마트 세차 하세요!
           </p>
           <div class="top_btns">
@@ -33,10 +33,10 @@
               <img src="../../assets/img/btn_logout.png" alt="">
               로그아웃
             </a> -->
-            <router-link to="/" class="btn_logout">
-              <img src="../../assets/img/btn_logout.png" alt="">
+            <a class="btn_logout">
+              <img src="../../assets/img/btn_logout.png" @click="logout">
               로그아웃
-            </router-link>
+            </a>
           </div>
         </div>
       </div>
@@ -44,16 +44,30 @@
         <section class="main_container">
           <div id="menu">
             <ul>
-              <li>
-                <!-- <a href="#">
-                  <img src="../../assets/img/btn_main07.png" alt="내정보">
-                  <p>내정보</p>
-                </a> -->
-                <router-link to="/myInfoList">
-                  <img src="../../assets/img/btn_main07.png" alt="내정보">
-                  <p>내정보</p>
-                </router-link>
-              </li>
+              <template v-if="visible">
+                <li>
+                  <!-- <a href="#">
+                    <img src="../../assets/img/btn_main07.png" alt="내정보">
+                    <p>내정보</p>
+                  </a> -->
+                  <router-link to="/myInfoList">
+                    <img src="../../assets/img/btn_main07.png" alt="내정보">
+                    <p>내정보</p>
+                  </router-link>
+                </li>
+              </template>
+              <template v-else>
+                <li>
+                  <!-- <a href="#">
+                    <img src="../../assets/img/btn_main08.png" alt="차량등록">
+                    <p>차량등록</p>
+                  </a> -->
+                  <router-link to="/fleetCarList">
+                    <img src="../../assets/img/btn_main08.png" alt="차량등록">
+                    <p>차량등록</p>
+                  </router-link>
+                </li>
+              </template>
               <li>
                 <!-- <a href="payment.html">
                   <img src="../../assets/img/btn_main02.png" alt="결제등록">
@@ -79,7 +93,7 @@
                   <img src="../../assets/img/btn_main04.png" alt="결제내역">
                   <p>결제내역</p>
                 </a> -->
-                <router-link to="/orderList01">
+                <router-link to="/orderList02">
                   <img src="../../assets/img/btn_main04.png" alt="결제내역">
                   <p>결제내역</p>
                 </router-link>
@@ -118,8 +132,9 @@
               <img class="balloon" src="../../assets/img/event_balloon.png" alt="">
             </div>
             <ul class="notice_list">
-              <li><a href="#">스파크플러스 쿠폰 사용방법을 안내 드립니다</a><span class="time">3시간 전</span></li>
-              <li><a href="#">[서비스 점검] 보다 안정적인 서비스를 위해 점검이 있을 예정입니다.</a><span class="time">02.23</span></li>
+              <li v-for="(info,index) in info_list" :key="index">
+                <a href="#">{{info.title}}</a><span class="time">{{return_date(info.write_date)}}</span>
+              </li>
             </ul>
           </div>
         </section>
@@ -142,6 +157,51 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  data(){
+    return{
+      mem_no : sessionStorage.getItem('mem_no'),
+      mem_chk : sessionStorage.getItem('mem_type'),
+      mem_name : sessionStorage.getItem('mem_name'),
+      info_list : [],
+      visible : true
+    }
+  },
+  created() {
+    // if(this.mem_id != null){
+    //   this.$router.push('LoginVue');
+    // }else   this.isShow = true;
+  },
+  mounted(){
+    if(this.mem_chk == "MMT001"){
+      this.visible = true;
+    }else if(this.mem_chk == "MMT002" || this.mem_chk == "MMT003"){
+      this.visible = false;
+    }else{
+      // this.$router.push('LoginVue');
+    }
+    this.$http.post('http://carwash.iptime.org:3000/userapp/getnoticemain', {
+      list_count : '3'
+    },{headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+    }).then((res) => {
+      this.info_list = res.data
+    })
+  },
+  methods : {
+    return_date(date){
+      const write = new Date(date);
+      const month = write.getMonth().toString().padStart(2,'0');
+      const day = write.getDate().toString().padStart(2,'0');
+
+      return month+'.'+day;    
+    },
+    logout(){
+      sessionStorage.clear();
+      this.$router.push({name : 'LoginVue'});
+      this.$router.go();
+    }
   }
-};
+}
 </script>

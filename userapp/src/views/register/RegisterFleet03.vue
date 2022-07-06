@@ -49,18 +49,24 @@
 			test : Boolean,
 			fleet_id : {
 				type: String,
-				default : 'Test01',
 			},
 			fleet_usage : {
 				type: String,
-				default : '선불전용',
 			},
 		},
+    data (){
+      return{
+        usage : ''  
+      }
+    },
 		methods : {
 
 		},
 		mounted (){
-      
+      if(this.fleet_usage == "MMT002")
+        this.usage = "선불전용"
+      else
+        this.usage = "할인전용"
 		}
 	}
 </script>

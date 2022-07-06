@@ -62,7 +62,7 @@ export default {
     registerbasic_phone() {
       if (this.checkPlate(this.car_no)){
       console.log(this.car_no);
-        this.$http.post('http://carwash.iptime.org:8000/userapp/chkcarno', {
+        this.$http.post('http://carwash.iptime.org:3000/userapp/chkcarno', {
           car_no : this.car_no,
         },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -102,8 +102,12 @@ export default {
             else if(res.data.result_code == "N"){
               alert("중복된 차량 번호입니다.");
             }
-          }
-        )
+          },
+        (err) => { // error 를 보여줌
+            console.log(err);
+          }).catch((err) => {
+            console.log(err);
+          });
       }
       else
         alert("차량 번호가 잘못되었습니다. 다시 입력해주세요.");
