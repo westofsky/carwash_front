@@ -3,9 +3,9 @@
     <div id="content_wrap" class="pay_onetime">
       <div id="top">
         <div id="nav">
-          <router-link to="/PayVue" class="btn_back">
+          <a class="btn_back" @click="before_reset">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
-          </router-link>
+          </a>
           <p class="current">1회권 세차상품</p>
           <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
         </div>
@@ -62,7 +62,7 @@
             <p class="sec_txt"><span class="black fontBold">02 1회권 옵션 상품</span>을 선택해주세요</p>
           </div>
           <ul class="oneOption_wrap check_list" id="option01">
-            <li v-for="(option , index) in option_list" :key="index" >
+            <li v-for="(option , index) in option_list" :key="index" @click="detect_change">
               <div class="option_img"><img :src="getSrcO(option.option_img)" alt=""></div>
               <label :for="getValO(option.option_code)"><span class="option_name">{{option.option_name}}</span><span class="option_price">+{{option.option_fee}}</span></label>
               <input type="checkbox" name="oneOption01" :id="getValO(option.option_code)" :value="option.option_code" v-model="selected.option" class="oneOption">
@@ -101,7 +101,7 @@
             
           </ul>
           <div class="oneOption_no check_list2" id="noOption01">
-            <input type="checkbox" name="oneOption01" id="oneNoOption01" class="oneNoOption" v-model ="no_option"><div class="check"></div>
+            <input type="checkbox" name="oneOption01" id="oneNoOption01" class="oneNoOption" v-model ="no_option"  @click="select_no_option"><div class="check"></div>
             <label for="oneNoOption01"><span class="option_name">세차옵션 선택 안함</span></label>
           </div>
         </section>
@@ -127,7 +127,7 @@
           </div>
         </section>
         <section class="how_use">
-          <p class="title">멤버쉽 세차상품을 선택 후, 결제하기 버튼을 눌러주세요</p>
+          <p class="title">1회권 세차상품을 선택 후, 결제하기 버튼을 눌러주세요</p>
         </section>
       </article>
       
@@ -158,25 +158,38 @@ export default {
         option : [],
         option_code : [],
         option_name : [],
-        option_fee : [],
-        opton_plc : [],
+        option_fee : 0,
+        option_plc : [],
       },
       brush : {
+        info : [],
         menu : false,
-        plc : '',
       }
     }
   },
   beforeCreate(){
     this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
         pro_type : "PGC001"
-      },{headers : {
-      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      },{
+      headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
       }
       }).then(
       (res) => {  // 
             this.product_list = res.data;
-    });
+      }
+    );
+    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+        pro_type : "PGC005"
+      },{
+      headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+            this.brush.info = res.data[0];
+      }
+    );
   },
   updated(){
     
@@ -203,9 +216,6 @@ export default {
 				oneNoOption01.checked = false;
 			});
 		}
-		
-		
-		
 		oneNoOption01.addEventListener('input', function(){
 			if(this.checked){
 				for(let i =0; i<oneOption01.length; i++){
@@ -234,7 +244,6 @@ export default {
       }
       }).then(
       (res) => {  // 
-            console.log(res.data);
             this.option_list = res.data;
       })
     },
@@ -242,7 +251,7 @@ export default {
       if(index>=10)
         return require('../../assets/img/content/pay_optionicon'+index+'.png');
       else
-        return require('../../assets/img/content/pay_optionicon0'+index+'.png');
+        return require('../../assets/img/content/'+index+'.png');
     },
     getValO(index){
       if(index >=10){
@@ -252,15 +261,55 @@ export default {
         return "oneOption010"+index;
     },
     onetime_register(){
-      console.log(this.selected.product.length!=0 && (this.no_option || this.selected.option.length!=0));
-    }
+      console.log(this.selected.product.prod_code + "||" + this.selected.product.prod_name+"||"+this.selected.product.prod_fee+"||");
+      console.log(this.brush.menu + "||"+this.brush.info.main_plc);
+      var send_options = []
+      for(var i=0;i<this.option_list.length;i++){
+        for(var j=0;j<this.selected.option.length;j++){
+          if(this.option_list[i].option_code == this.selected.option[j]){
+            send_options.push(this.option_list[i]);
+            this.selected.option_code.push(this.option_list[i].option_code);
+            this.selected.option_name.push(this.option_list[i].option_name);
+            this.selected.option_fee += parseInt(this.option_list[i].option_fee);
+            this.selected.option_plc.push(this.option_list[i].option_plc);
+          }
+          else
+            continue;
+        }
+      }
+      localStorage.setItem("send_options",JSON.stringify(send_options));
+      localStorage.setItem("pin_seq_no",JSON.stringify(this.selected.product.prod_code));
+      localStorage.setItem("first_menu",JSON.stringify(this.selected.product.prod_name));
+      localStorage.setItem("menu_fee",JSON.stringify(parseInt(this.selected.product.prod_fee)));
+      localStorage.setItem("main_plc",JSON.stringify(this.selected.product.main_plc));
+      localStorage.setItem("pin2_seq_no",JSON.stringify(this.selected.option_code));
+      localStorage.setItem("second_menu",JSON.stringify(this.selected.option_name));
+      localStorage.setItem("option_fee",JSON.stringify(this.selected.option_fee));
+      localStorage.setItem("option_plc",JSON.stringify(this.selected.option_plc));
+      localStorage.setItem("third_menu",JSON.stringify(this.brush.menu));
+      localStorage.setItem("brush_plc",JSON.stringify(this.brush.info.main_plc));
+      this.$router.push({name : 'PayOnetimeOrder01'})
+    },
+    detect_change(){
+      if( this.selected.option.length!=0)
+        this.no_option = false;
+    },
+    select_no_option(){
+      if(!this.no_option){
+        this.selected.option = [];
+      }
+    },
+    before_reset(){
+      localStorage.clear();
+      this.$router.push({name : 'PayVue'});
+    },
   },
   computed : {
     isActive :  function(){
       return{
         active : this.selected.product.length!=0 && (this.no_option || this.selected.option.length!=0)
       }
-    }
+    },
   }
 };
 </script>

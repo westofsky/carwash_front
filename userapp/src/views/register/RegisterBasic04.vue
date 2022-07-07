@@ -1,14 +1,11 @@
 <template>
-  <div>
+  <div id="wrapper">
     <div id="content_wrap" class="register_basic04">
       <div id="top">
         <div id="nav">
-          <!-- <a class="btn_back" href="./register_basic02.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/registerBasic0201" class="btn_back">
-            <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
-          </router-link>
+          <a></a>
           <p class="current">개인 회원가입</p>
-          <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
+          <a></a>
         </div>
         <div id="top_info">
           <p class="info">개인 회원가입이 완료 되었습니다.</p>
@@ -26,7 +23,7 @@
               </li>
               <li>
                 <p class="info_title">임시 비밀번호</p>
-                <p class="info_txt">4567</p>
+                <p class="info_txt">{{mem_pw}}</p>
               </li>
             </ul>
           </div>
@@ -58,6 +55,16 @@ export default {
   props :{
     car_no : String,
     mem_no : String,
+  },
+  data(){
+    return {
+      mem_pw : this.car_no.slice(-4),
+    }
   }
 };
 </script>
+<style>
+#wrapper {
+  height: 100%;
+}
+</style>

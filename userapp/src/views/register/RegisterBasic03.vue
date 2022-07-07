@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="wrapper">
     <div id="content_wrap" class="register_basic03">
       <div id="top">
         <div id="nav">
@@ -99,8 +99,9 @@ export default {
                 }).then(
                 (res) => {
                   if(res.data.result_code == "Y"){
-                    console.log("걸림3");
-                    this.$router.push({name : 'RegisterBasic04',param : {
+                    console.log(this.$route.query.car_no);
+                    console.log(res.data.mem_no);
+                    this.$router.push({name : 'RegisterBasic04',params : {
                       car_no : this.$route.query.car_no,
                       mem_no : res.data.mem_no,
                     }})
@@ -129,3 +130,8 @@ export default {
   }
 }
 </script>
+<style>
+#wrapper {
+  height: 100%;
+}
+</style>

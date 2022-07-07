@@ -36,7 +36,7 @@
             멤버쉽 결제
           </router-link>
         </section>
-        <section class="con2" v-else>
+        <section class="con2" v-if="is_personal == 'MMT002' || is_personal == 'MMT003'">
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">Fleet회원 선불제 횟수차감 방식</span>은<br>세차상품권을 미리 선불로 구매하여, 사용시마다 차감되는 방식으로
             최소 50회권부터 구매 가능합니다.</p>
@@ -73,7 +73,7 @@ export default {
   },
   data(){
     return {
-      is_personal : sessionStorage.getItem("mem_type") == "MMT001"
+      is_personal : sessionStorage.getItem("mem_type")
     }
   },
 };

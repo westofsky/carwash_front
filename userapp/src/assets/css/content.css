@@ -8,7 +8,7 @@
 .sec_txt .red { color:var(--mainColor-blue); }
 .sec_txt .black { color:#010101; }
 .fontBold { font-weight: 600;}
-
+#wrapper { height : 100%}
 
 .mainColor { color:var(--mainColor-blue); }
 .skyblue { color:var(--mainColor-blue); }

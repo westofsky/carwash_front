@@ -3,9 +3,9 @@
     <div id="content_wrap">
       <div id="top">
         <div id="nav">
-          <router-link to="/" class="btn_back">
+          <a class="btn_back">
             
-          </router-link>
+          </a>
           <!-- <a class="top_logo" href="#">
             <img src="../../assets/img/logo_top.svg" alt="SPARKPLUS">
           </a> -->

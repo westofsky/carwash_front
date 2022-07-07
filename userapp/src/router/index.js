@@ -21,6 +21,7 @@ import NoticeDetail from '../views/notice/NoticeDetail';
 import NoticeList from '../views/notice/NoticeList';
 import OrderList01 from '../views/order/OrderList01';
 import OrderList02 from '../views/order/OrderList02';
+import OrderListReceipt from '../views/order/OrderListReceipt';
 import PayCoupon01 from '../views/pay/PayCoupon01';
 import PayCoupon02 from '../views/pay/PayCoupon02';
 import PayCoupon03 from '../views/pay/PayCoupon03';
@@ -29,12 +30,13 @@ import PayCoupon05 from '../views/pay/PayCoupon05';
 import PayCouponAdd from '../views/pay/PayCouponAdd';
 import PayCouponBuy from '../views/pay/PayCouponBuy';
 import PayMembership from '../views/pay/PayMembership';
+import PayMemberShipOrder01 from '../views/pay/PayMemberShipOrder01';
 import PayMembershipBk from '../views/pay/PayMembershipBk';
+import PayReceipt from '../views/pay/PayReceipt';
 import PayOnetime from '../views/pay/PayOnetime';
 import PayOnetimeCoupon01 from '../views/pay/PayOnetimeCoupon01';
 import PayOnetimeCoupon02 from '../views/pay/PayOnetimeCoupon02';
 import PayOnetimeOrder01 from '../views/pay/PayOnetimeOrder01';
-import PayOnetimeOrder02 from '../views/pay/PayOnetimeOrder02';
 import PayVue from '../views/pay/PayVue';
 import PaymentVue from '../views/payment/PaymentVue';
 import PaymentCard from '../views/payment/PaymentCard';
@@ -168,6 +170,12 @@ const routes = [
     beforeEnter : requireAuth()
   },
   {
+    path : '/OrderListReceipt',
+    component : OrderListReceipt,
+    name : 'OrderListReceipt',
+    beforeEnter : requireAuth()
+  },
+  {
     path: '/payCoupon01',
     component: PayCoupon01,
     beforeEnter : requireAuth()
@@ -205,6 +213,13 @@ const routes = [
   {
     path: '/PayMembership',
     component: PayMembership,
+    name : 'PayMemberShip',
+    beforeEnter : requireAuth()
+  },
+  {
+    path : '/PayMemberShipOrder01',
+    component : PayMemberShipOrder01,
+    name : 'PayMemberShipOrder01',
     beforeEnter : requireAuth()
   },
   {
@@ -213,8 +228,15 @@ const routes = [
     beforeEnter : requireAuth()
   },
   {
+    path: '/PayReceipt',
+    component: PayReceipt,
+    name : 'PayReceipt',
+    beforeEnter : requireAuth()
+  },
+  {
     path: '/PayOnetime',
     component: PayOnetime,
+    name : 'PayOnetime',
     beforeEnter : requireAuth()
   },
   {
@@ -230,18 +252,14 @@ const routes = [
   {
     path: '/PayOnetimeOrder01',
     component: PayOnetimeOrder01,
-    beforeEnter : requireAuth()
-  },
-  {
-    path: '/PayOnetimeOrder02',
-    component: PayOnetimeOrder02,
-    name : 'payOnetimeOrder02',
-    props: true,
+    name : 'PayOnetimeOrder01',
+    props : true,
     beforeEnter : requireAuth()
   },
   {
     path: '/PayVue',
     component: PayVue,
+    name : 'PayVue',
     beforeEnter : requireAuth()
   },
   {

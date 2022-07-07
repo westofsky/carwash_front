@@ -124,14 +124,13 @@ export default {
       }
       }).then(
       (res) => {  // 
-        console.log(res.data);
         this.pay_list = res.data;
       })
   },
   methods: {
     confirmReceipt(key) {
       console.log(key); 
-      this.$router.push({name : 'payOnetimeOrder02',query :{
+      this.$router.push({name : 'OrderListReceipt',query :{
         key : key,
       }});
     }

@@ -19,7 +19,6 @@
           <div class="section_tab">
             <!-- <a class="active" href="#">무료 쿠폰</a>
             <a href="#">할인 쿠폰</a> -->
-            <router-link to="/payOnetimeCoupon01" class="active">무료 쿠폰</router-link>
             <router-link to="/payOnetimeCoupon02">할인 쿠폰</router-link>
           </div>
           <div class="coupon_list_wrap">

@@ -85,7 +85,6 @@ export default {
     }
     }).then(
     (res) => {  // 
-      console.log(res.data);
       this.prod_name = res.data.prod_name;
       this.option_name = res.data.option_name;
       this.pay_date = res.data.pay_date;

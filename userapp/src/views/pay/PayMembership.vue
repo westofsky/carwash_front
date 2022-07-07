@@ -3,15 +3,14 @@
     <div id="content_wrap" class="pay_onetime">
       <div id="top">
         <div id="nav">
-          <!-- <a class="btn_back" href="./pay.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/payVue" class="btn_back">
+          <a class="btn_back" @click="before_reset">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
-          </router-link>
+          </a>
           <p class="current">멤버쉽 세차상품</p>
           <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
         </div>
         <div id="top_info">
-          <p class="info">멤버쉽 세차 상품을 구매 중 입니다.<br>세차 상품 선택 후 옵션 상품을 선택해주세요</p>
+          <p class="info">멤버쉽 세차 상품을 구매 중 입니다.<br>세차 상품을 선택해주세요</p>
         </div>
       </div>
       <article class="scontainer">
@@ -20,66 +19,26 @@
             <p class="sec_txt"><span class="black fontBold">01 원하시는 세차 상품</span>을 선택해주세요</p>
           </div>
           <ul id="oneType_wrap" class="oneType_wrap">
-            <li><input type="radio" name="oneType" value="onetimePremium" id="onetimePremium">
-              <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime01.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime01_on.png" alt=""></span>
-                <span class="info"><span class="fontBold">PREMIUM</span>기존세차 + 거품 + 왁스 + 하부</span>
-                <span class="price">28,000</span>
-                <span class="check"></span>
-              </a>
-            </li>
-            <li><input type="radio" name="oneType" value="onetimeBest" id="onetimeBest">
-              <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime02.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime02_on.png" alt=""></span>
-                <span class="info"><span class="fontBold">BEST</span>기존세차 + 거품 + 왁스</span>
-                <span class="price">21,000</span>
-                <span class="check"></span>
-              </a>
-            </li>
-            <li><input type="radio" name="oneType" value="onetimeBubble" id="onetimeBubble">
-              <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime03.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime03_on.png" alt=""></span>
-                <span class="info"><span class="fontBold">BUBBLE</span>기존세차 + 거품</span>
-                <span class="price">16,000</span>
-                <span class="check"></span>
-              </a>
-            </li>
-            <li><input type="radio" name="oneType" value="onetimeBasic" id="onetimeBasic">
-              <a href="#">
-                <span class="img"><img class="off" src="../../assets/img/content/pay_onetime04.png" alt=""><img
-                    class="on" src="../../assets/img/content/pay_onetime04_on.png" alt=""></span>
-                <span class="info"><span class="fontBold">BASIC</span>기존세차</span>
-                <span class="price">12,000</span>
+            <li v-for="(product , index) in product_list" :key="index" @click="select_product(product)">
+              <input type="radio" name="oneType" :value="getValP(product.prod_name)" :id="getValP(product.prod_name)" >
+              <a>
+                <span class="img"><img class="off" :src="getSrcP(product.main_img)" alt=""><img class="on" :src="getSrcP(product.main_img)" alt=""></span>
+                <span class="info"><span class="fontBold">{{product.prod_name}}</span>{{product.prod_remarks}}</span>
+                <span class="price">{{product.prod_fee}}</span>
                 <span class="check"></span>
               </a>
             </li>
           </ul>
         </section>
-
+        
         <div class="arrow"><img src="../../assets/img/content/arrow01.svg" alt=""></div>
-
-
-
-
-        <section class="con2">
+        
+        <section class="con3">
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">02 세차 마지막 공정</span>을 선택해주세요</p>
           </div>
-          <!--
-				<ul class="oneOption_wrap check_list" id="option02">
-					<li>
-						<div class="option_img"><img src="./img/content/pay_oneOption0201.png" alt=""></div><label for="oneOption0201"><span class="option_name">브러시로 물기제거</span><span class="option_price">+2000</span></label>
-						<input type="checkbox" name="oneOption02" id="oneOption0201" value="oneOption0201" class="oneOption">
-						<div class="check"></div>
-					</li>
-				</ul>
--->
           <div class="oneOption_no check_list2" id="noOption02">
-            <input type="checkbox" name="oneOption02" id="oneNoOption02" class="oneNoOption">
-            <div class="check"></div>
+            <input type="checkbox" name="oneOption02" id="oneNoOption02" class="oneNoOption" v-model = "brush.menu"><div class="check"></div>
             <label for="oneNoOption02"><span class="option_name">건조브러쉬 미사용</span></label>
           </div>
         </section>
@@ -87,23 +46,11 @@
           <p class="title">멤버쉽 세차상품을 선택 후, 결제하기 버튼을 눌러주세요</p>
         </section>
       </article>
-
+      
     </div>
     <aside>
-      <div class="btn_next active">
-        <!-- <a href="#n">
-          <img src="../../assets/img/content/pay01.png" alt="">
-          멤버쉽 간편 결제(활성화)
-        </a> -->
-        <router-link to="/payOnetimeOrder01">
-          멤버쉽 간편 결제(활성화)
-        </router-link>
-      </div>
-      <div class="btn_next">
-        <!-- <a href="#n"><img src="../../assets/img/content/pay01.png" alt="">멤버쉽 간편 결제(비활성화)</a> -->
-        <router-link to="/payVue">
-          멤버쉽 간편 결제(비활성화)
-        </router-link>
+      <div class="btn_next" v-bind:class = "isActive" style="bottom:56px;">
+        <a @click = "onetime_register">멤버쉽 결제</a>
       </div>
     </aside>
     <FooterVue></FooterVue>
@@ -117,13 +64,47 @@ export default {
   components: {
     FooterVue
   },
-  mounted (){
-    /* 01 세차상품 선택 이벤트 */
+  data(){
+    return{
+      product_list : [],
+      selected : {
+        product : [],
+      },
+      brush : {
+        info : [],
+        menu : false,
+      }
+    }
+  },
+  beforeCreate(){
+    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+        pro_type : "PGC001"
+      },{
+      headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+            this.product_list = res.data;
+      }
+    );
+    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+        pro_type : "PGC005"
+      },{
+      headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+            this.brush.info = res.data[0];
+      }
+    );
+  },
+  updated(){
+        /* 01 세차상품 선택 이벤트 */
 		let oneType = document.getElementsByName('oneType'),
 			oneTypeLi = document.querySelectorAll('#oneType_wrap li'),
 			oneTypeBtn = document.querySelectorAll('#oneType_wrap li a');
-			// oneTypeImg = document.querySelectorAll('#oneType_wrap li a .img');
-		
 		for(let i=0; i<oneTypeBtn.length; i++){
 			oneTypeBtn[i].addEventListener('click', function(e){
 				e.preventDefault();
@@ -133,46 +114,40 @@ export default {
 				oneTypeLi[i].classList.add('active');
 				oneType[i].checked = 'true';
 			});
-		}
-		
-		
-//		/* 02 1회권 옵션 선택 이벤트1 */
-//		let oneOption01 = document.querySelectorAll('#option01 input[type="checkbox"]'),
-//			oneNoOption01 = document.querySelector('#noOption01 .oneNoOption');
-//		
-//		for(let i =0; i<oneOption01.length; i++){
-//			oneOption01[i].addEventListener('input', function(){
-//				oneNoOption01.checked = false;
-//			});
-//		}
-//		
-//		
-//		
-//		oneNoOption01.addEventListener('input', function(){
-//			if(this.checked){
-//				for(let i =0; i<oneOption01.length; i++){
-//					oneOption01[i].checked = false;
-//				}
-//			} 
-//		});
-		
-		/* 03 1회권 옵션 선택 이벤트2 */
-		let oneOption02 = document.querySelectorAll('#option02 input[type="checkbox"]'),
-			oneNoOption02 = document.querySelector('#noOption02 .oneNoOption');
-		
-		for(let i =0; i<oneOption02.length; i++){
-			oneOption02[i].addEventListener('input', function(){
-				oneNoOption02.checked = false;
-			});
-		}
-		
-		oneNoOption02.addEventListener('input', function(){
-			if(this.checked){
-				for(let i =0; i<oneOption02.length; i++){
-					oneOption02[i].checked = false;
-				}
-			}
-		});
+		} 
+	},
+  methods : {
+    getSrcP(index){
+      return require('../../assets/img/content/pay_onetime0'+index+'.png')
+    },
+    getValP(name){
+      return "onetime"+name.split(' ')[0]
+    },
+    select_product(selected){
+      this.selected.product = selected;
+    },
+    onetime_register(){
+      console.log(this.selected.product.prod_code + "||" + this.selected.product.prod_name+"||"+this.selected.product.prod_fee+"||");
+      console.log(this.brush.menu + "||"+this.brush.info.main_plc);
+      localStorage.setItem("pin_seq_no",JSON.stringify(this.selected.product.prod_code));
+      localStorage.setItem("first_menu",JSON.stringify(this.selected.product.prod_name));
+      localStorage.setItem("menu_fee",JSON.stringify(parseInt(this.selected.product.prod_fee)));
+      localStorage.setItem("main_plc",JSON.stringify(this.selected.product.main_plc));
+      localStorage.setItem("third_menu",JSON.stringify(this.brush.menu));
+      localStorage.setItem("brush_plc",JSON.stringify(this.brush.info.main_plc));
+      this.$router.push({name : 'PayMemberShipOrder01'})
+    },
+    before_reset(){
+      localStorage.clear();
+      this.$router.push({name : 'PayVue'});
+    },
+  },
+  computed : {
+    isActive :  function(){
+      return{
+        active : this.selected.product.length!=0
+      }
+    },
   }
 };
 </script>

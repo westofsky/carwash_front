@@ -53,6 +53,8 @@
 </template>
 <script>
 	export default {
+      beforeCrate(){
+      },
       mounted(){
 					let tabs = document.querySelectorAll('.login_tab a'),
 					loginForm = document.querySelectorAll('.login_form');
@@ -73,6 +75,9 @@
             });
           }
 				document.querySelector('.tab_basic a').click();
+        
+          sessionStorage.clear();
+          localStorage.clear();
 			},
         data () {
           return {
@@ -154,7 +159,7 @@
                         sessionStorage.setItem("mem_type",res.data.mem_type);
                         sessionStorage.setItem("mem_name",res.data.mem_name);
                         sessionStorage.setItem("mem_id",res.data.mem_id);
-                        this.$router.push({name : 'HomeFleet01'});
+                        this.$router.push({name : 'HomeBasic'});
                       })
                 }
                 else{
