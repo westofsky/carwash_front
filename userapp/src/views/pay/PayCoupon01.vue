@@ -37,74 +37,7 @@
                     <li>발급일자 : <span class="coupon_date">{{value.reg_date}}</span></li>
                     <li>유효기간 : <span class="coupon_period">{{value.expire_date}}</span></li>
                   </ul>
-                  <button class="using_coupon btn_arrow" type="button" @click="useCoupon()">키오스크 쿠폰사용</button>
-                </div>
-              </li>
-              <li class="coupon_list">
-                <div class="coupon_name">
-                  <img src="../../assets/img/content/ico_coupon_free.svg" alt="">
-                  <p>Gift 쿠폰_BUBBLE (1/5)</p>
-                </div>
-                <div class="coupon_info">
-                  <ul>
-                    <li>쿠폰번호 : <span class="coupon_num">WDC2022050227</span></li>
-                    <li>발급일자 : <span class="coupon_date">2022/05/02 10:52:39</span></li>
-                    <li>유효기간 : <span class="coupon_period">2022/06/01 24:00:00</span></li>
-                    <li>QR쿠폰번호 : <span class="coupon_QRnum">WDC2022050227</span></li>
-                  </ul>
-                  <button class="gift_coupon btn_basic" type="button" @click="givingAPresent()">선물하기</button>
-                  <button class="using_coupon btn_arrow" type="button" @click="useCoupon()">키오스크 쿠폰사용</button>
-                </div>
-              </li>
-
-              <li class="coupon_list">
-                <div class="coupon_name">
-                  <img src="../../assets/img/content/ico_coupon_percent.svg" alt="">
-                  <p>Gift 쿠폰_BUBBLE (1/5)</p>
-                </div>
-                <div class="coupon_info">
-                  <ul>
-                    <li>쿠폰번호 : <span class="coupon_num">WDC2022050227</span></li>
-                    <li>발급일자 : <span class="coupon_date">2022/05/02 10:52:39</span></li>
-                    <li>유효기간 : <span class="coupon_period">2022/06/01 24:00:00</span></li>
-                    <li>QR쿠폰번호 : <span class="coupon_QRnum">WDC2022050227</span></li>
-                  </ul>
-                  <button class="gift_coupon btn_basic" type="button">선물하기</button>
-                  <button class="using_coupon btn_arrow" type="button">키오스크 쿠폰사용</button>
-                </div>
-              </li>
-
-              <li class="coupon_list">
-                <div class="coupon_name">
-                  <img src="../../assets/img/content/ico_coupon_free.svg" alt="">
-                  <p>Gift 쿠폰_BUBBLE (1/5)</p>
-                </div>
-                <div class="coupon_info">
-                  <ul>
-                    <li>쿠폰번호 : <span class="coupon_num">WDC2022050227</span></li>
-                    <li>발급일자 : <span class="coupon_date">2022/05/02 10:52:39</span></li>
-                    <li>유효기간 : <span class="coupon_period">2022/06/01 24:00:00</span></li>
-                    <li>QR쿠폰번호 : <span class="coupon_QRnum">WDC2022050227</span></li>
-                  </ul>
-                  <button class="gift_coupon btn_basic" type="button">선물하기</button>
-                  <button class="using_coupon btn_arrow" type="button">키오스크 쿠폰사용</button>
-                </div>
-              </li>
-
-              <li class="coupon_list">
-                <div class="coupon_name">
-                  <img src="../../assets/img/content/ico_coupon_percent.svg" alt="">
-                  <p>Gift 쿠폰_BUBBLE (1/5)</p>
-                </div>
-                <div class="coupon_info">
-                  <ul>
-                    <li>쿠폰번호 : <span class="coupon_num">WDC2022050227</span></li>
-                    <li>발급일자 : <span class="coupon_date">2022/05/02 10:52:39</span></li>
-                    <li>유효기간 : <span class="coupon_period">2022/06/01 24:00:00</span></li>
-                    <li>QR쿠폰번호 : <span class="coupon_QRnum">WDC2022050227</span></li>
-                  </ul>
-                  <button class="gift_coupon btn_basic" type="button">선물하기</button>
-                  <button class="using_coupon btn_arrow" type="button">키오스크 쿠폰사용</button>
+                  <router-link style = "width:100%" class="using_coupon btn_arrow" :to="{name: 'PayCoupon02',query: { code:  value.coupon_code}}">키오스크 쿠폰사용</router-link>
                 </div>
               </li>
             </ul>
@@ -138,7 +71,7 @@ export default {
   methods: {
     async get_couponlist(){
       this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList01', {
-      mem_no : 'WYP0000016',
+      mem_no : mem_no,
       is_use : 'Y'
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'

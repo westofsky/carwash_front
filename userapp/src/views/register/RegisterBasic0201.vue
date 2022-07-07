@@ -21,7 +21,7 @@
           <div class="phone_num_wrap">
             <input type="text" class="basic" placeholder="예) 123가4567, 서울12가3456" v-model="car_no">
           </div>
-          <p class="warn"><img src="../../assets/img/content/ico_warn.png" alt="경고아이콘">잘못된 번호 입니다. 오류 메세지 출력할 곳</p>
+          <p class="warn"><img src="../../assets/img/content/ico_warn.png" alt="경고아이콘" v-if="warn_car">{{warn_car}}</p>
 
           <div class="Space4em"></div>
         </section>
@@ -56,7 +56,11 @@ export default {
       agree_finance : "N",
       agree_sms : "N",
       agree_location : "N",
+      warn_car : '',
     }
+  },
+  mounted (){
+    this.warn_car = '';
   },
   methods: {
     registerbasic_phone() {
@@ -109,51 +113,52 @@ export default {
             console.log(err);
           });
       }
-      else
+      else{
         alert("차량 번호가 잘못되었습니다. 다시 입력해주세요.");
+        this.warn_car = "잘못된 번호입니다. 다시 입력해주세요";
+      }
     },
-    checkPlate(value) {
-      var NSValue = value.replace(/ /gi, "");
-      var region = NSValue.substring(0, 2);
-      var checkRegion = "서울,부산,대구,인천,대전,광주,울산,제주,경기,강원,충남,충북,전남,전북,경남,경북";
-      var arrCheckRegion = checkRegion.split(',');
-
-      for (var i = 0; i < arrCheckRegion.length; i++) {
-        if (region == arrCheckRegion[i]) {
-          NSValue = NSValue.substring(2, NSValue.length);
-          break;
+    checkPlate(str) {
+        str = str.replace(/ /gi, "");
+        if(str.length >8){
+          var region = str.substring(0, 2);
+          var checkRegion = "서울,부산,대구,인천,대전,광주,울산,제주,경기,강원,충남,충북,전남,전북,경남,경북";
+          var arrCheckRegion = checkRegion.split(',');
+          for (var i = 0; i < arrCheckRegion.length; i++) {
+            if (region == arrCheckRegion[i]) {
+              str = str.substring(2, str.length);
+              console.log(str)
+              if (/^\d{2}[가-힣]\d{4}/.exec(str) !== null && str.length === 7) {
+                console.log('1');
+                return true;
+              }
+              else if (/^\d{3}[가-힣]\d{4}/.exec(str) !== null && str.length === 8) {
+                console.log('2')
+                return true;
+              }
+              else{
+                console.log('3')
+                return true;
+              }
+              break;
+            }
+          }
+        }else{
+          console.log(str)
+            if (/^\d{2}[가-힣]\d{4}/.exec(str) !== null && str.length === 7) {
+              console.log('1');
+              return true;
+            }
+            else if (/^\d{3}[가-힣]\d{4}/.exec(str) !== null && str.length === 8) {
+              console.log('2')
+              return true;
+            }
+            else{
+              this.warn_car = "잘못된 번호입니다. 다시 입력해주세요";
+              return false;
+          }
         }
-      }
-      var typeOfCar = Number(NSValue.substring(0, 2));
-
-      if (isNaN(typeOfCar) || typeOfCar <= 0) {
-        return false;
-      }
-      var use = NSValue.substring(2, 3);
-      var checkUse = "가,나,다,라,마,"
-        + "거,너,더,러,머,버,서,어,저,"
-        + "고,노,도,로,모,보,소,오,조,"
-        + "구,누,두,루,무,부,수,우,주,"
-        + "바,사,아,자,"
-        + "배,"
-        + "허,하,호,"
-        + "국,합,육,해,공";
-      var arrCheckUse = checkUse.split(',');
-      var resultUse = 0;
-      for (var j = 0; j < arrCheckUse.length; j++) {
-        if (use == arrCheckUse[j]) {
-          resultUse = 1;
-          break;
-        }
-      }
-      if (resultUse == 0) return false;
-
-      var serialNumber = NSValue.substring(3, value.length);
-      if (isNaN(serialNumber) || serialNumber < 1000) {
-        return false;
-      }
-      return true;
-    }
+    },
   }
 }
 </script>

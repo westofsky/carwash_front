@@ -9,10 +9,19 @@ import './assets/css/creditcard.css';
 import VueHead from 'vue-head';
 import FooterVue from "./views/footer/FooterVue.vue";
 import axios from 'axios';
+import VCalendar from 'v-calendar';
+import Calendar from 'v-calendar/lib/components/calendar.umd'
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(VueHead)
+Vue.use(VCalendar, {
+  componentPrefix : 'vc',
+})
+
+Vue.component('calendar', Calendar)
+Vue.component('date-picker', DatePicker)
 Vue.component('FooterVue',FooterVue);
 new Vue({
   router,

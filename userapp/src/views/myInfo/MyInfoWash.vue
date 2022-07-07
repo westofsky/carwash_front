@@ -15,61 +15,38 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <div class="myinfo_wash_cal">
+          <div class="myinfo_wash_cal" style="margin : 0 0 80px">
             <p class="title">기간검색</p>
-            <input type="text" value="22년12월 12일"><span>-</span><input type="text" placeholder="년월일">
-            <button type="submit">검색</button>
+            <vc-date-picker v-model="range" is-range>
+              <template v-slot="{ inputValue, inputEvents }">
+                <div class="flex justify-center items-center">
+                  <input
+                    :value="inputValue.start"
+                    v-on="inputEvents.start"
+                  />
+                  <span> ~ </span>
+                  <input
+                    :value="inputValue.end"
+                    v-on="inputEvents.end"
+                  />
+                </div>
+              </template>
+            </vc-date-picker>
+            <button type="submit" style="width:100%" @click="search">검색</button>
           </div>
-          <div class="myinfo_wash_empty">
+          <div class="myinfo_wash_empty" v-if="!washuse_in_date.length">
             <p>세차 이용 정보가 없습니다.</p>
           </div>
-          <div class="myinfo_wash_list">
+          <div class="myinfo_wash_list" v-else>
             <ul>
-              <li class="wash_list">
+              <li class="wash_list" v-for="(washuse,index) in washuse" :key="index">
                 <div class="wash_list_name">
-                  <img src="../../assets/img/content/pay_onetime04.png" alt="">
-                  <p>BASIC : 2회</p>
+                  <img :src="getSrc(washuse.prod_type)" alt="">
+                  <p>{{washuse.prod_name}}</p>
                 </div>
                 <div class="wash_info">
                   <ul>
-                    <li>세차일시 : 2022/05/02 11:07:39</li>
-                    <li>세차일시 : 2022/05/07 15:36:52</li>
-                  </ul>
-                </div>
-              </li>
-              <li class="wash_list">
-                <div class="wash_list_name">
-                  <img src="../../assets/img/content/pay_onetime03.png" alt="">
-                  <p>BEST : 1회</p>
-                </div>
-                <div class="wash_info">
-                  <ul>
-                    <li>세차일시 : 2022/05/02 11:07:39</li>
-                    <li>세차일시 : 2022/05/07 15:36:52</li>
-                  </ul>
-                </div>
-              </li>
-              <li class="wash_list">
-                <div class="wash_list_name">
-                  <img src="../../assets/img/content/pay_onetime02.png" alt="">
-                  <p>BUBBLE : 1회</p>
-                </div>
-                <div class="wash_info">
-                  <ul>
-                    <li>세차일시 : 2022/05/02 11:07:39</li>
-                    <li>세차일시 : 2022/05/07 15:36:52</li>
-                  </ul>
-                </div>
-              </li>
-              <li class="wash_list">
-                <div class="wash_list_name">
-                  <img src="../../assets/img/content/pay_onetime01.png" alt="">
-                  <p>PREMIUM : 1회</p>
-                </div>
-                <div class="wash_info">
-                  <ul>
-                    <li>세차일시 : 2022/05/02 11:07:39</li>
-                    <li>세차일시 : 2022/05/07 15:36:52</li>
+                    <li>세차일시 : {{washuse.washdate}}</li>
                   </ul>
                 </div>
               </li>
@@ -94,6 +71,53 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  data() {
+    return {
+      range: {
+        start: new Date(2022, 4, 5),
+        end: new Date(2022, 7, 7),
+      },
+      is_date : false,
+      washuse : [],
+      washuse_in_date : [],
+    };
+  },
+  mounted(){
+    this.$http.post('http://carwash.iptime.org:3000/userapp/getWashUse', {
+        mem_no : sessionStorage.getItem("mem_no"),
+    },{headers : {
+    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+    }
+    }).then(
+    (res) => {  //
+      this.washuse = res.data;
+      var temp = res.data;
+      for(var i=0;i<temp.length;i++){
+        var year = temp[i].wash_date.split(' ')[0].split('-')[0];
+        var month = temp[i].wash_date.split(' ')[0].split('-')[1];
+        var day = temp[i].wash_date.split(' ')[0].split('-')[2];
+        var date = new Date(year,month,day);
+        if(date>this.range.start && date<this.range.end)
+          this.washuse_in_date.push(temp[i]);
+      }
+    })
+  },
+  methods : {
+    search(){
+      this.washuse_in_date = [];
+      for(var i=0;i<washuse.length;i++){
+        var year = washuse[i].wash_date.split(' ')[0].split('-')[0];
+        var month = washuse[i].wash_date.split(' ')[0].split('-')[1];
+        var day = washuse[i].wash_date.split(' ')[0].split('-')[2];
+        var date = new Date(year,month,day);
+        if(date>this.range.start && date<this.range.end)
+          this.washuse_in_date.push(washuse[i]);
+      }
+    },
+    getSrc(value){
+      return require('../../assets/img/content/pay_onetime0'+value+'.png');
+    }
   }
 };
 </script>

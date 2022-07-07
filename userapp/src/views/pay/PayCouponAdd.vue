@@ -30,8 +30,10 @@
           <div class="coupon_list_wrap">
             <p class="title">추가할 쿠폰번호를 입력하세요.</p>
 
-            <input type="text" placeholder="예) 123456789">
-            <p class="warn"><img src="../../assets/img/content/ico_warn.png" alt="경고아이콘">잘못된 쿠폰번호 입니다. 오류 메세지 출력할 곳</p>
+            <input type="text" v-model="coupon_no" placeholder="예) 123456789">
+            <p class="warn" v-if="flag==0"></p>
+            <p class="warn" v-else-if="flag==1">정상추가 되었습니다.</p>
+            <p class="warn" v-else-if="flag==2"><img src="../../assets/img/content/ico_warn.png" alt="경고아이콘">잘못된 쿠폰 입니다.</p>
           </div>
         </section>
       </article>
@@ -39,8 +41,7 @@
 
     <aside>
       <div class="btn_next">
-        <!-- <a href="./register_basic04.html">추가하기</a> -->
-        <router-link to="/payCouponAdd">추가하기</router-link>
+        <a @click ="reges_coup">추가하기</a>
       </div>
     </aside>
     <FooterVue></FooterVue>
@@ -53,6 +54,33 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  data(){
+    return{
+      mem_no : sessionStorage.getItem('mem_no'),
+      mem_chk : sessionStorage.getItem('mem_type'),
+      mem_name : sessionStorage.getItem('mem_name'),
+      coupon_no: '',
+      flag : 0
+    }
+  },
+  methods: {
+    async reges_coup(){
+      this.$http.post('http://carwash.iptime.org:3000/userapp/setcouponreg', {
+      coupon_no : this.coupon_no,
+      mem_no : this.mem_no
+      },{headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+        }
+      }).then((res) => {
+        console.log(res.data)
+        if(res.data.result_code == 'Y'){
+          this.flag = 1;
+        }else if(res.data.result_code == 'N'){
+          this.flag = 2;
+        }
+      })
+    }
   }
 };
 </script>

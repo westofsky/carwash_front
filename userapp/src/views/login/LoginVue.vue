@@ -75,7 +75,6 @@
             });
           }
 				document.querySelector('.tab_basic a').click();
-        
           sessionStorage.clear();
           localStorage.clear();
 			},

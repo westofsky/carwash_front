@@ -183,6 +183,7 @@ const routes = [
   {
     path: '/PayCoupon02',
     component: PayCoupon02,
+    name : 'PayCoupon02',
     beforeEnter : requireAuth()
   },
   {
@@ -284,7 +285,6 @@ const routes = [
     path: '/RegisterBasic01',
     component: RegisterBasic01,
     name : 'RegisterBasic01',
-    beforeEnter : requireAuth()
   },
   {
     path: '/RegisterBasic03',

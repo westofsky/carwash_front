@@ -23,7 +23,7 @@
           <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
         </div>
         <div id="top_info">
-          <p class="info">FLEET 차량관리 화면입니다.</p>
+          <p class="info">{{mem_name}}님 차량관리 화면입니다.</p>
         </div>
       </div>
       <article class="scontainer">
@@ -32,50 +32,23 @@
             <p>FLEET(사업자 또는 단체) 차량중 선불이용차량 차량을 구분하여 등록해 주시기 바랍니다.<br>- 데이터 없을 경우 텍스트와 버튼 -</p>
             <input type="text" class="car_num" placeholder="10다 1000" v-model="car_no">
             <p></p>
-            <a class="btn_arrow" href="#">차량 추가하기</a>
+            <a class="btn_arrow" href="#" @click="car_inforegister">차량 추가하기</a>
           </div>
           <div class="fleet_car_list_wrap">
             <ul class="check_list">
               <li v-for = "(info, index) in car_list" :key="index">
                 <div class="car_img"><img src="../../assets/img/content/car_profile_dummy.jpg" alt=""></div>
-                <label for="fleetCarList01">
+                <label :for="index">
                   <p class="car_num">{{info.car_no}}</p>
                   <p class="car_date">등록일 : {{info.reg_date}}</p>
                 </label>
-                <input type="checkbox" name="fleetCarList" :id="index" class="fleetCarList">
+                <input type="checkbox" name="fleetCarList" :id="index" v-model="delete_list" :value="info.car_no" class="fleetCarList">
                 <div class="check"></div>
               </li>
-              <li>
-                <div class="car_img"><img src="../../assets/img/content/car_profile_dummy.jpg" alt=""></div>
-                <label for="fleetCarList01">
-                  <p class="car_num">서울33다 8477</p>
-                  <p class="car_date">등록일 : 2022/05/22</p>
-                </label>
-                <input type="checkbox" name="fleetCarList" id="fleetCarList01" class="fleetCarList">
-                <div class="check"></div>
-              </li>
-              <li>
-                <div class="car_img"><img src="../../assets/img/content/car_profile_dummy.jpg" alt=""></div>
-                <label for="fleetCarList02">
-                  <p class="car_num">서울33다 8477</p>
-                  <p class="car_date">등록일 : 2022/05/22</p>
-                </label>
-                <input type="checkbox" name="fleetCarList" id="fleetCarList02" class="fleetCarList">
-                <div class="check"></div>
-              </li>
-              <li>
-                <div class="car_img"><img src="../../assets/img/content/car_profile_dummy.jpg" alt=""></div>
-                <label for="fleetCarList03">
-                  <p class="car_num">서울33다 8477</p>
-                  <p class="car_date">등록일 : 2022/05/22</p>
-                </label>
-                <input type="checkbox" name="fleetCarList" id="fleetCarList03" class="fleetCarList">
-                <div class="check"></div>
-              </li>
+
             </ul>
-            <div class="fleet_car_btn">
-              <a href="#" class="fleet_car_add btn_arrow">차량 추가하기</a>
-              <button class="fleet_car_delete btn_basic" type="submit" @click="deleteSelection()">선택 삭제 <img
+            <div class="fleet_car_btn" v-if="car_list.length != 0">
+              <button style = "width:100%" class="fleet_car_delete btn_basic" type="submit" @click="car_infodelete">선택 삭제 <img
                   src="../../assets/img/content/ico_close2.svg" alt=""></button>
             </div>
           </div>
@@ -93,9 +66,13 @@ export default {
   data(){
     return{
       mem_no : sessionStorage.getItem('mem_no'),
+      mem_chk : sessionStorage.getItem('mem_type'),
+      mem_name : sessionStorage.getItem('mem_name'),
       car_list : [],
       car_no: '',
-      car_no_list: []
+      car_no_list: [],
+      delete_list : [],
+      is_ok : false
     }
   },
   mounted(){
@@ -106,10 +83,50 @@ export default {
   },
 
   methods: {
-
+     async carNumCheck(str) {
+        str = str.replace(/ /gi, "");
+        if(str.length >8){
+          var region = str.substring(0, 2);
+          var checkRegion = "서울,부산,대구,인천,대전,광주,울산,제주,경기,강원,충남,충북,전남,전북,경남,경북";
+          var arrCheckRegion = checkRegion.split(',');
+          for (var i = 0; i < arrCheckRegion.length; i++) {
+            if (region == arrCheckRegion[i]) {
+              str = str.substring(2, str.length);
+              console.log(str)
+              if (/^\d{2}[가-힣]\d{4}/.exec(str) !== null && str.length === 7) {
+                console.log('1')
+                this.is_ok = true;
+              }
+              else if (/^\d{3}[가-힣]\d{4}/.exec(str) !== null && str.length === 8) {
+                console.log('2')
+                this.is_ok = true;
+              }
+              else{
+                console.log('3')
+                this.is_ok = false;
+              }
+              break;
+            }
+          }
+        }else{
+          console.log(str)
+            if (/^\d{2}[가-힣]\d{4}/.exec(str) !== null && str.length === 7) {
+              console.log('1')
+              this.is_ok = true;
+            }
+            else if (/^\d{3}[가-힣]\d{4}/.exec(str) !== null && str.length === 8) {
+              console.log('2')
+              this.is_ok = true;
+            }
+            else{
+              console.log('3')
+              this.is_ok = false;
+          }
+        }
+    },
     async car_infolist(){
       this.$http.post('http://carwash.iptime.org:3000/userapp/getfleetcar', {
-      mem_no : 'YGF220600000005'
+      mem_no : this.mem_no
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
@@ -118,42 +135,53 @@ export default {
         console.log(this.car_list)
       })
     },
-    async car_infodelete(delete_list){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getfleetdel', {
+    async car_infodelete(){
+      console.log(this.delete_list);
+ 
+      this.$http.post('http://carwash.iptime.org:3000/userapp/setfleetcardel', {
       mem_no : this.mem_no,
       car_no : this.delete_list
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
       }).then((res) => {
-        if(res.data == 'Y'){
+        console.log(res.data)
+        if(res.data.result_code == 'Y'){
           alert("성공");
-        }else if (res.data == 'N'){
+          this.$router.go();
+        }else if (res.data.result_code == 'N'){
           alert("실패");
+          this.$router.go();
         }
       })
     },
     async car_inforegister(){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getfleetcarins', {
-      mem_no : this.mem_no,
-      car_no : this.car_no
-      },{headers : {
-          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-        }
-      }).then((res) => {
-        if(res.data == 'Y'){
-          alert('Y');
-        }else if(res.data == 'N'){
-          alert('N');
-        }else if (res.data == 'duple'){
-          alert('중복입니다.')
-        }
-      })
+      this.carNumCheck(this.car_no)
+      if(this.is_ok){
+        this.$http.post('http://carwash.iptime.org:3000/userapp/setfleetcarins', {
+        mem_no : this.mem_no,
+        car_no : this.car_no.replace(/ /gi, "")
+        
+        },{headers : {
+            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+          }
+        }).then((res) => {
+          console.log(res.data)
+          if(res.data.result_code == 'Y'){
+            alert('성공입니다');
+            this.$router.go();
+          }else if(res.data.result_code == 'N'){
+            alert('실패입니다');
+            this.$router.go();
+          }else if (res.data.result_code == 'Duple'){
+            alert('중복 차량이 있습니다.');
+            this.$router.go();
+          }
+        })
+      }else{
+        alert('올바르지 않은 차량 형식입니다!')
+      }
     },
-
-    deleteSelection() {
-      this.$router.push('/fleetCarList');
-    }
   }
 };
 </script>

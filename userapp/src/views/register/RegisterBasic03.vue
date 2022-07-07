@@ -18,9 +18,9 @@
         <section class="con1">
           <p class="title"><span class="red">휴대폰 번호</span>를 숫자만 입력하세요</p>
           <div class="phone_num_wrap">
-            <input type="text" class="basic" placeholder="예) 01082247363" v-model = "phone_no">
+            <input type="text" class="basic" placeholder="예) 01082247363" v-model = "phone_no" @input="change_phone">
           </div>
-          <p class="warn"><img src="../../assets/img/content/ico_warn.png" alt="경고아이콘">잘못된 번호 입니다. 오류 메세지 출력할 곳</p>
+          <p class="warn"><img src="../../assets/img/content/ico_warn.png" alt="경고아이콘" v-if="warn_phone">{{warn_phone}}</p>
 
           <div class="agree_privacy_wrap check_list2">
             <input type="checkbox" name="" id="privacy01" class="agree_privacy"  v-model = "agree_privacy">
@@ -59,18 +59,25 @@ export default {
       agree_check : false,
       agree_privacy : "N",
       phone_no : '',
+      warn_phone : '',
+      phone_no_chk : false,
     }
   },
   methods : {
     register(){
       if(!this.agree_privacy){
         alert("개인정보 수집에 동의해주세요.");
+        return false;
       }
       else if(this.phone_no == ''){
         alert("핸드폰 번호를 입력해주세요");
+        return false;
+      }
+      else if(!this.phone_no_chk){
+        this.warn_phone = "핸드폰 번호를 확인해주세요";
+        return false;
       }
       else{
-            console.log("걸림1");
         this.$http.post('http://carwash.iptime.org:8000/userapp/chkphone', {
           phone_no : this.phone_no
         },{headers : {
@@ -126,6 +133,15 @@ export default {
             console.log(err);
           });
       }
+    },
+    change_phone(){
+      var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+      if (regPhone.test(this.phone_no) === true) {
+        this.warn_phone = '';
+        this.phone_no_chk = true;
+      }
+      else
+        this.warn_phone = "핸드폰 형식이 올바르지 않습니다.";
     }
   }
 }

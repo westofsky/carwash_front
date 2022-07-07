@@ -18,23 +18,28 @@
           <ul class="myinfo_info_wrap">
             <li>
               <label for="basicId" class="title">아이디</label>
-              <input type="text" class="basicId" id="basicId" placeholder="예) abcd1234@">
+              <input type="text" class="basicId" id="basicId" :value = "mem_id">
+            </li>
+            <li>
+              <label for="basicId" class="title">회원명</label>
+              <input type="text" class="basicName" id="basicName" :value = "mem_name">
             </li>
             <li>
               <label for="basicPW" class="title">비밀번호</label>
-              <input type="password" class="basicPW" id="basicPW" placeholder="********">
-              <button class="check" @click="changePassword()">비밀번호 변경</button>
+              <input type="password" class="basicPW" id="basicPW" :value = "mem_pwd">
+              <button class="check" @click="open_pop">비밀번호 변경</button>
             </li>
             <li>
               <label for="basicUserNum" class="title">회원번호</label>
-              <input type="text" class="basicUserNum" id="basicUserNum" value="YGP22021600000001">
+              <input type="text" class="basicUserNum" id="basicUserNum" :value="mem_no" disabled>
             </li>
             <li>
-              <label for="basicUsergrade" class="title">회원등급</label>
-              <input type="text" class="basicUsergrade" id="basicUsergrade" value="멤버쉽 회원">
+              <label for="basicUsergrade" class="title">회원구분</label>
+              <input type="text" class="basicUsergrade" id="basicUsergrade" :value="mem_type_name" disabled>
             </li>
           </ul>
         </section>
+        <div v-if="is_pop">
         <div class="content_pop">
           <div class="pop_title">
             <p>비밀번호 변경</p>
@@ -42,26 +47,27 @@
           <div class="pop_cont">
             <ul class="myinfo_pop">
               <li>
-                <label for="userPrePW" class="title">기존 비밀변호<span class="required">*</span></label>
-                <input type="password" class="userPrePW" id="userPrePW" placeholder="******">
-                <p class="warn">비밀번호가 일치하지 않습니다.</p>
+                <label for="userPrePW" class="title">기존 비밀번호<span class="required">*</span></label>
+                <input type="password" class="userPrePW" id="userPrePW" placeholder="******" @input = "check_prepw" v-model = "change_prepw" ref = 'prepw'>
+                <p class="warn">{{warn_mem_prepw}}</p>
               </li>
               <li>
                 <label for="userNewPW" class="title">변경 비밀번호<span class="required">*</span></label>
-                <input type="password" class="userNewPW" id="userNewPW" placeholder="******">
-                <p class="guide">영문, 숫자, 특수문자 혼용하여 10~12자리 이내</p>
+                <input type="password" class="userNewPW" id="userNewPW" placeholder="******" @input = "warn_check_newpw" v-model = "change_newpw" ref = 'newpw'>
+                <p class="guide">{{warn_mem_newpw}}</p>
               </li>
               <li>
                 <label for="userNewPWCheck" class="title">변경 비밀변호 확인<span class="required">*</span></label>
-                <input type="password" class="userNewPWCheck" id="userNewPWCheck" placeholder="******">
-                <p class="warn">비밀번호가 일치하지 않습니다.</p>
+                <input type="password" class="userNewPWCheck" id="userNewPWCheck" placeholder="******" @input = "warn_check_newpw_chk" v-model = "change_newpwchk" ref = 'newpwchk'>
+                <p class="warn">{{warn_mem_newpwchk}}</p>
               </li>
             </ul>
-            <button class="submit btn_arrow" type="submit">비밀번호 변경</button>
+            <button class="submit btn_arrow" type="submit" @click = "change_pw">비밀번호 변경</button>
           </div>
-          <button class="pop_close"><img src="../../assets/img/content/btn_close.svg" alt=""></button>
+          <button class="pop_close" @click ="is_pop=false"><img src="../../assets/img/content/btn_close.svg" alt=""></button>
         </div>
         <span class="content_pop_bg"></span>
+        </div>
       </article>
     </div>
     <aside>
@@ -81,37 +87,140 @@ export default {
   components: {
     FooterVue
   },
-
-  created() {
-    this.myInfo();
+  data(){
+    return {
+      is_pop : false,
+      mem_id : '',
+      mem_name : '',
+      mem_pwd : '',
+      mem_no : sessionStorage.getItem("mem_no"),
+      mem_type_name : '',
+      change_prepw : '',
+      change_newpw : '',
+      change_newpwchk : '',
+      warn_mem_prepw : '',
+      warn_mem_newpw : '',
+      warn_mem_newpwchk : '',
+      check : {
+        prepw : false,
+        newpw : false,
+      }
+    }
   },
 
-  methods: {
-    myInfo() {
-      let fleetInput = document.querySelectorAll('input');
-
-      for (let i = 0; i < fleetInput.length; i++) {
-        fleetInput[i].onfocus = function () {
-          let id = this.getAttribute('id');
-          let label = document.querySelector(`label[for="${id}"]`);
-          if (label) {
-            label.style.color = "var(--mainColor)";
-            label.style.fontWeight = "600";
-          }
+  beforeCreate() {
+    this.$http.post('http://carwash.iptime.org:3000/userapp/getMemDetail', {
+        mem_no : sessionStorage.getItem("mem_no"),
+    },{headers : {
+    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+    }
+    }).then(
+    (res) => {  //
+        this.mem_id = res.data.mem_id;
+        this.mem_pwd = res.data.mem_pwd;
+        this.mem_type_name = res.data.mem_type_name;
+        this.mem_name = res.data.mem_name;
+        console.log(res.data);
+    })
+  },
+  methods :{
+    open_pop(){
+      this.is_pop = true;
+      this.change_prepw = '';
+      this.change_newpw = '';
+      this.change_newpwchk = '';
+      this.warn_mem_prepw = '';
+      this.warn_mem_newpw = '';
+      this.warn_mem_newpwchk = '';
+      this.check.prepw = false;
+      this.check.newpw = false;
+    },
+    check_prepw(){
+      console.log(this.mem_pwd != this.change_prepw);
+      if(this.mem_pwd != this.change_prepw)
+        this.warn_mem_prepw = "기존 비밀번호와 일치하지 않습니다."
+      else
+        this.warn_mem_prepw = '';
+        this.check.prepw = true;
+    },
+    warn_check_newpw(){
+      if(!this.change_newpw)
+        this.warn_mem_newpw = "비밀번호를 입력해주세요.";
+      else{
+        if(!(this.change_newpw.length>=10 && this.change_newpw.length<=12)){
+          this.warn_mem_newpw = "10~12자리 이내로 작성해주세요.";
         }
-        fleetInput[i].onblur = function () {
-          let id = this.getAttribute('id');
-          let label = document.querySelector(`label[for="${id}"]`);
-          if (label) {
-            label.style.color = "#000";
-            label.style.fontWeight = "400";
+        else{
+          this.warn_mem_newpw = "";
+          if(this.change_newpw != this.change_newpwchk){
+            if(!this.change_newpwchk)
+              this.warn_mem_newpwchk = "";
+            else
+              this.warn_mem_newpwchk = "비밀번호가 일치하지 않습니다.";
+          }
+          else{
+            this.warn_mem_newpwchk = "";
+            this.warn_mem_newpw = "";
+            this.check.newpw = true;
           }
         }
       }
     },
-
-    changePassword() {
-      this.$router.push('/myInfoInfoContentPop');
+    warn_check_newpw_chk(){
+      if(this.change_newpw != this.change_newpwchk){
+        this.warn_mem_newpwchk = "비밀번호가 일치하지 않습니다.";
+      }
+      else{
+        this.warn_mem_newpwchk = "";
+        this.check.newpw = true;
+      }
+    },
+    change_pw(){
+      if(!this.change_prepw){
+        this.$refs.prepw.focus();
+        this.warn_mem_prepw = "기존 비밀번호를 입력해주세요.";
+        return false;
+      }
+      if(!this.change_newpw){
+        this.warn_mem_newpw = "비밀번호를 입력해주세요.";
+        this.$refs.newpw.focus();
+        return false;
+      }
+      else{
+        if(!(this.change_newpw.length>=10 && this.change_newpw.length<=12)){
+          this.warn_mem_newpw = "10~12자리 이내로 작성해주세요.";
+          this.$refs.newpw.focus();
+          return false;
+        }
+        else{
+          if(this.change_newpw != this.change_newpwchk){
+            if(this.change_newpwchk){
+              this.warn_mem_newpwchk = "비밀번호가 일치하지 않습니다.";
+              this.$refs.newpwchk.focus();
+              return false;
+            }
+          }
+        }
+      }
+      if(!this.change_newpwchk){
+        this.warn_mem_newpwchk = "확인 비밀번호를 입력해주세요.";
+        this.$refs.newpwchk.focus();
+        return false;
+      }
+      this.$http.post('http://carwash.iptime.org:3000/userapp/setMemPwd', {
+            mem_no : sessionStorage.getItem("mem_no"),
+            mem_pwd : this.change_mewpwd,
+        },{headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+        }
+        }).then(
+        (res) => {  //
+            if(res.data.result_code == "Y"){
+              alert("비밀번호가 변경되었습니다.");
+              this.is_pop = false;
+              this.$router.go();
+            }
+        })
     }
   }
 };

@@ -22,16 +22,15 @@
             <ul>
               <li class="shop_spot">
                 <div class="shop_name">
-                  <p>WASH DAY 대구 중리점</p>
+                  <p>WASH DAY 와료룡점</p>
                 </div>
                 <div class="shop_info">
                   <ul>
-                    <li>영업여부 : 현재 영업중</li>
                     <li>영업시간 : AM 06:00~PM 10:00 까지</li>
                     <li>휴무일 : 연중무휴</li>
                     <li>주유소 : 주유소 인근 1Km</li>
-                    <li>소재지 : 대구광역시 서구 와룡로 335(중리동)</li>
-                    <li>전화번호 : <a href="tel:054-922-4000">054-922-4000</a></li>
+                    <li>소재지 : 대구광역시 서구 와료룡 335 스파크플러스</li>
+                    <li>전화번호 : <a href="tel:053-573-8008">053)573-8008</a></li>
                   </ul>
                   <!-- <a class="shop_map btn_basic" href="#"><img src="../../assets/img/content/ico_location.svg"
                       alt="지도">지도보기</a> -->
@@ -42,74 +41,7 @@
                   <button class="shop_close btn_basic" type="button">닫기</button>
                 </div>
               </li>
-              <li class="shop_spot">
-                <div class="shop_name">
-                  <p>WASH DAY 구미점</p>
-                </div>
-                <div class="shop_info">
-                  <ul>
-                    <li>영업여부 : 현재 영업중</li>
-                    <li>영업시간 : AM 06:00~PM 10:00 까지</li>
-                    <li>휴무일 : 연중무휴</li>
-                    <li>주유소 : 주유소 인근 1Km</li>
-                    <li>소재지 : 경북 칠곡군 왜관읍</li>
-                    <li>전화번호 : <a href="tel:054-922-4000">054-922-4000</a></li>
-                  </ul>
-                  <a class="shop_map btn_basic" href="#"><img src="../../assets/img/content/ico_location.svg"
-                      alt="지도">지도보기</a>
-                  <button class="shop_close btn_basic" type="button">닫기</button>
-                </div>
-              </li>
-              <li class="shop_spot">
-                <div class="shop_name">
-                  <p>WASH DAY 서울점(길어질 때)</p>
-                </div>
-                <div class="shop_info">
-                  <ul>
-                    <li>영업여부 : 현재 영업중</li>
-                    <li>영업시간 : AM 06:00~PM 10:00 까지</li>
-                    <li>휴무일 : 연중무휴</li>
-                    <li>주유소 : 주유소 인근 1Km</li>
-                    <li>소재지 : 경북 칠곡군 왜관읍</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>정보추가 : 정보가 길어질때 정보가 길어질때</li>
-                    <li>전화번호 : <a href="tel:054-922-4000">054-922-4000</a></li>
-                  </ul>
-                  <a class="shop_map btn_basic" href="#"><img src="../../assets/img/content/ico_location.svg"
-                      alt="지도">지도보기</a>
-                  <button class="shop_close btn_basic" type="button">닫기</button>
-                </div>
-              </li>
-              <li class="shop_spot">
-                <div class="shop_name">
-                  <p>WASH DAY 구미점</p>
-                </div>
-                <div class="shop_info">
-                  <ul>
-                    <li>영업여부 : 현재 영업중</li>
-                    <li>영업시간 : AM 06:00~PM 10:00 까지</li>
-                    <li>휴무일 : 연중무휴</li>
-                    <li>주유소 : 주유소 인근 1Km</li>
-                    <li>소재지 : 경북 칠곡군 왜관읍</li>
-                    <li>전화번호 : <a href="tel:054-922-4000">054-922-4000</a></li>
-                  </ul>
-                  <a class="shop_map btn_basic" href="#"><img src="../../assets/img/content/ico_location.svg"
-                      alt="지도">지도보기</a>
-                  <button class="shop_close btn_basic" type="button">닫기</button>
-                </div>
-              </li>
+              
             </ul>
           </div>
         </section>

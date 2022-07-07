@@ -16,17 +16,11 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title">Gift쿠폰_BUBBLE(5회권)</p>
+          <p class="title">{{coupon_in.coupon_name}}</p>
           <div class="info_table onetime_pay_table">
             <table>
               <tr>
-                <td class="table_name">Gift_BUBBLE(2/5)</td>
-                <td class="table_price">39,000원</td>
-              </tr>
-
-              <tr class="total_price">
-                <td>합계</td>
-                <td class="fontBold">39,000원</td>
+                <td class="table_name" v-if="coupon_in.coupon_type=='CCT004'">{{coupon_in.rest_cout}}</td>
               </tr>
             </table>
           </div>
@@ -36,14 +30,14 @@
 
           <div class="onetime_pay_info BRT_none">
             <ul>
-              <li>결제승인번호 : WD2022051402</li>
-              <li>결제시간 : 2022/05/14/ 14:26:35</li>
-              <li>결제수단 : 농협카드 5461-11**-948</li>
-              <li>결제밴사 : KICC</li>
+              <li>쿠폰번호 : {{coupon_in.coupon_code}}</li>
+              <li>발급일시 : {{coupon_in.reg_date}}</li>
+              <li>사용일시 : {{coupon_in.use_date}}</li>
+              <li>유효기간 : {{coupon_in.expire_date}}</li>
             </ul>
 
             <div class="info_QR_wrap">
-              <div class="info_QR"><img src="../../assets/img/content/one_QR.jpg" alt=""></div>
+              <div class="info_QR" id = 'qrcode'></div>
 
               <p>생성된 QR코드 영수증을 무인키오스크 <br>QR스캐너에 스캔해주세요</p>
             </div>
@@ -68,9 +62,35 @@
 <script>
 import FooterVue from "../footer/FooterVue.vue";
 
+
 export default {
+  data(){
+    return{
+      mem_no : sessionStorage.getItem('mem_no'),
+      mem_chk : sessionStorage.getItem('mem_type'),
+      mem_name : sessionStorage.getItem('mem_name'),
+      coupon_in : []
+    }
+  },
   components: {
     FooterVue
+  },
+  mounted(){
+    this.get_detail();
+  },
+  methods: {
+    async get_detail(){
+      this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList', {
+      coupon_code : this.$route.query.code
+      },{headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+        }
+      }).then((res) => {
+        console.log(this.$route.query.code);
+        this.coupon_in = res.data[0];
+      })
+    }
+    
   }
 };
 </script>

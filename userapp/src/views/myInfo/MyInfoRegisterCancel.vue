@@ -15,7 +15,7 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title"><span class="red fontBold">서울 123가 4567</span>님,<br>
+          <p class="title"><span class="red fontBold">{{mem_name}}</span>님,<br>
             회원을 탈퇴 하시겠습니까?
           </p>
           <div class="membership_cancel_info">
@@ -30,8 +30,7 @@
     </div>
     <aside>
       <div class="btn_next">
-        <!-- <a href="#">멤버쉽 해지</a> -->
-        <router-link to="/loginVue">개인회원 탈퇴</router-link>
+        <a @click="mem_cancel">개인회원 탈퇴</a>
       </div>
     </aside>
     <FooterVue></FooterVue>
@@ -44,6 +43,36 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
+  },
+  data(){
+    return{
+      mem_no : sessionStorage.getItem('mem_no'),
+      mem_chk : sessionStorage.getItem('mem_type'),
+      mem_name : sessionStorage.getItem('mem_name')
+    }
+  },
+  created(){
+  }
+  ,
+  methods :{
+    async mem_cancel(){
+      if(confirm('개인탈퇴를 하시겠습니까?')){
+        this.$http.post('http://carwash.iptime.org:3000/userapp/setmemdel', {
+        mem_no : this.mem_no
+        },{headers : {
+            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+          }
+        }).then((res) => {
+          console.log(res.data)
+          if(res.data.result_code == 'Y'){
+            alert('정상적으로 탈퇴되었습니다.')
+            this.$router.go('/');
+          }else if (res.data.result_code == 'N'){
+            alert('오류가 발생하였습니다.')
+          }
+        })
+      }
+    }
   }
 };
-</script>
+</script> 

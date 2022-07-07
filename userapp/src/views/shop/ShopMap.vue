@@ -17,7 +17,12 @@
       <article class="scontainer">
         <section class="con1">
           <p class="title">WASH DAY 왜관점</p>
-          <div id="map" style="width: 500px; height: 500px;"></div>
+          <div id="map" style="width: 500px height: 500px;">
+            <img src="../../assets/img/sparkpliswa_map.png" style="width: 100%" alt="" srcset="">
+          </div>
+          <p></p>
+          <p>소재지 : 대구광역시 서구 와료룡 335 스파크플러스</p>
+          <p>전화번호 : <a href="tel:053-573-8008">053)573-8008</a></p>
         </section>
       </article>
     </div>
@@ -37,43 +42,6 @@ import FooterVue from "../footer/FooterVue.vue";
 export default {
   components: {
     FooterVue
-  },
-
-  data() {
-    return {
-      map: null
-    }
-  },
-
-  methods: {
-    initMap() {
-      const container = document.getElementById('map');
-      const options = {
-        center: new kakao.maps.LatLng(35.862760644626, 128.53727781384),
-        level: 3
-      };
-      this.map = new kakao.maps.Map(container, options);
-
-      new kakao.maps.Marker({
-        map: this.map,
-        position: new kakao.maps.LatLng(35.862760644626, 128.53727781384)
-      });
-    }
-  },
-
-  mounted() {
-    if (!window.kakao || !window.kakao.maps) {
-      const script = document.createElement('script');
-      script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0def9c6378b8e968420c1ed2bccd82de';
-
-      /* global kakao */
-      script.addEventListener('load', () => {
-        kakao.maps.load(this.initMap);
-      });
-      document.head.appendChild(script);
-    } else {
-      this.initMap();
-    }
   }
 };
 </script>
