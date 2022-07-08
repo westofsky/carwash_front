@@ -68,8 +68,13 @@ export default {
   },
   methods : {
     before_reset(){
-      localStorage.clear();
-      this.$router.push({name : 'PayOnetime'});
+      localStorage.removeItem("pin_seq_no");
+      localStorage.removeItem("first_menu");
+      localStorage.removeItem("menu_fee");
+      localStorage.removeItem("main_plc");
+      localStorage.removeItem("third_menu");
+      localStorage.removeItem("brush_plc");
+      this.$router.push({name : 'PayMemberShip'});
     },
     pay(){
       var data = {
@@ -91,14 +96,15 @@ export default {
           }
         }
       }
-      this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
-      {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-        console.log(res.data.authPageUrl);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+      // this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
+      // {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
+      //   console.log(res.data.authPageUrl);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
     //   this.$router.push({name : 'PayReceipt'});
+      this.$router.push({name : 'Service_Prepare'});
     }
   }
 };

@@ -4,11 +4,11 @@
       <div id="top">
         <div id="nav">
           <!-- <a class="btn_back" href="./register_fleet01.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/registerFleet01" class="btn_back">
+          <router-link to="/" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">FLEET 회원가입</p>
-          <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
+          <a class="btn_back"></a>
         </div>
         <div id="top_info">
           <p class="info">기업 또는 단체용 FLEET 회원가입 입니다.<br>이용약관에 동의해 주세요</p>

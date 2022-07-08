@@ -20,6 +20,7 @@
             <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
           </div>
           <a class="card" href="#" @click = "card_option"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
+          <a class="card" href="#" @click = "card_option2"><img src="../../assets/img/content/payment01.png" alt="">승인테스트</a>
         </section>
         <!-- <section class="con2">
           <div class="con_info">
@@ -84,9 +85,74 @@ export default {
   },
   methods : {
     card_option(){
-      this.$router.push({name : 'PaymentCard',query : {
-        card_state : this.card_state
-      }});
+      var data = {
+        "mallId": "T0001997", //KICC 에서 발급한상점 ID
+        "payMethodTypeCode": "81", //빌키발급 : 81
+        "currency": "00", //통화코드  00:원화
+        "clientTypeCode": "00", //결제창 종류 00: 통합결제창 전용
+        "returnUrl": "http://localhost/PaymentVue", //인증응답 URL 
+        "deviceTypeCode": "pc", // 교객결제 단말
+        "shopOrderNo": "ORDER_12345678901234567890", // 상점 주문번호
+        "amount":0, // 결제요청금액
+        "orderInfo": { //주문정보
+        "goodsName": "SPARK_PLUS 카드등록" //상품명
+        },
+        "payMethodInfo":{ //결제수단관리정보
+          "billKeyMethodInfo":{ // 빌키발급 옵션
+          "certType" : "1" // 빌키발급 인증타입 1 : 카드번호,유횩간,생년월일
+          }
+        }
+      };
+      var data2 = {
+        "mallId": "05546809",
+        "shopTransactionId": "20210326090126",
+        "authorizationId" : "21032609005210816913",
+        "shopOrderNo": "20210326090046",
+        "approvalReqDate" : "20210326"
+
+      }
+      this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
+      {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
+        console.log(res.data);
+        sessionStorage.setItem("url",res.data.authPageUrl);
+        window.open(res.data.authPageUrl,"_self");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      // this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval', data2,
+      // {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
+      //   console.log(res.data);
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
+      // this.$router.push({name : 'PaymentCardRegisterOk'});
+    },
+    card_option2(){
+      var data = {
+        "mallId":"05546809",
+        "shopTransactionId":"20210908101251",
+        "amount":51004,
+        "shopOrderNo" : "20210908102459",
+        "approvalReqDate":"20210908",
+        "payMethodInfo":{
+        "billKeyMethodInfo":{
+        "batchKey" : "546800000111BA212134"
+        }
+        },
+        "orderInfo":{
+        "goodsName" : "테스트상품명"
+        }
+      };
+      this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', data,
+      {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      // this.$router.push({name : 'PaymentCardRegisterOk'});
     }
   }
 };

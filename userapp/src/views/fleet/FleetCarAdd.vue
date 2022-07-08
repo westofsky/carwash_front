@@ -6,7 +6,7 @@
           <!-- <a class="btn_back" href="./register_basic02.html">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </a> -->
-          <router-link to="/homeFleet01" class="btn_back">
+          <router-link to="/homeBasic" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">차량등록</p>

@@ -3,12 +3,9 @@
     <div id="content_wrap" class="register_fleet03">
       <div id="top">
         <div id="nav">
-          <!-- <a class="btn_back" href="./register_fleet02.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/registerFleet02" class="btn_back">
-            <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
-          </router-link>
+          <a class="btn_back"></a>
           <p class="current">FLEET 회원가입</p>
-          <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
+          <a class="btn_back"></a>
         </div>
         <div id="top_info">
           <p class="info">FLEET 회원가입이 완료 되었습니다.</p>

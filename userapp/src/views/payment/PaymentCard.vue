@@ -106,7 +106,7 @@
 						  </div>
 						</div>
 					  </div>
-					  <div class="card-form__inner">
+					  <div class="card-form__inner" style="margin-top:130px;">
 						<div class="card-input">
 						  <label for="cardNumber" class="card-input__label">카드번호</label>
 						  <input type="text" id="cardNumber" class="card-input__input" v-model="cardNumber" @input = "onlyNum" data-ref="cardNumber" autocomplete="off" maxlength="16">

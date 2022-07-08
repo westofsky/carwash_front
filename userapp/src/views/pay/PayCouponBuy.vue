@@ -11,7 +11,7 @@
           <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
         </div>
         <div id="top_info">
-          <p class="info">쿠폰 리스트를 관리하거나 구매하실 수 있습니다.s
+          <p class="info">쿠폰 리스트를 관리하거나 구매하실 수 있습니다.
           </p>
         </div>
       </div>

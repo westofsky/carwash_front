@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div id="wrapper">
     <div id="content_wrap" class="register_terms">
       <div id="top">
         <div id="nav">
           <a class="btn_back" @click="$router.go(-1)"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a>
           <p class="current">서비스 이용약관</p>
-          <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
+          <a class="btn_back"></a>
         </div>
         <div id="top_info">
         </div>
@@ -28,18 +28,18 @@
     </div>
 
 
-
+<!--
     <aside>
       <div class="btn_cancel2">
-        <!-- <a href="./register_basic02.html">취소</a> -->
+         <a href="./register_basic02.html">취소</a
         <a @click="$router.go(-1)">취소</a>
       </div>
       <div class="btn_next2">
-        <!-- <a href="./register_basic04.html">회원가입 완료</a> -->
-        <router-link to="/registerBasic04">회원가입 완료</router-link>
+         <a href="./register_basic04.html">회원가입 완료</a>
+        <router-link to="/registerBasic04">회원가입 </router-link>
       </div>
     </aside>
-    <FooterVue></FooterVue>
+    -->
   </div>
 </template>
 

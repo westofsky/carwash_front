@@ -34,7 +34,7 @@
             <!-- <router-link to="/homeFleet01"><input type="submit" value="로그인"></router-link> -->
             <input type = "submit" value="로그인" @click.self.prevent = "fleet_login">
           </form>
-          <div class="login_auto"><input type="checkbox" id="login_auto" name="login_auto"><label
+          <div class="login_auto"><input type="checkbox" id="login_auto" name="login_auto" v-model="auto_login"><label
               for="login_auto">자동로그인</label></div>
           <div class="login_find"><a href="#n">아이디/비밀번호 찾기</a></div>
           <div class="login_regiBtns">
@@ -75,8 +75,15 @@
             });
           }
 				document.querySelector('.tab_basic a').click();
-          sessionStorage.clear();
-          localStorage.clear();
+        sessionStorage.clear();
+        if(localStorage.getItem("auto_mem_no")){
+          sessionStorage.setItem("mem_no",localStorage.getItem("auto_mem_no"));
+          sessionStorage.setItem("mem_type",localStorage.getItem("auto_mem_type"));
+          sessionStorage.setItem("mem_name",localStorage.getItem("auto_mem_name"));
+          sessionStorage.setItem("mem_id",localStorage.getItem("auto_mem_id"));
+          this.$router.push({name : 'HomeBasic'});
+        }
+
 			},
         data () {
           return {
@@ -87,7 +94,8 @@
             fleetUser : {
               id : '',
               pw : '',
-            }
+            },
+            auto_login : false,
           }
         },
         methods : {
@@ -107,6 +115,7 @@
               (res) => {  //개인 로그인 
                 if (res.data.result_code == "Y"){
                       console.log("개인회원로그인 성공");
+
                       this.$http.post('http://carwash.iptime.org:3000/useapp/getlogininfo', {
                         mem_type : "01",
                         car_no : this.basicUser.car_no,
@@ -115,7 +124,12 @@
                       }
                       }).then(
                       (res) => {  //개인 회원 정보
-                        console.log(res.data.mem_no + "||" + res.data.mem_type + "||"+ res.data.mem_name+"||"+res.data.mem_id);
+                        if(this.auto_login){
+                          localStorage.setItem("auto_mem_no",res.data.mem_no);
+                          localStorage.setItem("auto_mem_type",res.data.mem_type);
+                          localStorage.setItem("auto_mem_name",res.data.mem_name);
+                          localStorage.setItem("auto_mem_id",res.data.mem_id);
+                        }
                         sessionStorage.setItem("mem_no",res.data.mem_no);
                         sessionStorage.setItem("mem_type",res.data.mem_type);
                         sessionStorage.setItem("mem_name",res.data.mem_name);
@@ -153,7 +167,12 @@
                       }
                       }).then(
                       (res) => {  //FLEET 회원 정보
-                        console.log(res.data.mem_no + "||" + res.data.mem_type + "||"+ res.data.mem_name+"||"+res.data.mem_id);
+                        if(this.auto_login){
+                          localStorage.setItem("auto_mem_no",res.data.mem_no);
+                          localStorage.setItem("auto_mem_type",res.data.mem_type);
+                          localStorage.setItem("auto_mem_name",res.data.mem_name);
+                          localStorage.setItem("auto_mem_id",res.data.mem_id);
+                        }
                         sessionStorage.setItem("mem_no",res.data.mem_no);
                         sessionStorage.setItem("mem_type",res.data.mem_type);
                         sessionStorage.setItem("mem_name",res.data.mem_name);

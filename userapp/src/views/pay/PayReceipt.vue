@@ -143,9 +143,7 @@ export default {
                 (res) => {  // 
                     if(res.data.result_code=="Y"){
                         console.log("결제 승인 정보 저장 완료");
-                        
-                    
-                    
+
                     }
                 }
                 );
@@ -172,7 +170,18 @@ export default {
   },
   methods :{
     confirm(){
-        localStorage.clear();
+        localStorage.removeItem("send_options");
+        localStorage.removeItem("pin_seq_no");
+        localStorage.removeItem("first_menu");
+        localStorage.removeItem("menu_fee");
+        localStorage.removeItem("main_plc");
+
+        localStorage.removeItem("pin2_seq_no");
+        localStorage.removeItem("second_menu");
+        localStorage.removeItem("option_fee");
+        localStorage.removeItem("option_plc");
+        localStorage.removeItem("third_menu");
+        localStorage.removeItem("brush_plc");
         this.$router.push({name : 'PayVue'});
     }
   }

@@ -16,12 +16,12 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title">WASH DAY 왜관점</p>
+          <p class="title">SPARKPLUS 와룡로점</p>
           <div id="map" style="width: 500px height: 500px;">
             <img src="../../assets/img/sparkpliswa_map.png" style="width: 100%" alt="" srcset="">
           </div>
           <p></p>
-          <p>소재지 : 대구광역시 서구 와료룡 335 스파크플러스</p>
+          <p>소재지 : 대구광역시 서구 와룡로 335 스파크플러스</p>
           <p>전화번호 : <a href="tel:053-573-8008">053)573-8008</a></p>
         </section>
       </article>

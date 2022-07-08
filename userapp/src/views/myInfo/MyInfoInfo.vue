@@ -18,15 +18,15 @@
           <ul class="myinfo_info_wrap">
             <li>
               <label for="basicId" class="title">아이디</label>
-              <input type="text" class="basicId" id="basicId" :value = "mem_id">
+              <input type="text" class="basicId" id="basicId" :value = "mem_id" disabled>
             </li>
             <li>
               <label for="basicId" class="title">회원명</label>
-              <input type="text" class="basicName" id="basicName" :value = "mem_name">
+              <input type="text" class="basicName" id="basicName" :value = "mem_name" disabled>
             </li>
             <li>
               <label for="basicPW" class="title">비밀번호</label>
-              <input type="password" class="basicPW" id="basicPW" :value = "mem_pwd">
+              <input type="password" class="basicPW" id="basicPW" :value = "mem_pwd" disabled>
               <button class="check" @click="open_pop">비밀번호 변경</button>
             </li>
             <li>
@@ -176,6 +176,7 @@ export default {
       }
     },
     change_pw(){
+      this.$refs.prepw.focus();
       if(!this.change_prepw){
         this.$refs.prepw.focus();
         this.warn_mem_prepw = "기존 비밀번호를 입력해주세요.";
@@ -209,7 +210,7 @@ export default {
       }
       this.$http.post('http://carwash.iptime.org:3000/userapp/setMemPwd', {
             mem_no : sessionStorage.getItem("mem_no"),
-            mem_pwd : this.change_mewpwd,
+            mem_pwd : this.change_newpw,
         },{headers : {
         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }

@@ -1,5 +1,12 @@
 <template>
   <div id="wrapper">
+    <div class="waiting" v-if="waiting">
+			<img src="../../assets/img/ZombieingDoodle.png" class="bored-image"/>
+			<div class="waiting-notice">
+				<img src="../../assets/img/sync.svg" class="sync-image"/>
+				처리중입니다.. 잠시만 기다려주세요.
+			</div>
+		</div>
     <div id="content_wrap" class="pay_onetime_order_01">
       <div id="top">
         <div id="nav">
@@ -28,11 +35,11 @@
                 <td>합계</td>
                 <td class="fontBold fRed">{{menu_fee+option_fee}}원</td>
               </tr>
-              <tr class="total_price" style="border-top : none;" v-if="is_coupon">
+              <tr class="total_price" style="border-top : none;" v-if="is_coupon.length">
                 <td>할인금액</td>
                 <td class="table_price">{{is_discount}}원</td>
               </tr>
-              <tr class="total_price" v-if="is_coupon">
+              <tr class="total_price" v-if="is_coupon.length">
                 <td>결제금액</td>
                 <td class="fontBold fRed">{{tot_fee}}원</td>
               </tr>
@@ -55,7 +62,7 @@
         </router-link>
       </div>
       <div class="btn_next3_right" @click = "pay">
-        <a href="#"><img src="../../assets/img/content/btn_pay.svg" >결제하기</a>
+        <a><img src="../../assets/img/content/btn_pay.svg" >결제하기</a>
       </div>
     </aside>
     <FooterVue></FooterVue>
@@ -85,6 +92,7 @@ export default {
       is_coupon : [],
       is_discount : 0,
       tot_fee : 0,
+      waiting : false,
     }
   },
   beforeCreate(){
@@ -108,38 +116,157 @@ export default {
   },
   methods : {
     before_reset(){
-      localStorage.clear();
+      localStorage.removeItem("send_options");
+      localStorage.removeItem("pin_seq_no");
+      localStorage.removeItem("first_menu");
+      localStorage.removeItem("menu_fee");
+      localStorage.removeItem("main_plc");
+
+      localStorage.removeItem("pin2_seq_no");
+      localStorage.removeItem("second_menu");
+      localStorage.removeItem("option_fee");
+      localStorage.removeItem("option_plc");
+      localStorage.removeItem("third_menu");
+      localStorage.removeItem("brush_plc");
       this.$router.push({name : 'PayOnetime'});
     },
     pay(){
-      // var data = {
-
-      //   "mallId": "T0001997",
-      //   "payMethodTypeCode": "81",
-      //   "currency": "00",
-      //   "clientTypeCode": "00",
-      //   "returnUrl": "localhost/payOnetimeOrder01",
-      //   "deviceTypeCode": "pc",
-      //   "shopOrderNo": "ORDER_12345678901234567890",
-      //   "amount":51004,
-      //   "orderInfo": {
-      //   "goodsName": "기본-최소 등록 테스트 1"
-      //   },
-      //   "payMethodInfo":{
-      //     "billKeyMethodInfo":{
-      //     "certType" : "1"
-      //     }
-      //   }
-      // }
-      // this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
+      var data = {
+        "mallId": "T0001997", //KICC 에서 발급한상점 ID
+        "payMethodTypeCode": "81", //빌키발급 : 81
+        "currency": "00", //통화코드  00:원화
+        "clientTypeCode": "00", //결제창 종류 00: 통합결제창 전용
+        "returnUrl": "localhost/payOnetimeOrder01", //인증응답 URL 
+        "deviceTypeCode": "pc", // 교객결제 단말
+        "shopOrderNo": "ORDER_12345678901234567890", // 상점 주문번호
+        "amount":this.tot_fee, // 결제요청금액
+        "orderInfo": { //주문정보
+        "goodsName": this.first_menu //상품명
+        },
+        "payMethodInfo":{ //결제수단관리정보
+          "billKeyMethodInfo":{ // 빌키발급 옵션
+          "certType" : "1" // 빌키발급 인증타입 1 : 카드번호,유횩간,생년월일
+          }
+        }
+      };
+      // this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', data2,
       // {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-      //   console.log(res.data.authPageUrl);
+      //   console.log(res.data);
       // })
       // .catch((error) => {
       //   console.log(error);
       // })
-      this.$router.push({name : 'PayReceipt'});
+      this.$http.post('http://carwash.iptime.org:3000/userapp/ChkRegCard', {
+        mem_no : sessionStorage.getItem("mem_no"),
+      },{headers : {
+      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+        if(res.data.result_code == "Y"){
+          alert("등록된 카드가 없습니다. 카드를 등록해주세요.");
+          this.$router.push({name : 'PaymentVue'});
+        }
+        else{ //결제진행
+          this.waiting = true;
+          this.$http.post('http://carwash.iptime.org:3000/userapp/getRegCardUse', {
+            mem_no : sessionStorage.getItem("mem_no"),
+          },{headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+          }
+          }).then(
+          (res) => {  
+            var token = res.data.token;
+            var req_data = {
+              "mallId":"05546809", //KICC에서 발급한 상점ID
+              "shopTransactionId":"20210908101251", // 상점거래고유번호
+              "amount":this.tot_fee, // 가격
+              "shopOrderNo" : "20210908102459", //상점 주문번호
+              "approvalReqDate":"20210908", //승인요청일자 YYYYMMDD
+              "payMethodInfo":{ //결제수단관리정보
+              "billKeyMethodInfo":{
+              "batchKey" : token,
+              }
+              },
+              "orderInfo":{
+              "goodsName" : this.first_menu // 상품명
+              }
+            };
+            this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', req_data,
+              {headers : {
+              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+              }
+            }).then(
+            (res) => {  
+                console.log(res.data);
+                if(res.data.resCD == "0000"){
+                  console.log("결제성공");
+                  this.waiting = false;
+                  this.$router.push({name : 'PayVue'});
+                }
+                else{
+                  console.log("결제오류");
+                  alert("결제 오류입니다.");
+                  this.waiting = false;
+                  this.$router.push({name : 'PayVue'});
+
+                }
+            })
+
+            
+          })
+        }
+      })
+      // this.$router.push({name : 'Service_Prepare'});
+      // this.$router.push({name : 'PayReceipt'});
     }
   }
 };
 </script>
+<style>
+.waiting {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	margin : 0 auto;
+	background: rgba(0, 0, 0, .8);
+}
+.bored-image {
+		margin-top: 15vh;
+		width: 30rem;
+		animation: rotateFlip 0.5s infinite steps(2);
+}
+.sync-image {
+		width: 1rem;
+		animation: rotation 2s infinite linear;
+		margin-right: .5rem;
+}
+.waiting-notice {
+  	position: absolute;
+		bottom: 10rem;
+		left: 50%;
+		transform: translate(-50%, 0px);
+		color: white;
+		background: #5f5fff;
+		padding: 1rem 2.5rem 1rem 2rem;
+		border-radius: .5rem;
+}
+@keyframes rotation {
+	from {
+		transform: rotate(359deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}
+@keyframes rotateFlip {
+	from {
+		transform: rotate(10deg);
+	}
+	to {
+		transform: rotate(-10deg);
+	}
+}
+</style>

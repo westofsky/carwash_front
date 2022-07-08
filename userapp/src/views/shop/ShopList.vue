@@ -22,14 +22,14 @@
             <ul>
               <li class="shop_spot">
                 <div class="shop_name">
-                  <p>WASH DAY 와료룡점</p>
+                  <p>WASH DAY 와룡로점</p>
                 </div>
                 <div class="shop_info">
                   <ul>
                     <li>영업시간 : AM 06:00~PM 10:00 까지</li>
                     <li>휴무일 : 연중무휴</li>
                     <li>주유소 : 주유소 인근 1Km</li>
-                    <li>소재지 : 대구광역시 서구 와료룡 335 스파크플러스</li>
+                    <li>소재지 : 대구광역시 서구 와룡로 335 스파크플러스</li>
                     <li>전화번호 : <a href="tel:053-573-8008">053)573-8008</a></li>
                   </ul>
                   <!-- <a class="shop_map btn_basic" href="#"><img src="../../assets/img/content/ico_location.svg"

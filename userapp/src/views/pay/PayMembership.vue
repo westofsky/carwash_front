@@ -78,7 +78,7 @@ export default {
   },
   beforeCreate(){
     this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
-        pro_type : "PGC001"
+        pro_type : "PGC002"
       },{
       headers : {
         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -86,6 +86,7 @@ export default {
       }).then(
       (res) => {  // 
             this.product_list = res.data;
+            console.log(this.product_list);
       }
     );
     this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
@@ -127,6 +128,10 @@ export default {
       this.selected.product = selected;
     },
     onetime_register(){
+      if(this.selected.product.length==0){
+        alert("상품을 선택해주세요!");
+        return false;
+      }
       console.log(this.selected.product.prod_code + "||" + this.selected.product.prod_name+"||"+this.selected.product.prod_fee+"||");
       console.log(this.brush.menu + "||"+this.brush.info.main_plc);
       localStorage.setItem("pin_seq_no",JSON.stringify(this.selected.product.prod_code));
@@ -138,7 +143,12 @@ export default {
       this.$router.push({name : 'PayMemberShipOrder01'})
     },
     before_reset(){
-      localStorage.clear();
+      localStorage.removeItem("pin_seq_no");
+      localStorage.removeItem("first_menu");
+      localStorage.removeItem("menu_fee");
+      localStorage.removeItem("main_plc");
+      localStorage.removeItem("third_menu");
+      localStorage.removeItem("brush_plc");
       this.$router.push({name : 'PayVue'});
     },
   },

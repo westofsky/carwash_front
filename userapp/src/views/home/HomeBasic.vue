@@ -199,6 +199,7 @@ export default {
     },
     logout(){
       sessionStorage.clear();
+      localStorage.clear();
       this.$router.push({name : 'LoginVue'});
       this.$router.go();
     }

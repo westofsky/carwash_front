@@ -40,6 +40,7 @@ import PayOnetimeOrder01 from '../views/pay/PayOnetimeOrder01';
 import PayVue from '../views/pay/PayVue';
 import PaymentVue from '../views/payment/PaymentVue';
 import PaymentCard from '../views/payment/PaymentCard';
+import PaymentCardRegisterOk from '../views/payment/PaymentCardRegisterOk';
 import PopUp from '../views/popUp/PopUp';
 import RegisterBasic01 from '../views/register/RegisterBasic01';
 import RegisterBasic03 from '../views/register/RegisterBasic03';
@@ -53,15 +54,21 @@ import RegisterTerms from '../views/register/RegisterTerms';
 import ShopList from '../views/shop/ShopList';
 import ShopMap from '../views/shop/ShopMap';
 import MyInfoInfoContentPop from '../views/myInfo/MyInfoInfoContentPop';
+import Service_Prepare from '../views/Service_Prepare';
 
 Vue.use(VueRouter)
 
 const requireAuth = () => (to, from, next) =>{
-	if (sessionStorage.getItem("mem_id")){
-		return next();
-	}
-	alert('잘못된 접근입니다. 로그인 해주세요');
-	next('/');
+  if(localStorage.getItem("auto_mem_id")){
+    return next();
+  }
+	else{
+    if (sessionStorage.getItem("mem_id")){
+      return next();
+    }
+    alert('잘못된 접근입니다. 로그인 해주세요');
+    next('/');
+  }
 }
 
 const routes = [
@@ -277,6 +284,13 @@ const routes = [
     beforeEnter : requireAuth()
   },
   {
+    path : '/PaymentCardRegisterOk',
+    component : PaymentCardRegisterOk,
+    name : 'PaymentCardRegisterOk',
+    props : true,
+    beforeEnter : requireAuth()
+  },
+  {
     path: '/PopUp',
     component: PopUp,
     beforeEnter : requireAuth()
@@ -343,6 +357,12 @@ const routes = [
   {
     path: '/myInfoInfoContentPop',
     component: MyInfoInfoContentPop,
+    beforeEnter : requireAuth()
+  },
+  {
+    path : '/Service_Prepare',
+    component : Service_Prepare,
+    name : 'Service_Prepare',
     beforeEnter : requireAuth()
   }
 ]

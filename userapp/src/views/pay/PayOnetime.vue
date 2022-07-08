@@ -177,6 +177,7 @@ export default {
       }).then(
       (res) => {  // 
             this.product_list = res.data;
+            console.log(this.product_list);
       }
     );
     this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
@@ -245,6 +246,7 @@ export default {
       }).then(
       (res) => {  // 
             this.option_list = res.data;
+            console.log(this.option_list);
       })
     },
     getSrcO(index){
@@ -261,34 +263,74 @@ export default {
         return "oneOption010"+index;
     },
     onetime_register(){
-      console.log(this.selected.product.prod_code + "||" + this.selected.product.prod_name+"||"+this.selected.product.prod_fee+"||");
-      console.log(this.brush.menu + "||"+this.brush.info.main_plc);
-      var send_options = []
-      for(var i=0;i<this.option_list.length;i++){
-        for(var j=0;j<this.selected.option.length;j++){
-          if(this.option_list[i].option_code == this.selected.option[j]){
-            send_options.push(this.option_list[i]);
-            this.selected.option_code.push(this.option_list[i].option_code);
-            this.selected.option_name.push(this.option_list[i].option_name);
-            this.selected.option_fee += parseInt(this.option_list[i].option_fee);
-            this.selected.option_plc.push(this.option_list[i].option_plc);
-          }
-          else
-            continue;
+      if(this.selected.product.length!=0 && (this.no_option || this.selected.option.length!=0)){
+        if(!this.option_list.length && !this.selected.product.prod_name.length){
+          alert("상품을 선택해주세요!");
+          return false;
         }
+        if(this.option_list.length && !this.selected.product.prod_name.length && !this.selected.option.length){
+          alert("상품을 선택해주세요!");
+          return false;
+        }
+        console.log(this.selected.product.prod_code + "||" + this.selected.product.prod_name+"||"+this.selected.product.prod_fee+"||");
+        console.log(this.brush.menu + "||"+this.brush.info.main_plc);
+        var send_options = []
+        for(var i=0;i<this.option_list.length;i++){
+          for(var j=0;j<this.selected.option.length;j++){
+            if(this.option_list[i].option_code == this.selected.option[j]){
+              send_options.push(this.option_list[i]);
+              this.selected.option_code.push(this.option_list[i].option_code);
+              this.selected.option_name.push(this.option_list[i].option_name);
+              this.selected.option_fee += parseInt(this.option_list[i].option_fee);
+              this.selected.option_plc.push(this.option_list[i].option_plc);
+            }
+            else
+              continue;
+          }
+        }
+        var sum_option_plc = "";
+        var sum_option_code = "";
+        var sum_option_menu = "";
+        if(send_options.length == 1){
+          sum_option_plc = send_options[0].option_plc;
+          sum_option_code = send_options[0].option_code;
+          sum_option_menu = send_options[0].option_name;
+        }
+        else{
+          for(var i=0;i<send_options.length;i++){
+            console.log("걸림");
+            if(i==send_options.length-1){
+              sum_option_plc += send_options[i].option_plc;
+              sum_option_code += send_options[i].option_code;
+              sum_option_menu += send_options[i].option_name;
+            }
+            else{
+              sum_option_plc += send_options[i].option_plc;
+              sum_option_plc += "::";
+              sum_option_code += send_options[i].option_code;
+              sum_option_code += "::";
+              sum_option_menu += send_options[i].option_name;
+              sum_option_menu += "::";
+            }
+          }
+        }
+        console.log(sum_option_plc);
+        console.log(sum_option_code);
+        console.log(sum_option_menu);
+        localStorage.setItem("send_options",JSON.stringify(send_options));
+        localStorage.setItem("pin_seq_no",JSON.stringify(this.selected.product.prod_code));
+        localStorage.setItem("first_menu",JSON.stringify(this.selected.product.prod_name));
+        localStorage.setItem("menu_fee",JSON.stringify(parseInt(this.selected.product.prod_fee)));
+        localStorage.setItem("main_plc",JSON.stringify(this.selected.product.main_plc));
+
+        localStorage.setItem("pin2_seq_no",JSON.stringify(sum_option_code));
+        localStorage.setItem("second_menu",JSON.stringify(sum_option_menu));
+        localStorage.setItem("option_fee",JSON.stringify(this.selected.option_fee));
+        localStorage.setItem("option_plc",JSON.stringify(sum_option_plc));
+        localStorage.setItem("third_menu",JSON.stringify(this.brush.menu));
+        localStorage.setItem("brush_plc",JSON.stringify(this.brush.info.main_plc));
+        this.$router.push({name : 'PayOnetimeOrder01'})
       }
-      localStorage.setItem("send_options",JSON.stringify(send_options));
-      localStorage.setItem("pin_seq_no",JSON.stringify(this.selected.product.prod_code));
-      localStorage.setItem("first_menu",JSON.stringify(this.selected.product.prod_name));
-      localStorage.setItem("menu_fee",JSON.stringify(parseInt(this.selected.product.prod_fee)));
-      localStorage.setItem("main_plc",JSON.stringify(this.selected.product.main_plc));
-      localStorage.setItem("pin2_seq_no",JSON.stringify(this.selected.option_code));
-      localStorage.setItem("second_menu",JSON.stringify(this.selected.option_name));
-      localStorage.setItem("option_fee",JSON.stringify(this.selected.option_fee));
-      localStorage.setItem("option_plc",JSON.stringify(this.selected.option_plc));
-      localStorage.setItem("third_menu",JSON.stringify(this.brush.menu));
-      localStorage.setItem("brush_plc",JSON.stringify(this.brush.info.main_plc));
-      this.$router.push({name : 'PayOnetimeOrder01'})
     },
     detect_change(){
       if( this.selected.option.length!=0)
@@ -300,8 +342,19 @@ export default {
       }
     },
     before_reset(){
-      localStorage.clear();
-      this.$router.push({name : 'PayVue'});
+      localStorage.removeItem("send_options");
+      localStorage.removeItem("pin_seq_no");
+      localStorage.removeItem("first_menu");
+      localStorage.removeItem("menu_fee");
+      localStorage.removeItem("main_plc");
+
+      localStorage.removeItem("pin2_seq_no");
+      localStorage.removeItem("second_menu");
+      localStorage.removeItem("option_fee");
+      localStorage.removeItem("option_plc");
+      localStorage.removeItem("third_menu");
+      localStorage.removeItem("brush_plc");
+        this.$router.push({name : 'PayVue'});
     },
   },
   computed : {
