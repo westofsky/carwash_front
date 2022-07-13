@@ -18,6 +18,7 @@ import MyInfoMembershipCancel from '../views/myInfo/MyInfoMembershipCancel';
 import MyInfoRegisterCancel from '../views/myInfo/MyInfoRegisterCancel';
 import MyInfoWash from '../views/myInfo/MyInfoWash';
 import NoticeDetail from '../views/notice/NoticeDetail';
+import Notice from '../views/notice/Notice';
 import NoticeList from '../views/notice/NoticeList';
 import OrderList01 from '../views/order/OrderList01';
 import OrderList02 from '../views/order/OrderList02';
@@ -363,6 +364,12 @@ const routes = [
     path : '/Service_Prepare',
     component : Service_Prepare,
     name : 'Service_Prepare',
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/notice',
+    component: Notice,
+    name : 'Notice',
     beforeEnter : requireAuth()
   }
 ]

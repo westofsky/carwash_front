@@ -4,7 +4,7 @@
       <div id="top">
         <div id="nav">
           <!-- <a class="btn_back" href="./register_basic02.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/registerBasic01" class="btn_back">
+          <router-link to="/registerBasic0201" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">개인 회원가입</p>

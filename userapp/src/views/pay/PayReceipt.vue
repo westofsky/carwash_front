@@ -39,7 +39,7 @@
             </table>
           </div>
             <p class="title">결제 정보</p>
-            <div class="onetime_pay_info">
+            <div class="onetime_pay_info" v-if="menu_fee !=0">
                 <ul>
                     <li>결제승인번호 : {{approve.auth_no}}</li>
                     <li>결제시간 : {{time}}</li>
@@ -57,7 +57,7 @@
     </aside>
     <FooterVue></FooterVue>
   </div>
-</template>
+</template>s
 
 <script>
 import FooterVue from "../footer/FooterVue.vue";
@@ -83,18 +83,19 @@ export default {
       is_discount : 0,
       tot_fee : 0,
       approve : {
-        auth_no : localStorage.getItem("auth_no") || "",
-        card_no : localStorage.getItem("card_no").substring(0,4) +'-'+localStorage.getItem("card_no").substring(4,8)+'-****-****'  || "",
-        card_name : localStorage.getItem("card_name") || "",
-        time : localStorage.getItem("tr_date") || "",
+        auth_no : ( localStorage.getItem("auth_no") != null) ?  localStorage.getItem("auth_no") : "",
+        card_no : ( localStorage.getItem("card_no") != null) ?  localStorage.getItem("card_no").substring(0,4) +'-'+localStorage.getItem("card_no").substring(4,8)+'-****-****' : "",
+        card_name : ( localStorage.getItem("card_name") != null) ?  localStorage.getItem("card_name") : "",
+        time :  ( localStorage.getItem("tr_date") != null) ?  localStorage.getItem("tr_date") : "",
       },
-      time : "",
+      time : (localStorage.getItem("tr_date") !=null) ? localStorage.getItem("tr_date").replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6') : "",
     }
   },
   beforeCreate(){
-    
   },
   mounted (){
+    
+
     if(!JSON.parse(localStorage.getItem("third_menu")))
       this.third_menu = "Y"
     else
@@ -107,7 +108,6 @@ export default {
     else
       this.tot_fee = this.menu_fee + this.option_fee;
 
-    this.time = this.approve.time.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6');
     // 승인 후 사용 결제 세차 정보 저장 처리
     this.$http.post(this.$server+'/userapp/setWashpay', {
         mem_no : sessionStorage.getItem("mem_no"),
@@ -137,7 +137,7 @@ export default {
             //승인 후 사용 결제 승인 저장 처리
             if(this.menu_fee==0){ // 끝 
               console.log("결제된 금액 없음");
-              this.confirm();
+              // this.confirm();
             }
             else{
               this.$http.post(this.$server+'/userapp/setApprovalPay', {
@@ -157,7 +157,7 @@ export default {
               (res) => {  // 
                   if(res.data.result_code=="Y"){
                       console.log("결제 승인 정보 저장 완료");
-                      this.confirm();
+                      // this.confirm();
                   }
               }
               );

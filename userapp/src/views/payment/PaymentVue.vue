@@ -103,7 +103,7 @@ export default {
           }
         }
       };
-      this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
+      this.$http.post('https://pgapi.easypay.co.kr/api/trades/webpay', data,
       {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
         sessionStorage.setItem("url",res.data.authPageUrl);
         location.href=res.data.authPageUrl;

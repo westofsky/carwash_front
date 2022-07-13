@@ -33,8 +33,8 @@
               <img src="../../assets/img/btn_logout.png" alt="">
               로그아웃
             </a> -->
-            <a class="btn_logout">
-              <img src="../../assets/img/btn_logout.png" @click="logout">
+            <a class="btn_logout" @click="logout">
+              <img src="../../assets/img/btn_logout.png">
               로그아웃
             </a>
           </div>
@@ -133,13 +133,13 @@
             </div>
             <ul class="notice_list">
               <li v-for="(info,index) in info_list" :key="index">
-                <a href="#">{{info.title}}</a><span class="time">{{return_date(info.write_date)}}</span>
+                <router-link :to="{name : 'Notice', query: { seq_no :info.seq_no}}">{{info.title}}</router-link><span class="time">{{return_date(info.write_date)}}</span>
               </li>
             </ul>
           </div>
         </section>
         <section>
-          <div class="copyright">
+          <div class="copyright" style="font-size: 13px; padding: 0rem 21px;">
             <p>(주)엔티아이</p>
             <a href="">서비스 이용약관</a> <a href="">개인정보 처리방침</a> <a href="">위치정보 이용약관</a><br>
             사업자등록번호 : 504-81-15358 ㅣ 대표이사 : 김도연<br>대구광역시 서구 와룡로 335 1층 스파크플러스
@@ -186,13 +186,16 @@ export default {
         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
       }
     }).then((res) => {
+      console.log(res.data.write_date)
       this.info_list = res.data
     })
   },
   methods : {
     return_date(date){
       const write = new Date(date);
-      const month = write.getMonth().toString().padStart(2,'0');
+      let month = write.getMonth()+1;
+      console.log(month);
+      month = month.toString().padStart(2,'0');
       const day = write.getDate().toString().padStart(2,'0');
 
       return month+'.'+day;    

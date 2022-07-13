@@ -57,7 +57,7 @@ export default {
   mounted(){
     console.log(sessionStorage.getItem("url"));
     if(sessionStorage.getItem("url")){
-      fetch(sessionStorage.getitem("url"),
+      this.$http.post(sessionStorage.getitem("url"),
         {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
           console.log(res.data.json());
         })

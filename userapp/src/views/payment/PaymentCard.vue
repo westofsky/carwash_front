@@ -240,7 +240,7 @@ import FooterVue from "../footer/FooterVue.vue";
 						exp_yy : this.cardYear,
 						cvc_no : this.cardCVC,
 						password_no : this.card_passno,
-						token : "test",
+
 					},{headers : {
 					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
 					}

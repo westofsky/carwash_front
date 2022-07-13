@@ -4,7 +4,7 @@
       <div id="top">
         <div id="nav">
           <!-- <a class="btn_back" href="./notice_list.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/noticeList" class="btn_back">
+          <router-link to="/homebasic" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">공지사항</p>

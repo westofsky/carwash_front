@@ -1,5 +1,4 @@
 const { defineConfig } = require('@vue/cli-service')
-const target = 'https://carwash.iptime.org:8000';
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {

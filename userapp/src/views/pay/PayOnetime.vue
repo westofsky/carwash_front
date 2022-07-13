@@ -177,7 +177,7 @@ export default {
       }).then(
       (res) => {  // 
             this.product_list = res.data;
-            console.log(this.product_list);
+            console.log("상품정보 가져옴");
       }
     );
     this.$http.post(this.$server+'/userapp/getMainProduct', {
@@ -195,35 +195,35 @@ export default {
   updated(){
     
         /* 01 세차상품 선택 이벤트 */
-		let oneType = document.getElementsByName('oneType'),
-			oneTypeLi = document.querySelectorAll('#oneType_wrap li'),
-			oneTypeBtn = document.querySelectorAll('#oneType_wrap li a');
-		for(let i=0; i<oneTypeBtn.length; i++){
-			oneTypeBtn[i].addEventListener('click', function(e){
-				e.preventDefault();
-				for(let x=0; x<oneTypeBtn.length; x++){
-					oneTypeLi[x].classList.remove('active');
-				}
-				oneTypeLi[i].classList.add('active');
-				oneType[i].checked = 'true';
-			});
-		}
-    	/* 02 1회권 옵션 선택 이벤트1 */
-		let oneOption01 = document.querySelectorAll('#option01 input[type="checkbox"]'),
-			oneNoOption01 = document.querySelector('#noOption01 .oneNoOption');
-		
-		for(let i =0; i<oneOption01.length; i++){
-			oneOption01[i].addEventListener('input', function(){
-				oneNoOption01.checked = false;
-			});
-		}
-		oneNoOption01.addEventListener('input', function(){
-			if(this.checked){
-				for(let i =0; i<oneOption01.length; i++){
-					oneOption01[i].checked = false;
-				}
-			} 
-		});
+      let oneType = document.getElementsByName('oneType'),
+         oneTypeLi = document.querySelectorAll('#oneType_wrap li'),
+         oneTypeBtn = document.querySelectorAll('#oneType_wrap li a');
+      for(let i=0; i<oneTypeBtn.length; i++){
+         oneTypeBtn[i].addEventListener('click', function(e){
+            e.preventDefault();
+            for(let x=0; x<oneTypeBtn.length; x++){
+               oneTypeLi[x].classList.remove('active');
+            }
+            oneTypeLi[i].classList.add('active');
+            oneType[i].checked = 'true';
+         });
+      }
+       /* 02 1회권 옵션 선택 이벤트1 */
+      let oneOption01 = document.querySelectorAll('#option01 input[type="checkbox"]'),
+         oneNoOption01 = document.querySelector('#noOption01 .oneNoOption');
+      
+      for(let i =0; i<oneOption01.length; i++){
+         oneOption01[i].addEventListener('input', function(){
+            oneNoOption01.checked = false;
+         });
+      }
+      oneNoOption01.addEventListener('input', function(){
+         if(this.checked){
+            for(let i =0; i<oneOption01.length; i++){
+               oneOption01[i].checked = false;
+            }
+         } 
+      });
     
 
   },
@@ -246,7 +246,7 @@ export default {
       }).then(
       (res) => {  // 
             this.option_list = res.data;
-            console.log(this.option_list);
+            console.log("옵션 정보 가져옴");
       })
     },
     getSrcO(index){
@@ -272,8 +272,6 @@ export default {
           alert("상품을 선택해주세요!");
           return false;
         }
-        console.log(this.selected.product.prod_code + "||" + this.selected.product.prod_name+"||"+this.selected.product.prod_fee+"||");
-        console.log(this.brush.menu + "||"+this.brush.info.main_plc);
         var send_options = []
         for(var i=0;i<this.option_list.length;i++){
           for(var j=0;j<this.selected.option.length;j++){
@@ -298,7 +296,7 @@ export default {
         }
         else{
           for(var i=0;i<send_options.length;i++){
-            console.log("걸림");
+            console.log("옵션 가공함");
             if(i==send_options.length-1){
               sum_option_plc += send_options[i].option_plc;
               sum_option_code += send_options[i].option_code;
@@ -314,9 +312,6 @@ export default {
             }
           }
         }
-        console.log(sum_option_plc);
-        console.log(sum_option_code);
-        console.log(sum_option_menu);
         localStorage.setItem("send_options",JSON.stringify(send_options));
         localStorage.setItem("pin_seq_no",JSON.stringify(this.selected.product.prod_code));
         localStorage.setItem("first_menu",JSON.stringify(this.selected.product.prod_name));

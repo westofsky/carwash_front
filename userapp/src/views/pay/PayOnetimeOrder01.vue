@@ -151,7 +151,7 @@ export default {
             }
             else{ //결제진행
               this.waiting = true;
-              this.$http.post(this.$server+'/userapp/getRegCardUse', {
+              this.$http.post(this.$server+'/userapp/getRegCard', {
                 mem_no : sessionStorage.getItem("mem_no"),
               },{headers : {
               auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -159,9 +159,6 @@ export default {
               }).then(
               (res) => {  
                 var token = res.data.token;
-                console.log(token);
-                console.log(this.tot_fee);
-                console.log(this.first_menu);
                 var today = new Date();
                 var year = today.getFullYear();
                 var month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -175,11 +172,12 @@ export default {
 
                 trans_id = year+month+day+trans_id;
                 var req_data = {
-                  "mallId":"T0001997", //KICC에서 발급한 상점ID
+                  "mallId":"05562973", //KICC에서 발급한 상점ID
                   "shopTransactionId":trans_id, // 상점거래고유번호
-                  "amount":this.tot_fee, // 가격
+                  // "amount":this.tot_fee, // 가격
+                  "amount" : 10,
                   "shopOrderNo" : trans_id, //상점 주문번호
-                  "approvalReqDate":"20210908", //승인요청일자 YYYYMMDD
+                  "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                   "payMethodInfo":{ //결제수단관리정보
                   "billKeyMethodInfo":{
                   "batchKey" : token,
@@ -189,12 +187,12 @@ export default {
                   "goodsName" : this.first_menu // 상품명
                   }
                 };
-                this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', req_data,
+                this.$http.post('https://pgapi.easypay.co.kr/api/trades/approval/batch', req_data,
                   {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
                 ).then(
                 (res) => {  
                     console.log(res.data);
-                    if(res.data.resCD == "0000"){
+                    if(res.data.resCd == "0000"){
                       console.log("결제성공");
                       console.log(res.data.resMsg);
                       this.waiting = false;
@@ -205,9 +203,10 @@ export default {
                       localStorage.setItem("token",token);
                       localStorage.setItem("card_no",res.data.paymentInfo.cardInfo.cardNo);
                       localStorage.setItem("card_name",res.data.paymentInfo.cardInfo.issuerName);
-                      // this.$router.push({name : 'PayReceipt'});
+                      this.$router.push({name : 'PayReceipt'});
                     }
                     else{
+                    console.log(res.data);
                       console.log("결제 오류입니다. 관리자에게 문의하세요.");
                       // alert("결제 오류입니다. 관리자에게 문의하세요.");
                       this.waiting = false;
