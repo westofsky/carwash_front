@@ -89,7 +89,7 @@ export default {
       this.prod_name = res.data.prod_name;
       this.option_name = res.data.option_name;
       this.pay_date = res.data.pay_date;
-      this.wash_pay = res.data.wash_pay;
+      this.wash_pay = res.data.wash_fee;
       this.dc_fee = res.data.dc_fee;
       this.pay_fee = res.data.pay_fee;
       this.trno = res.data.trno;

@@ -38,6 +38,7 @@ import PayOnetime from '../views/pay/PayOnetime';
 import PayOnetimeCoupon01 from '../views/pay/PayOnetimeCoupon01';
 import PayOnetimeCoupon02 from '../views/pay/PayOnetimeCoupon02';
 import PayOnetimeOrder01 from '../views/pay/PayOnetimeOrder01';
+import PayOnetimeSelectMethod from '../views/pay/PayOnetimeSelectMethod';
 import PayVue from '../views/pay/PayVue';
 import PaymentVue from '../views/payment/PaymentVue';
 import PaymentCard from '../views/payment/PaymentCard';
@@ -262,6 +263,13 @@ const routes = [
     path: '/PayOnetimeOrder01',
     component: PayOnetimeOrder01,
     name : 'PayOnetimeOrder01',
+    props : true,
+    beforeEnter : requireAuth()
+  },
+  {
+    path : '/PayOnetimeSelectMethod',
+    component : PayOnetimeSelectMethod,
+    name : 'PayOnetimeSelectMethod',
     props : true,
     beforeEnter : requireAuth()
   },
