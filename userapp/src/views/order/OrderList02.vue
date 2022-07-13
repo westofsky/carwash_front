@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted(){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getPayList', {
+      this.$http.post(this.$server+'/userapp/getPayList', {
         mem_no : sessionStorage.getItem("mem_no"),
         // mem_no : "YGP220500000002"
       },{headers : {

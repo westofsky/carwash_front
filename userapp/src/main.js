@@ -13,8 +13,10 @@ import VCalendar from 'v-calendar';
 import Calendar from 'v-calendar/lib/components/calendar.umd'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
-Vue.prototype.$http = axios
-Vue.config.productionTip = false
+Vue.prototype.$http = axios;
+Vue.config.productionTip = false;
+Vue.prototype.$server = 'https://app.sparkpluswash.com:3000';
+Vue.prototype.$mallId = '05562973';
 Vue.use(VueHead)
 Vue.use(VCalendar, {
   componentPrefix : 'vc',

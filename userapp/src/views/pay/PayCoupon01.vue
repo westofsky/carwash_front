@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     async get_couponlist(){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList01', {
+      this.$http.post(this.$server+'/userapp/getCouponList01', {
       mem_no : mem_no,
       is_use : 'Y'
       },{headers : {
@@ -81,7 +81,7 @@ export default {
       })
     },
     async get_detail(code){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList', {
+      this.$http.post(this.$server+'/userapp/getCouponList', {
       coupon_code : code
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'

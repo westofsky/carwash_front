@@ -66,7 +66,7 @@ export default {
     registerbasic_phone() {
       if (this.checkPlate(this.car_no)){
         this.car_no = this.car_no.replace(/ /gi, "");
-        this.$http.post('http://carwash.iptime.org:3000/userapp/chkcarno', {
+        this.$http.post(this.$server+'/userapp/chkcarno', {
           car_no : this.car_no,
           
         },{headers : {

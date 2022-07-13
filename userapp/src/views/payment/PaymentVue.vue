@@ -20,7 +20,6 @@
             <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
           </div>
           <a class="card" href="#" @click = "card_option"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
-          <a class="card" href="#" @click = "card_option2"><img src="../../assets/img/content/payment01.png" alt="">승인테스트</a>
         </section>
         <!-- <section class="con2">
           <div class="con_info">
@@ -57,7 +56,7 @@ export default {
     FooterVue
   },
   mounted(){
-    this.$http.post('http://carwash.iptime.org:3000/userapp/ChkRegCard', {
+    this.$http.post(this.$server+'/userapp/ChkRegCard', {
       mem_no : sessionStorage.getItem("mem_no"),
     },{headers : {
     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -66,12 +65,12 @@ export default {
     (res) => {  // 
       if (res.data.result_code == "Y"){
         console.log("등록해야함");
-        this.card_state = "register";
+        this.card_state = "Y";
         this.card_state_notice = "신용/체크 카드 등록";
       }
       else{
         console.log("변경해야함");
-        this.card_state = "change"; 
+        this.card_state = "N"; 
         this.card_state_notice = "신용/체크 카드 변경";
       }
       
@@ -80,19 +79,20 @@ export default {
   data(){
     return {
       card_state_notice : "신용/체크 카드 등록",
-      card_state : "register",
+      card_state : "Y",
     }
   },
   methods : {
     card_option(){
       var data = {
-        "mallId": "T0001997", //KICC 에서 발급한상점 ID
+        "mallId": '05562973', //KICC 에서 발급한상점 ID
         "payMethodTypeCode": "81", //빌키발급 : 81
         "currency": "00", //통화코드  00:원화
         "clientTypeCode": "00", //결제창 종류 00: 통합결제창 전용
-        "returnUrl": "http://localhost/PaymentVue", //인증응답 URL 
-        "deviceTypeCode": "pc", // 교객결제 단말
-        "shopOrderNo": "ORDER_12345678901234567890", // 상점 주문번호
+        // "returnUrl": "http://app.sparkpluswash.com/PaymentCardRegisterOk", //인증응답 URL 
+        "returnUrl" : this.$server+"/userapp/CardTask?mem_no="+sessionStorage.getItem("mem_no")+"&code="+this.card_state,
+        "deviceTypeCode": "mobile", // 교객결제 단말
+        "shopOrderNo": "CARD_REGISTER", // 상점 주문번호
         "amount":0, // 결제요청금액
         "orderInfo": { //주문정보
         "goodsName": "SPARK_PLUS 카드등록" //상품명
@@ -103,57 +103,16 @@ export default {
           }
         }
       };
-      var data2 = {
-        "mallId": "05546809",
-        "shopTransactionId": "20210326090126",
-        "authorizationId" : "21032609005210816913",
-        "shopOrderNo": "20210326090046",
-        "approvalReqDate" : "20210326"
-
-      }
       this.$http.post('https://testpgapi.easypay.co.kr/api/trades/webpay', data,
       {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-        console.log(res.data);
         sessionStorage.setItem("url",res.data.authPageUrl);
-        window.open(res.data.authPageUrl,"_self");
+        location.href=res.data.authPageUrl;
+
       })
       .catch((error) => {
         console.log(error);
       })
-      // this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval', data2,
-      // {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-      //   console.log(res.data);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // })
-      // this.$router.push({name : 'PaymentCardRegisterOk'});
     },
-    card_option2(){
-      var data = {
-        "mallId":"05546809",
-        "shopTransactionId":"20210908101251",
-        "amount":51004,
-        "shopOrderNo" : "20210908102459",
-        "approvalReqDate":"20210908",
-        "payMethodInfo":{
-        "billKeyMethodInfo":{
-        "batchKey" : "546800000111BA212134"
-        }
-        },
-        "orderInfo":{
-        "goodsName" : "테스트상품명"
-        }
-      };
-      this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', data,
-      {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      // this.$router.push({name : 'PaymentCardRegisterOk'});
-    }
   }
 };
 </script>

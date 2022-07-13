@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     async get_detail(){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList', {
+      this.$http.post(this.$server+'/userapp/getCouponList', {
       coupon_code : this.$route.query.code
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'

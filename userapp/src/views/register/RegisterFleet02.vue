@@ -152,7 +152,7 @@ export default {
 			}
 		},
 		created(){
-			this.$http.post('http://carwash.iptime.org:3000/userapp/getfleettype', {
+			this.$http.post(this.$server+'/userapp/getfleettype', {
 			},{headers : {
 			auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
 			}
@@ -191,7 +191,7 @@ export default {
 			chk_id_duplicate(){
 				if(this.warning.id == "" && this.fleet_id != ''){
 					console.log("걸림1");
-					this.$http.post('http://carwash.iptime.org:3000/upserapp/chkfleetid', {
+					this.$http.post(this.$server+'/upserapp/chkfleetid', {
 						fleet_id : this.fleet_id
 					},{headers : {
 					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -320,7 +320,7 @@ export default {
 					alert("사업자등록번호를 입력해주세요");
 					return false;
 				}
-				this.$http.post('http://carwash.iptime.org:3000/userapp/chkfleetid', {
+				this.$http.post(this.$server+'/userapp/chkfleetid', {
 					fleet_name : this.fleet_name
 				},{headers : {
 				auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -361,7 +361,7 @@ export default {
 				}
 				console.log(this.fleet_id + " || " + this.fleet_name + " || " + this.fleet_pw + " || " + this.fleet_usage + " || " + this.fleet_phone + " || " + this.fleet_email + " || " + this.fleet_business);
 				console.log(this.agree_age + " || " + this.agree_service + " || " + this.agree_privacy + " || " + this.agree_sms + " || " + this.agree_location);
-				this.$http.post('http://carwash.iptime.org:3000/userapp/setfmember', {
+				this.$http.post(this.$server+'/userapp/setfmember', {
 					fleet_id : this.fleet_id,
 					fleet_name : this.fleet_name,
 					pwd : this.fleet_pw,

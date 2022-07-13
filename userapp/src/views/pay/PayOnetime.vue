@@ -168,7 +168,7 @@ export default {
     }
   },
   beforeCreate(){
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+    this.$http.post(this.$server+'/userapp/getMainProduct', {
         pro_type : "PGC001"
       },{
       headers : {
@@ -180,7 +180,7 @@ export default {
             console.log(this.product_list);
       }
     );
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+    this.$http.post(this.$server+'/userapp/getMainProduct', {
         pro_type : "PGC005"
       },{
       headers : {
@@ -237,7 +237,7 @@ export default {
     select_product(selected){
       this.selected.option = [];
       this.selected.product = selected;
-      this.$http.post('http://carwash.iptime.org:3000/userapp/getOptProduct', {
+      this.$http.post(this.$server+'/userapp/getOptProduct', {
         pro_type : "PGC001",
         main_seq_no : selected.prod_code,
       },{headers : {

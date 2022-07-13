@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     async reges_coup(){
-      this.$http.post('http://carwash.iptime.org:3000/userapp/setcouponreg', {
+      this.$http.post(this.$server+'/userapp/setcouponreg', {
       coupon_no : this.coupon_no,
       mem_no : this.mem_no
       },{headers : {

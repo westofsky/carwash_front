@@ -104,7 +104,7 @@
               alert("차량번호(아이디) 또는 비밀번호를 입력해주세요.");
             }
             else{
-              this.$http.post('http://carwash.iptime.org:3000/userapp/chklogin', {
+              this.$http.post(this.$server+'/userapp/chklogin', {
                 mem_type : "01",
                 car_no : this.basicUser.car_no,
                 pwd : this.basicUser.pw
@@ -116,7 +116,7 @@
                 if (res.data.result_code == "Y"){
                       console.log("개인회원로그인 성공");
 
-                      this.$http.post('http://carwash.iptime.org:3000/useapp/getlogininfo', {
+                      this.$http.post(this.$server+'/useapp/getlogininfo', {
                         mem_type : "01",
                         car_no : this.basicUser.car_no,
                       },{headers : {
@@ -148,7 +148,7 @@
               alert("차량번호(아이디) 또는 비밀번호를 입력해주세요.");
             }
             else{
-              this.$http.post('http://carwash.iptime.org:3000/userapp/chklogin', {
+              this.$http.post(this.$server+'/userapp/chklogin', {
                 mem_type : "02",
                 fleet_id : this.fleetUser.id,
                 pwd : this.fleetUser.pw
@@ -159,7 +159,7 @@
               (res) => {  //FLEET로그인
                 if (res.data.result_code == "Y"){
                   console.log("fleet로그인 성공");
-                  this.$http.post('http://carwash.iptime.org:3000/useapp/getlogininfo', {
+                  this.$http.post(this.$server+'/useapp/getlogininfo', {
                         mem_type : "02",
                         fleet_id : this.fleetUser.id,
                       },{headers : {

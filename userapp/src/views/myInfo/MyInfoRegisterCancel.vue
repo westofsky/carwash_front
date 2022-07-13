@@ -57,7 +57,7 @@ export default {
   methods :{
     async mem_cancel(){
       if(confirm('개인탈퇴를 하시겠습니까?')){
-        this.$http.post('http://carwash.iptime.org:3000/userapp/setmemdel', {
+        this.$http.post(this.$server+'/userapp/setmemdel', {
         mem_no : this.mem_no
         },{headers : {
             auth_key :'c83b4631-ff58-43b9-8646-024b12193202'

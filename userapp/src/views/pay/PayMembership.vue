@@ -77,7 +77,7 @@ export default {
     }
   },
   beforeCreate(){
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+    this.$http.post(this.$server+'/userapp/getMainProduct', {
         pro_type : "PGC002"
       },{
       headers : {
@@ -89,7 +89,7 @@ export default {
             console.log(this.product_list);
       }
     );
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getMainProduct', {
+    this.$http.post(this.$server+'/userapp/getMainProduct', {
         pro_type : "PGC005"
       },{
       headers : {

@@ -4,7 +4,7 @@
       <div id="top">
         <div id="nav">
           <!-- <a class="btn_back" href="./register_basic02.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/registerBasic0201" class="btn_back">
+          <router-link to="/registerBasic01" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">개인 회원가입</p>
@@ -77,7 +77,7 @@ export default {
         return false;
       }
       else{
-        this.$http.post('http://carwash.iptime.org:3000/userapp/chkphone', {
+        this.$http.post(this.$server+'/userapp/chkphone', {
           phone_no : this.phone_no
         },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -90,7 +90,7 @@ export default {
                 this.agree_privacy = "Y";
               else
                 this.agree_privacy = "N";
-              this.$http.post('http://carwash.iptime.org:3000/userapp/setpmember', {
+              this.$http.post(this.$server+'/userapp/setpmember', {
                 car_no : this.$route.query.car_no,
                 mem_tel : this.phone_no,
                 agree_age : this.$route.query.agree_age,

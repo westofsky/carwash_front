@@ -78,15 +78,15 @@ export default {
   },
   data(){
     return {
-      receive_option : JSON.parse(localStorage.getItem("send_options")) || [],
+      receive_option : JSON.parse(localStorage.getItem("send_options")) || "",
       pin_seq_no : JSON.parse(localStorage.getItem("pin_seq_no")),
       first_menu : JSON.parse(localStorage.getItem("first_menu")) || "",
       menu_fee : JSON.parse(localStorage.getItem("menu_fee")) || 0,
       main_plc : JSON.parse(localStorage.getItem("main_plc")) || "",
       pin2_seq_no : JSON.parse(localStorage.getItem("pin2_seq_no")) || "" ,
-      second_menu : JSON.parse(localStorage.getItem("second_menu")) || [],
+      second_menu : JSON.parse(localStorage.getItem("second_menu")) || "",
       option_fee : JSON.parse(localStorage.getItem("option_fee")) || 0,
-      // option_plc : JSON.parse(localStorage.getItem("option_plc")) || '',
+      option_plc : JSON.parse(localStorage.getItem("option_plc")) || '',
       third_menu : '',
       brush_plc : JSON.parse(localStorage.getItem("brush_plc")) || '',
       is_coupon : [],
@@ -102,10 +102,10 @@ export default {
       this.third_menu = "N"
   },
   mounted(){
-    if(!this.receive_option){
-      alert("잘못된 접근입니다.");
-      this.$router.push({name : 'PayOnetime'});
-    }
+    // if(!this.receive_option){
+    //   alert("잘못된 접근입니다.");
+    //   this.$router.push({name : 'PayOnetime'});
+    // }
     if(JSON.parse(localStorage.getItem("use_coupon"))){
       this.is_coupon = JSON.parse(localStorage.getItem("use_coupon"));
       this.is_discount = (this.menu_fee+this.option_fee) * parseInt(this.is_coupon.dc_percent) / 100;
@@ -121,7 +121,6 @@ export default {
       localStorage.removeItem("first_menu");
       localStorage.removeItem("menu_fee");
       localStorage.removeItem("main_plc");
-
       localStorage.removeItem("pin2_seq_no");
       localStorage.removeItem("second_menu");
       localStorage.removeItem("option_fee");
@@ -131,94 +130,100 @@ export default {
       this.$router.push({name : 'PayOnetime'});
     },
     pay(){
-      var data = {
-        "mallId": "T0001997", //KICC 에서 발급한상점 ID
-        "payMethodTypeCode": "81", //빌키발급 : 81
-        "currency": "00", //통화코드  00:원화
-        "clientTypeCode": "00", //결제창 종류 00: 통합결제창 전용
-        "returnUrl": "localhost/payOnetimeOrder01", //인증응답 URL 
-        "deviceTypeCode": "pc", // 교객결제 단말
-        "shopOrderNo": "ORDER_12345678901234567890", // 상점 주문번호
-        "amount":this.tot_fee, // 결제요청금액
-        "orderInfo": { //주문정보
-        "goodsName": this.first_menu //상품명
-        },
-        "payMethodInfo":{ //결제수단관리정보
-          "billKeyMethodInfo":{ // 빌키발급 옵션
-          "certType" : "1" // 빌키발급 인증타입 1 : 카드번호,유횩간,생년월일
-          }
-        }
-      };
-      // this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', data2,
-      // {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-      //   console.log(res.data);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // })
-      this.$http.post('http://carwash.iptime.org:3000/userapp/ChkRegCard', {
-        mem_no : sessionStorage.getItem("mem_no"),
-      },{headers : {
-      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      if(this.tot_fee == 0){
+        this.$router.push({name : 'PayReceipt'});
       }
-      }).then(
-      (res) => {  // 
-        if(res.data.result_code == "Y"){
-          alert("등록된 카드가 없습니다. 카드를 등록해주세요.");
-          this.$router.push({name : 'PaymentVue'});
+      else{
+        if(this.menu_fee == 0){
+          this.$router.push({name : 'PayReceipt'});
         }
-        else{ //결제진행
-          this.waiting = true;
-          this.$http.post('http://carwash.iptime.org:3000/userapp/getRegCardUse', {
+        else{
+          this.$http.post(this.$server+'/userapp/ChkRegCard', {
             mem_no : sessionStorage.getItem("mem_no"),
           },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
           }
           }).then(
-          (res) => {  
-            var token = res.data.token;
-            var req_data = {
-              "mallId":"05546809", //KICC에서 발급한 상점ID
-              "shopTransactionId":"20210908101251", // 상점거래고유번호
-              "amount":this.tot_fee, // 가격
-              "shopOrderNo" : "20210908102459", //상점 주문번호
-              "approvalReqDate":"20210908", //승인요청일자 YYYYMMDD
-              "payMethodInfo":{ //결제수단관리정보
-              "billKeyMethodInfo":{
-              "batchKey" : token,
-              }
-              },
-              "orderInfo":{
-              "goodsName" : this.first_menu // 상품명
-              }
-            };
-            this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', req_data,
-              {headers : {
+          (res) => {  // 
+            if(res.data.result_code == "Y"){
+              alert("등록된 카드가 없습니다. 카드를 등록해주세요.");
+              this.$router.push({name : 'PaymentVue'});
+            }
+            else{ //결제진행
+              this.waiting = true;
+              this.$http.post(this.$server+'/userapp/getRegCardUse', {
+                mem_no : sessionStorage.getItem("mem_no"),
+              },{headers : {
               auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
               }
-            }).then(
-            (res) => {  
-                console.log(res.data);
-                if(res.data.resCD == "0000"){
-                  console.log("결제성공");
-                  this.waiting = false;
-                  this.$router.push({name : 'PayVue'});
-                }
-                else{
-                  console.log("결제오류");
-                  alert("결제 오류입니다.");
-                  this.waiting = false;
-                  this.$router.push({name : 'PayVue'});
+              }).then(
+              (res) => {  
+                var token = res.data.token;
+                console.log(token);
+                console.log(this.tot_fee);
+                console.log(this.first_menu);
+                var today = new Date();
+                var year = today.getFullYear();
+                var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                var day = ('0' + today.getDate()).slice(-2);
 
-                }
-            })
+                var id = new Uint32Array(1);
+                var trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString();
+                do{
+                  trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
+                }while(trans_id.length!=6);
 
-            
+                trans_id = year+month+day+trans_id;
+                var req_data = {
+                  "mallId":"T0001997", //KICC에서 발급한 상점ID
+                  "shopTransactionId":trans_id, // 상점거래고유번호
+                  "amount":this.tot_fee, // 가격
+                  "shopOrderNo" : trans_id, //상점 주문번호
+                  "approvalReqDate":"20210908", //승인요청일자 YYYYMMDD
+                  "payMethodInfo":{ //결제수단관리정보
+                  "billKeyMethodInfo":{
+                  "batchKey" : token,
+                  }
+                  },
+                  "orderInfo":{
+                  "goodsName" : this.first_menu // 상품명
+                  }
+                };
+                this.$http.post('https://testpgapi.easypay.co.kr/api/trades/approval/batch', req_data,
+                  {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
+                ).then(
+                (res) => {  
+                    console.log(res.data);
+                    if(res.data.resCD == "0000"){
+                      console.log("결제성공");
+                      console.log(res.data.resMsg);
+                      this.waiting = false;
+                      localStorage.setItem("is_type","membership");
+                      localStorage.setItem("tr_date",res.data.transactionDate);
+                      localStorage.setItem("auth_no",res.data.pgCno);
+                      localStorage.setItem("tr_no",res.data.shopTransactionId);
+                      localStorage.setItem("token",token);
+                      localStorage.setItem("card_no",res.data.paymentInfo.cardInfo.cardNo);
+                      localStorage.setItem("card_name",res.data.paymentInfo.cardInfo.issuerName);
+                      // this.$router.push({name : 'PayReceipt'});
+                    }
+                    else{
+                      console.log("결제 오류입니다. 관리자에게 문의하세요.");
+                      // alert("결제 오류입니다. 관리자에게 문의하세요.");
+                      this.waiting = false;
+                      // this.$router.push({name : 'PayVue'});
+
+                    }
+                })
+
+                
+              })
+            }
           })
         }
-      })
-      // this.$router.push({name : 'Service_Prepare'});
-      // this.$router.push({name : 'PayReceipt'});
+        // this.$router.push({name : 'Service_Prepare'});
+        // this.$router.push({name : 'PayReceipt'});
+      }
     }
   }
 };

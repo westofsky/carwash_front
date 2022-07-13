@@ -41,9 +41,9 @@
             <p class="title">결제 정보</p>
             <div class="onetime_pay_info">
                 <ul>
-                    <li>결제승인번호 : WD2022051402</li>
-                    <li>결제시간 : 2022/05/14/ 14:26:35</li>
-                    <li>결제수단 : 농협카드 5461-11**-948</li>
+                    <li>결제승인번호 : {{approve.auth_no}}</li>
+                    <li>결제시간 : {{time}}</li>
+                    <li>결제수단 : {{approve.card_name}}카드 {{approve.card_no}}</li>
                     <li>결제밴사 : KICC</li>
                 </ul>
             </div>
@@ -76,21 +76,29 @@ export default {
       pin2_seq_no : JSON.parse(localStorage.getItem("pin2_seq_no")) || "" ,
       second_menu : JSON.parse(localStorage.getItem("second_menu")) || [],
       option_fee : JSON.parse(localStorage.getItem("option_fee")) || 0,
-      // option_plc : JSON.parse(localStorage.getItem("option_plc")) || '',
+      option_plc : JSON.parse(localStorage.getItem("option_plc")) || '',
       third_menu : '',
       brush_plc : JSON.parse(localStorage.getItem("brush_plc")) || '',
       is_coupon : [],
       is_discount : 0,
       tot_fee : 0,
+      approve : {
+        auth_no : localStorage.getItem("auth_no") || "",
+        card_no : localStorage.getItem("card_no").substring(0,4) +'-'+localStorage.getItem("card_no").substring(4,8)+'-****-****'  || "",
+        card_name : localStorage.getItem("card_name") || "",
+        time : localStorage.getItem("tr_date") || "",
+      },
+      time : "",
     }
   },
   beforeCreate(){
+    
+  },
+  mounted (){
     if(!JSON.parse(localStorage.getItem("third_menu")))
       this.third_menu = "Y"
     else
       this.third_menu = "N"
-  },
-  mounted (){
     if(JSON.parse(localStorage.getItem("use_coupon"))){
       this.is_coupon = JSON.parse(localStorage.getItem("use_coupon"));
       this.is_discount = (this.menu_fee+this.option_fee) * parseInt(this.is_coupon.dc_percent) / 100;
@@ -98,63 +106,69 @@ export default {
     }
     else
       this.tot_fee = this.menu_fee + this.option_fee;
-    console.log(this.is_coupon.length);
-    //승인 후 사용 결제 세차 정보 저장 처리
-    if(JSON.parse(localStorage.getItem("use_coupon")) && 0){
-        this.$http.post('http://carwash.iptime.org:3000/userapp/setWashpay', {
-            mem_no : sessionStorage.getItem("mem_no"),
-            is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
-            use_type : 'WUT001',
-            prod_name : this.first_menu,
-            prod_code : this._pin_seq_no,
-            is_brush : this.third_menu,
-            wash_fee : this.menu_fee,
-            dc_fee : this.is_discount,
-            option_fee : this.option_fee,
-            pay_fee : this.tot_fee,
-            plc_code : this.main_plc,
-            // pay_type : 'WPT001' or 'WPT002' or 'WPT003'
-            terminal_type : 'WTT002',            
-        },{
-        headers : {
-            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-        }
-        }).then(
-        (res) => {  // 
-            if(res.data.result_code=="Y"){
-                console.log("결제 정보 저장 완료");
-                var pay_seq_no = res.data.pay_seq_no;
-                
-    //승인 후 사용 결제 승인 저장 처리
-                this.$http.post('http://carwash.iptime.org:3000/userapp/setApprovalPay', {
-                    mem_no : sessionStorage.getItem("mem_no"),
-                    pay_fee : this.tot_fee,
-                    // trd_date : 
-                    // trd_time : 
-                    // auth_no :
-                    // tr_no :
-                    // token : 
-                    pay_seq_no : pay_seq_no,
-                },{
-                headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                }
-                }).then(
-                (res) => {  // 
-                    if(res.data.result_code=="Y"){
-                        console.log("결제 승인 정보 저장 완료");
 
-                    }
-                }
-                );
+    this.time = this.approve.time.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6');
+    // 승인 후 사용 결제 세차 정보 저장 처리
+    this.$http.post(this.$server+'/userapp/setWashpay', {
+        mem_no : sessionStorage.getItem("mem_no"),
+        is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+        use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : 'WUT002',
+        prod_name : this.first_menu,
+        prod_code : this.pin_seq_no,
+        option_code : this.pin2_seq_no || '',
+        option_name : this.second_menu || '',
+        is_brush : this.third_menu,
+        wash_fee : this.menu_fee,
+        dc_fee : this.is_discount,
+        option_fee : this.option_fee || 0,
+        pay_fee : this.tot_fee,
+        plc_code : this.main_plc,
+        pay_type : (this.menu_fee==0) ? 'WPT002' : 'WPT001',
+        terminal_type : 'WTT002',
+    },{
+    headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+    }
+    }).then(
+    (res) => {  // 
+        if(res.data.result_code=="Y"){
+            console.log("결제 정보 저장 완료");
+            var pay_seq_no = res.data.pay_seq_no;
+            //승인 후 사용 결제 승인 저장 처리
+            if(this.menu_fee==0){ // 끝 
+              console.log("결제된 금액 없음");
+              this.confirm();
+            }
+            else{
+              this.$http.post(this.$server+'/userapp/setApprovalPay', {
+                  mem_no : sessionStorage.getItem("mem_no"),
+                  pay_fee : this.tot_fee,
+                  trd_date : this.approve.time.substring(0,8),
+                  trd_time : this.approve.time.substring(8,this.approve.time.length),
+                  auth_no : localStorage.getItem("auth_no"),
+                  tr_no : localStorage.getItem("tr_no"),
+                  token : localStorage.getItem("token"),
+                  pay_seq_no : pay_seq_no,
+              },{
+              headers : {
+                  auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+              }
+              }).then(
+              (res) => {  // 
+                  if(res.data.result_code=="Y"){
+                      console.log("결제 승인 정보 저장 완료");
+                      this.confirm();
+                  }
+              }
+              );
             }
         }
-        );
     }
+    );
 
     //승인 후 사용 coupon 처리
     if(JSON.parse(localStorage.getItem("use_coupon")) && 0){
-        this.$http.post('http://carwash.iptime.org:3000/userapp/setCouponUse', {
+        this.$http.post(this.$server+'/userapp/setCouponUse', {
             coupon_code : JSON.parse(localStorage.getItem("use_coupon")).coupon_code,
         },{
         headers : {
@@ -164,7 +178,8 @@ export default {
         (res) => {  // 
             if(res.data.result_code=="Y")
                 console.log("coupon사용 완료");
-        }
+                this.confirm();
+            }
         );
     }
   },
@@ -175,13 +190,19 @@ export default {
         localStorage.removeItem("first_menu");
         localStorage.removeItem("menu_fee");
         localStorage.removeItem("main_plc");
-
         localStorage.removeItem("pin2_seq_no");
         localStorage.removeItem("second_menu");
         localStorage.removeItem("option_fee");
         localStorage.removeItem("option_plc");
         localStorage.removeItem("third_menu");
         localStorage.removeItem("brush_plc");
+        localStorage.removeItem("is_type");
+        localStorage.removeItem("tr_date");
+        localStorage.removeItem("auth_no");
+        localStorage.removeItem("tr_no");
+        localStorage.removeItem("token");
+        localStorage.removeItem("card_name");
+        localStorage.removeItem("card_no");
         this.$router.push({name : 'PayVue'});
     }
   }

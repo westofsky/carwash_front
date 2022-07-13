@@ -109,7 +109,7 @@ export default {
   },
 
   beforeCreate() {
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getMemDetail', {
+    this.$http.post(this.$server+'/userapp/getMemDetail', {
         mem_no : sessionStorage.getItem("mem_no"),
     },{headers : {
     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -208,7 +208,7 @@ export default {
         this.$refs.newpwchk.focus();
         return false;
       }
-      this.$http.post('http://carwash.iptime.org:3000/userapp/setMemPwd', {
+      this.$http.post(this.$server+'/userapp/setMemPwd', {
             mem_no : sessionStorage.getItem("mem_no"),
             mem_pwd : this.change_newpw,
         },{headers : {

@@ -106,7 +106,7 @@ export default {
     }
   },
   beforeCreate(){
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getCouponList', {
+    this.$http.post(this.$server+'/userapp/getCouponList', {
         coupon_type : 'CCT001',
         mem_no : sessionStorage.getItem("mem_no"),
       },{

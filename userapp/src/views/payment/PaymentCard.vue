@@ -232,7 +232,7 @@ import FooterVue from "../footer/FooterVue.vue";
 				}
 				console.log(this.cardNumber + "||" + this.cardName + "||" + this.cardMonth +"||"+this.cardYear+"||"+this.cardCVC);
 				if(this.$route.query.card_state = "register"){
-					this.$http.post('http://carwash.iptime.org:3000/userapp/setRegCard', {
+					this.$http.post(this.$server+'/userapp/setRegCard', {
 						mem_no : sessionStorage.getItem("mem_no"),
 						card_no : this.cardNumber,
 						owner : this.cardName,
@@ -240,7 +240,7 @@ import FooterVue from "../footer/FooterVue.vue";
 						exp_yy : this.cardYear,
 						cvc_no : this.cardCVC,
 						password_no : this.card_passno,
-
+						token : "test",
 					},{headers : {
 					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
 					}
@@ -256,7 +256,7 @@ import FooterVue from "../footer/FooterVue.vue";
 					})
 				}
 				else if(this.$router.query.card_state = "change"){
-					this.$http.post('http://carwash.iptime.org:3000/userapp/setUpdateCard', {
+					this.$http.post(this.$server+'/userapp/setUpdateCard', {
 						mem_no : sessionStorage.getItem("mem_no"),
 						card_no : this.cardNumber,
 						owner : this.cardName,

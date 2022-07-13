@@ -78,7 +78,7 @@ export default {
     }
   },
   mounted (){
-    this.$http.post('http://carwash.iptime.org:3000/userapp/getPayDetail', {
+    this.$http.post(this.$server+'/userapp/getPayDetail', {
       pay_seq : this.$route.query.key,
     },{headers : {
     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
