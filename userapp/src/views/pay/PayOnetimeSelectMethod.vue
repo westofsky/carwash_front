@@ -89,7 +89,7 @@ export default {
 
     },
     naverpay(){
-
+        this.$router.push({name : 'Service_Prepare'});
     },
     pay(){
         this.$http.post(this.$server+'/userapp/ChkRegCard', {
