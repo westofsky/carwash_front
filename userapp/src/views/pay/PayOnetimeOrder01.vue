@@ -1,12 +1,6 @@
 <template>
   <div id="wrapper">
-    <div class="waiting" v-if="waiting">
-			<img src="../../assets/img/ZombieingDoodle.png" class="bored-image"/>
-			<div class="waiting-notice">
-				<img src="../../assets/img/sync.svg" class="sync-image"/>
-				처리중입니다.. 잠시만 기다려주세요.
-			</div>
-		</div>
+    
     <div id="content_wrap" class="pay_onetime_order_01">
       <div id="top">
         <div id="nav">
@@ -92,7 +86,6 @@ export default {
       is_coupon : [],
       is_discount : 0,
       tot_fee : 0,
-      waiting : false,
     }
   },
   beforeCreate(){
@@ -113,6 +106,7 @@ export default {
     }
     else
       this.tot_fee = this.menu_fee + this.option_fee;
+    localStorage.setItem("tot_fee",this.tot_fee);
   },
   methods : {
     before_reset(){
