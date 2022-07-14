@@ -67,6 +67,7 @@ export default {
     else
       this.third_menu = "N"
     this.tot_fee = this.menu_fee;
+    localStorage.setItem("tot_fee",this.tot_fee);
   },
   methods : {
     before_reset(){
@@ -122,8 +123,8 @@ export default {
               var req_data = {
                 "mallId":"05562973", //KICC에서 발급한 상점ID
                 "shopTransactionId":trans_id, // 상점거래고유번호
-                // "amount":this.tot_fee, // 가격
-                "amount":10,
+                "amount":this.tot_fee, // 가격
+                // "amount":10,
                 "shopOrderNo" : trans_id, //상점 주문번호
                 "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                 "payMethodInfo":{ //결제수단관리정보
