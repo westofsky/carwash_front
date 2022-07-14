@@ -5,6 +5,10 @@ import './assets/css/add.css';
 import './assets/css/style.css';
 import VueHead from 'vue-head';
 import HeaderVue from './views/header/Header';
+import axios from 'axios';
+
+Vue.prototype.$server = 'https://app.sparkpluswash.com:9000';
+Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false
 Vue.use(VueHead)

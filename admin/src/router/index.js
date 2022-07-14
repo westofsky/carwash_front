@@ -23,6 +23,18 @@ import Setting04 from '../views/setting/Setting04';
 
 Vue.use(VueRouter)
 
+const requireAuth = () => (to, from, next) =>{
+  if(localStorage.getItem("auto_admin_id")){
+    return next();
+  }
+	else{
+    if (sessionStorage.getItem("admin_id")){
+      return next();
+    }
+    alert('잘못된 접근입니다. 로그인 해주세요');
+    next('/');
+  }
+}
 const routes = [
   {
     path: '/',

@@ -164,7 +164,6 @@ export default {
                             // alert("결제 오류입니다. 관리자에게 문의하세요.");
                             this.waiting = false;
                             // this.$router.push({name : 'PayVue'});
-
                     }
                 })
                 })
