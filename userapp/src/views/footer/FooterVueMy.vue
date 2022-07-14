@@ -7,7 +7,7 @@
             <img class="on" src="../../assets/img/nav_home_on.svg" alt="홈">
             <p>홈</p>
           </a> -->
-        <router-link to="/homeBasic">
+        <router-link to="/homeBasic" >
           <img class="off" src="../../assets/img/nav_home_off.svg" alt="홈">
           <img class="on" src="../../assets/img/nav_home_on.svg" alt="홈">
           <p>홈</p>
@@ -43,7 +43,7 @@
             <img class="on" src="../../assets/img/nav_my_on.svg" alt="내정보">
             <p>내정보</p>
           </a> -->
-        <router-link to="/myInfoList">
+        <router-link to="/myInfoList" class="active">
           <img class="off" src="../../assets/img/nav_my_off.svg" alt="내정보">
           <img class="on" src="../../assets/img/nav_my_on.svg" alt="내정보">
           <p>내정보</p>

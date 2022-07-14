@@ -19,7 +19,7 @@
             <img class="on" src="../../assets/img/nav_pay_on.svg" alt="요금결제">
             <p>요금결제</p>
           </a> -->
-        <router-link to="/payVue">
+        <router-link to="/payVue" class="active">
           <img class="off" src="../../assets/img/nav_pay_off.svg" alt="요금결제">
           <img class="on" src="../../assets/img/nav_pay_on.svg" alt="요금결제">
           <p>요금결제</p>

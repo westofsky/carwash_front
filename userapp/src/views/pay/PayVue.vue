@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
+import FooterVue from "../footer/FooterVuePay.vue";
 
 export default {
   components: {

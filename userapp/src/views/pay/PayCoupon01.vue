@@ -25,11 +25,12 @@
           </div>
           <div class="coupon_list_wrap">
             <ul>
+              <p v-if="this.coupon_list.length == 0" style="text-align: center;">사용 가능한 쿠폰이 없습니다.</p>
               <li class="coupon_list" v-for="(value, index) in this.coupon_list" :key="index">
                 <div class="coupon_name">
                   <img v-if = "get_detail(value.coupon_code) == 1" src="../../assets/img/content/ico_coupon_percent.svg" alt="">
                   <img v-else src="../../assets/img/content/ico_coupon_free.svg" alt="">
-                  <p>{{value.coupon_name}} {{value.rest_count}}</p>
+                  <p>{{value.coupon_name}}</p>
                 </div>
                 <div class="coupon_info">
                   <ul>
@@ -50,7 +51,7 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
+import FooterVue from "../footer/FooterVueCoupon.vue";
 
 export default {
   components: {
@@ -71,7 +72,7 @@ export default {
   methods: {
     async get_couponlist(){
       this.$http.post(this.$server+'/userapp/getCouponList01', {
-      mem_no : mem_no,
+      mem_no : this.mem_no,
       is_use : 'Y'
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -81,13 +82,13 @@ export default {
       })
     },
     async get_detail(code){
-      this.$http.post(this.$server+'/userapp/getCouponList', {
+      this.$http.post(this.$server+'/userapp/getCouponDetail', {
       coupon_code : code
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
       }).then((res) => {
-        if(res.data[0].dc_percent > 0){
+        if(res.data.dc_percent > 0){
           return 1
         }else{
           return 0

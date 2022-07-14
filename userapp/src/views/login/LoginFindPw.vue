@@ -27,19 +27,19 @@
 
 
             <p class="PdT30">
-              <input type="radio" id="type01" name="memtype" checked><label for="type01">개인회원</label>
-              <input type="radio" id="type02" name="memtype"><label for="type02">FLEET회원</label>
+              <input type="radio" id="01" value="01" name="memtype" v-model="id_type"><label for="01">개인회원</label>
+              <input type="radio" id="02" value="02" name="memtype" v-model="id_type"><label for="02">FLEET회원</label>
             </p>
 
 
-            <form id="" class="login_form fleet" action="" style="display: block;">
-              <div class="input_fleet_id MgT0"><label for="fid">아이디</label><input type="text" name="fid" id="fid"
+            <div class="login_form fleet" action="" style="display: block;">
+              <div class="input_fleet_id MgT0"><label for="fid">아이디</label><input v-model="mem_id" type="text" name="fid" id="fid"
                   placeholder="예) C123456">
               </div>
-              <div class="input_fleet_pw"><label for="fmo">휴대폰번호</label><input type="text" name="fmo" id="fmo"
-                  placeholder="예) 01012345678" class="TxtaR"></div>
-              <input type="submit" value="비밀번호 재설정">
-            </form>
+              <div class="input_fleet_pw"><label for="fleetPW">휴대폰번호</label><input v-model="mobile_num" type="text" name="mobile"
+                  id="fleetPW" placeholder="예) 01012345678" class="TxtaR"></div>
+              <input type="submit" @click="send_form" value="아이디 찾기">
+            </div>
 
           </div>
         </section>
@@ -53,8 +53,39 @@
 import FooterVue from "../footer/FooterVue.vue";
 
 export default {
+  data(){
+    return{
+      mobile_num : '',
+      id_type : '',
+      mem_id : ''
+    }
+  },
   components: {
     FooterVue
+  },
+  methods :{
+    async send_form(){
+      console.log(this.mobile_num)
+      console.log(this.id_type)
+      console.log(this.mem_id)
+      if(this.mobile_num != '' && this.id_type != '' && this.mem_id){
+        console.log('ok')
+        this.$http.post(this.$server+'/userapp/chkLostPw', {
+          mem_type : this.id_type,
+          phone_no : this.mobile_num,
+          mem_id : this.mem_id
+        },{headers : {
+            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+          }
+        }).then((res) => {
+          console.log('ok2')
+          console.log(res)
+        })
+      }
+      else{
+        alert('값을 입력해주세요')
+      }
+    }
   }
 };
 </script>

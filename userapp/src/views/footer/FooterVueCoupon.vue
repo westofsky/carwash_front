@@ -7,7 +7,7 @@
             <img class="on" src="../../assets/img/nav_home_on.svg" alt="홈">
             <p>홈</p>
           </a> -->
-        <router-link to="/homeBasic">
+        <router-link to="/homeBasic" >
           <img class="off" src="../../assets/img/nav_home_off.svg" alt="홈">
           <img class="on" src="../../assets/img/nav_home_on.svg" alt="홈">
           <p>홈</p>
@@ -31,7 +31,7 @@
             <img class="on" src="../../assets/img/nav_coupon_on.svg" alt="쿠폰">
             <p>쿠폰</p>
           </a> -->
-        <router-link to="/payCoupon01">
+        <router-link to="/payCoupon01" class="active">
           <img class="off" src="../../assets/img/nav_coupon_off.svg" alt="쿠폰">
           <img class="on" src="../../assets/img/nav_coupon_on.svg" alt="쿠폰">
           <p>쿠폰</p>

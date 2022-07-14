@@ -29,6 +29,7 @@
           </div>
           <div class="coupon_list_wrap">
             <ul>
+              <p v-if="this.coupon_list.length == 0" style="text-align: center;">사용한 쿠폰이 없습니다.</p>
               <li class="coupon_list" v-for="(value, index) in this.coupon_list" :key="index">
                 <div class="coupon_name">
                   <img v-if = "get_detail(value.coupon_code) == 1" src="../../assets/img/content/ico_coupon_percent.svg" alt="">
@@ -43,39 +44,6 @@
                   </ul>
                 </div>
               </li>
-              <li class="coupon_list">
-                <div class="coupon_name">
-                  <img src="../../assets/img/content/ico_coupon_free.svg" alt="">
-                  <p>Gift 쿠폰_BUBBLE (1/5)</p>
-                </div>
-                <div class="coupon_info">
-                  <ul>
-                    <li>쿠폰번호 : <span class="coupon_num">WDC2022050227</span></li>
-                    <li>발급일자 : <span class="coupon_date">2022/05/02 10:52:39</span></li>
-                    <li>유효기간 : <span class="coupon_period">사용완료</span></li>
-                    <li>QR쿠폰번호 : <span class="coupon_QRnum">WDC2022050227</span></li>
-                  </ul>
-
-                </div>
-              </li>
-
-              <li class="coupon_list">
-                <div class="coupon_name">
-                  <img src="../../assets/img/content/ico_coupon_percent.svg" alt="">
-                  <p>Gift 쿠폰_BUBBLE (1/5)</p>
-                </div>
-                <div class="coupon_info">
-                  <ul>
-                    <li>쿠폰번호 : <span class="coupon_num">WDC2022050227</span></li>
-                    <li>발급일자 : <span class="coupon_date">2022/05/02 10:52:39</span></li>
-                    <li>유효기간 : <span class="coupon_period">만료</span></li>
-                    <li>QR쿠폰번호 : <span class="coupon_QRnum">WDC2022050227</span></li>
-                  </ul>
-
-                </div>
-              </li>
-
-
             </ul>
           </div>
         </section>
@@ -102,17 +70,19 @@ export default {
     }
   },
   mounted(){
+    console.log(this.mem_no);
     this.get_couponlist();
   },
   methods: {
     async get_couponlist(){
       this.$http.post(this.$server+'/userapp/getCouponList01', {
-      mem_no : 'WYP0000016',
+      mem_no : this.mem_no,
       is_use : 'N'
       },{headers : {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
       }).then((res) => {
+        console.log(res.data)
         this.coupon_list = res.data;
       })
     },

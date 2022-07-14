@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
+import FooterVue from "../footer/FooterVueMy.vue";
 
 export default {
   components: {

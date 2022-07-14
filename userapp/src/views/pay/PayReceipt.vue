@@ -43,9 +43,7 @@
                 <ul>
                     <li>결제승인번호 : {{approve.auth_no}}</li>
                     <li>결제시간 : {{time}}</li>
-                    <li v-if="what_pay =='card'">결제수단 : {{approve.card_name}}카드 {{approve.card_no}}</li>
-                    <li v-else-if="what_pay=='naver'">결제수단 : 네이버페이</li>
-                    <li v-else>결제수단 : 카카오페이</li>
+                    <li>결제수단 : {{approve.card_name}}카드 {{approve.card_no}}</li>
                     <li>결제밴사 : KICC</li>
                 </ul>
             </div>
@@ -91,7 +89,6 @@ export default {
         time :  ( localStorage.getItem("tr_date") != null) ?  localStorage.getItem("tr_date") : "",
       },
       time : (localStorage.getItem("tr_date") !=null) ? localStorage.getItem("tr_date").replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6') : "",
-      what_pay : ( localStorage.getItem("what_pay") != null) ?  localStorage.getItem("what_pay") : "",
     }
   },
   beforeCreate(){

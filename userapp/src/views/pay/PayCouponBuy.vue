@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
+import FooterVue from "../footer/FooterVueCoupon.vue";
 
 export default {
   components: {
@@ -112,6 +112,9 @@ export default {
 				oneType[i].checked = 'true';
 			});
 		}
+    alert("준비중입니다.")
+    this.$router.go(-1);
   }
+
 };
 </script>

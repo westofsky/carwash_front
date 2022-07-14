@@ -7,7 +7,7 @@
             <img class="on" src="../../assets/img/nav_home_on.svg" alt="홈">
             <p>홈</p>
           </a> -->
-        <router-link to="/homeBasic">
+        <router-link to="/homeBasic" class="active">
           <img class="off" src="../../assets/img/nav_home_off.svg" alt="홈">
           <img class="on" src="../../assets/img/nav_home_on.svg" alt="홈">
           <p>홈</p>

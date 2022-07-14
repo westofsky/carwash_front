@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
+import FooterVue from "../footer/FooterVueHome.vue";
 
 export default {
   components: {
