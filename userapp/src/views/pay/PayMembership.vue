@@ -24,7 +24,7 @@
               <a>
                 <span class="img"><img class="off" :src="getSrcP(product.main_img)" alt=""><img class="on" :src="getSrcP(product.main_img)" alt=""></span>
                 <span class="info"><span class="fontBold">{{product.prod_name}}</span>{{product.prod_remarks}}</span>
-                <span class="price">{{product.prod_fee}}</span>
+                <span class="price">{{return_one(product.prod_fee)}}</span>
                 <span class="check"></span>
               </a>
             </li>
@@ -149,6 +149,10 @@ export default {
       localStorage.removeItem("third_menu");
       localStorage.removeItem("brush_plc");
       this.$router.push({name : 'PayVue'});
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
     },
   },
   computed : {

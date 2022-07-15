@@ -18,23 +18,23 @@
             <table>
               <tr>
                 <td class="table_name">{{first_menu}}</td>
-                <td class="table_price">{{menu_fee}}원</td>
+                <td class="table_price">{{return_one(menu_fee)}}원</td>
               </tr>
               <tr v-for="(option,index) in receive_option" :key="index">
                 <td class="table_name">옵션추가 / {{option.option_name}}</td>
-                <td class="table_price">{{option.option_fee}}원</td>
+                <td class="table_price">{{return_one(option.option_fee)}}원</td>
               </tr>
               <tr class="total_price">
                 <td>합계</td>
-                <td class="fontBold fRed">{{menu_fee+option_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(menu_fee+option_fee)}}원</td>
               </tr>
               <tr class="total_price" style="border-top : none;" v-if="is_coupon.length">
                 <td>할인금액</td>
-                <td class="table_price">{{is_discount}}원</td>
+                <td class="table_price">{{return_one(is_discount)}}원</td>
               </tr>
               <tr class="total_price" v-if="is_coupon.length">
                 <td>결제금액</td>
-                <td class="fontBold fRed">{{tot_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(tot_fee)}}원</td>
               </tr>
             </table>
           </div>
@@ -157,7 +157,27 @@ export default {
               (res) => {  // 
                   if(res.data.result_code=="Y"){
                       console.log("결제 승인 정보 저장 완료");
-                      // this.confirm();
+                      this.$http.post(this.$server+'/userapp/getCouponReg', {
+                        mem_no : sessionStorage.getItem("mem_no"),
+                        coupon_type : "CCT003",
+                        rest_count : 0,
+                        is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+                        prod_name : this.first_menu,
+                        dc_fee : 0,
+                        dc_percent:0,
+                        plc_code : this.main_plc,
+                      },{
+                      headers : {
+                          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                      }
+                      }).then(
+                      (res) => {  // 
+                          if(res.data.result_code=="Y"){
+                              console.log("coupon등록완료");
+                              // this.confirm();
+                          }
+                      }
+                    );
                   }
               }
               );
@@ -204,7 +224,11 @@ export default {
         localStorage.removeItem("card_name");
         localStorage.removeItem("card_no");
         this.$router.push({name : 'PayVue'});
-    }
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
+    },
   }
 };
 </script>

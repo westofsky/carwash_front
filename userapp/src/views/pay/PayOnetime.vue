@@ -24,7 +24,7 @@
               <a>
                 <span class="img"><img class="off" :src="getSrcP(product.main_img)" alt=""><img class="on" :src="getSrcP(product.main_img)" alt=""></span>
                 <span class="info"><span class="fontBold">{{product.prod_name}}</span>{{product.prod_remarks}}</span>
-                <span class="price">{{product.prod_fee}}</span>
+                <span class="price">{{return_one(product.prod_fee)}}</span>
                 <span class="check"></span>
               </a>
             </li>
@@ -64,7 +64,7 @@
           <ul class="oneOption_wrap check_list" id="option01">
             <li v-for="(option , index) in option_list" :key="index" @click="detect_change">
               <div class="option_img"><img :src="getSrcO(option.option_img)" alt=""></div>
-              <label :for="getValO(option.option_code)"><span class="option_name">{{option.option_name}}</span><span class="option_price">+{{option.option_fee}}</span></label>
+              <label :for="getValO(option.option_code)"><span class="option_name">{{option.option_name}}</span><span class="option_price">+{{return_one(option.option_fee)}}</span></label>
               <input type="checkbox" name="oneOption01" :id="getValO(option.option_code)" :value="option.option_code" v-model="selected.option" class="oneOption">
               <div class="check"></div>
             </li>
@@ -350,6 +350,10 @@ export default {
       localStorage.removeItem("third_menu");
       localStorage.removeItem("brush_plc");
         this.$router.push({name : 'PayVue'});
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
     },
   },
   computed : {

@@ -19,23 +19,23 @@
             <table>
               <tr>
                 <td class="table_name">{{first_menu}}</td>
-                <td class="table_price">{{menu_fee}}원</td>
+                <td class="table_price">{{return_one(menu_fee)}}원</td>
               </tr>
               <tr v-for="(option,index) in receive_option" :key="index">
                 <td class="table_name">옵션추가 / {{option.option_name}}</td>
-                <td class="table_price">{{option.option_fee}}원</td>
+                <td class="table_price">{{return_one(option.option_fee)}}원</td>
               </tr>
               <tr class="total_price">
                 <td>합계</td>
-                <td class="fontBold fRed">{{menu_fee+option_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(menu_fee+option_fee)}}원</td>
               </tr>
-              <tr class="total_price" style="border-top : none;" v-if="is_coupon.length">
+              <tr class="total_price" style="border-top : none;" v-if="is_coupon">
                 <td>할인금액</td>
-                <td class="table_price">{{is_discount}}원</td>
+                <td class="table_price">{{return_one(is_discount)}}원</td>
               </tr>
-              <tr class="total_price" v-if="is_coupon.length">
+              <tr class="total_price" v-if="is_coupon">
                 <td>결제금액</td>
-                <td class="fontBold fRed">{{tot_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(tot_fee)}}원</td>
               </tr>
             </table>
           </div>
@@ -121,6 +121,8 @@ export default {
       localStorage.removeItem("option_plc");
       localStorage.removeItem("third_menu");
       localStorage.removeItem("brush_plc");
+      localStorage.removeItem("use_coupon");
+      localStorage.removeItem("tot_fee");
       this.$router.push({name : 'PayOnetime'});
     },
     pay(){
@@ -130,7 +132,11 @@ export default {
       else{
         this.$router.push({name : 'PayOnetimeSelectMethod'});
       }
-    }
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
+    },
   }
 };
 </script>

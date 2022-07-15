@@ -30,9 +30,12 @@
 					<p class="sec_txt"><span class="black fontBold">모바일 간편결제 결제<br></span>1회권 세차권만 결제 가능합니다.</p>
 				</div>
 				<div class="pay_register">
-					<a class="naverpay" @click ="naverpay('11')" href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 카드 결제</a>
-					<a class="naverpay" @click ="naverpay('50')" href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 포인트 결제</a>
-					<a class="kakaopay" @click ="kakaopay" href="javascript:void(0)"><img src="../../assets/img/content/payment03.png" alt="">카카오페이 결제</a>
+					<!-- <a class="naverpay" @click ="naverpay('11')" href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 카드 결제</a> -->
+					<!-- <a class="naverpay" @click ="naverpay('50')" href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 포인트 결제</a> -->
+					<!-- <a class="kakaopay" @click ="kakaopay" href="javascript:void(0)"><img src="../../assets/img/content/payment03.png" alt="">카카오페이 결제</a> -->
+					<a class="naverpay"  href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">준비중입니다</a>
+					<a class="naverpay"  href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">준비중입니다</a>
+					<a class="kakaopay"  href="javascript:void(0)"><img src="../../assets/img/content/payment03.png" alt="">준비중입니다</a>
 				</div>
 			</section>
 			<section class="how_use">
@@ -161,8 +164,8 @@ export default {
                     var req_data = {
                         "mallId":"05562973", //KICC에서 발급한 상점ID
                         "shopTransactionId":trans_id, // 상점거래고유번호
-                        "amount":this.tot_fee, // 가격
-                        // "amount" : 10,
+                        // "amount":this.tot_fee, // 가격
+                        "amount" : 10,
                         "shopOrderNo" : trans_id, //상점 주문번호
                         "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                         "payMethodInfo":{ //결제수단관리정보
@@ -195,9 +198,30 @@ export default {
                         }
                         else{
                         console.log(res.data);
-                            console.log("결제 오류입니다. 관리자에게 문의하세요.");
-                            // alert("결제 오류입니다. 관리자에게 문의하세요.");
+                            // console.log("결제 오류입니다. 관리자에게 문의하세요.");
+                            alert("결제 오류입니다.");
                             this.waiting = false;
+                            localStorage.removeItem("send_options");
+                            localStorage.removeItem("pin_seq_no");
+                            localStorage.removeItem("first_menu");
+                            localStorage.removeItem("menu_fee");
+                            localStorage.removeItem("main_plc");
+                            localStorage.removeItem("pin2_seq_no");
+                            localStorage.removeItem("second_menu");
+                            localStorage.removeItem("option_fee");
+                            localStorage.removeItem("option_plc");
+                            localStorage.removeItem("third_menu");
+                            localStorage.removeItem("brush_plc");
+                            localStorage.removeItem("is_type");
+                            localStorage.removeItem("tr_date");
+                            localStorage.removeItem("auth_no");
+                            localStorage.removeItem("tr_no");
+                            localStorage.removeItem("token");
+                            localStorage.removeItem("card_name");
+                            localStorage.removeItem("card_no");
+                            localStorage.removeItem("use_coupon");
+                            localStorage.removeItem("tot_fee");
+                            this.$router.push({name : 'PayVue'});
                             // this.$router.push({name : 'PayVue'});
 
                         }
