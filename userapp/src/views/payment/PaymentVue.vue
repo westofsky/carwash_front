@@ -56,6 +56,9 @@ export default {
     FooterVue
   },
   mounted(){
+    if(this.$route.query.msg != undefined){
+      alert(this.$route.query.msg);
+    }
     this.$http.post(this.$server+'/userapp/ChkRegCard', {
       mem_no : sessionStorage.getItem("mem_no"),
     },{headers : {

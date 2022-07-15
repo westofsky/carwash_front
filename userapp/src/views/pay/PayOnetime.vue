@@ -167,6 +167,27 @@ export default {
       }
     }
   },
+  mounted(){
+    localStorage.removeItem("send_options");
+    localStorage.removeItem("pin_seq_no");
+    localStorage.removeItem("first_menu");
+    localStorage.removeItem("menu_fee");
+    localStorage.removeItem("main_plc");
+    localStorage.removeItem("pin2_seq_no");
+    localStorage.removeItem("second_menu");
+    localStorage.removeItem("option_fee");
+    localStorage.removeItem("option_plc");
+    localStorage.removeItem("third_menu");
+    localStorage.removeItem("brush_plc");
+    localStorage.removeItem("is_type");
+    localStorage.removeItem("tr_date");
+    localStorage.removeItem("auth_no");
+    localStorage.removeItem("tr_no");
+    localStorage.removeItem("token");
+    localStorage.removeItem("card_name");
+    localStorage.removeItem("card_no");
+    localStorage.removeItem("use_coupon");
+  },
   beforeCreate(){
     this.$http.post(this.$server+'/userapp/getMainProduct', {
         pro_type : "PGC001"

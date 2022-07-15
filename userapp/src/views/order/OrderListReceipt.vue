@@ -22,7 +22,7 @@
             <table>
               <tr>
                 <td class="table_name">합계금액</td>
-                <td class="table_price">{{return_one(wash_pay)}}원</td>
+                <td class="table_price">{{return_one(pay_fee)}}원</td>
               </tr>
               <tr>
                 <td class="table_name">할인금액</td>
@@ -30,7 +30,7 @@
               </tr>
               <tr class="total_price">
                 <td>합계</td>
-                <td class="fontBold">{{return_one(pay_fee)}}원</td>
+                <td class="fontBold">{{return_one(real_pay)}}원</td>
               </tr>
             </table>
           </div>
@@ -52,9 +52,9 @@
         <!-- <a href="#">확 인</a> -->
         <router-link to="/orderList02">확 인</router-link>
       </div>
-      <div class="btn_next">
+      <!-- <div class="btn_next" style="bottom: 102px;">
         <a @click="cancel">취 소</a>
-      </div>
+      </div> -->
     </aside>
     <FooterVue></FooterVue>
   </div>
@@ -78,6 +78,7 @@ export default {
       trno : '',
       auth_no : '',
       pay_type : '',
+      real_pay : '',
     }
   },
   mounted (){
@@ -98,7 +99,10 @@ export default {
       this.trno = res.data.trno;
       this.auth_no = res.data.auth_no;
       this.pay_type = res.data.pay_type;
-    })
+      console.log(this.trno);
+      this.real_pay = this.pay_fee-this.dc_fee
+    });
+    
   },
   methods:{
     return_one(amount){
@@ -107,51 +111,44 @@ export default {
     },
     cancel(){
       var result = confirm("취소하시겠습니까?");
+      var key =  'easypay!O0OWO2Bb';
+      // const id = this.$CryptoJS.HmacSHA256(this.auth_no+"|"+this.trno, key).toString(this.$CryptoJS.enc.Hex);
+      var today = new Date();
+      var year = today.getFullYear();
+      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+      var day = ('0' + today.getDate()).slice(-2);
       if(result){
         var req_data = {
             "mallId":"05562973", //KICC에서 발급한 상점ID
             "shopTransactionId":this.trno, // 상점거래고유번호
-            // "amount":this.tot_fee, // 가격
             "pgCno" : this.auth_no,
-            "reviseTypeCode":40,
+            "reviseTypeCode":'40',
             "amount" : this.pay_fee,
-            
-            "shopOrderNo" : trans_id, //상점 주문번호
-            "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
-            "payMethodInfo":{ //결제수단관리정보
-            "billKeyMethodInfo":{
-            "batchKey" : token,
-            }
-            },
-            "orderInfo":{
-            "goodsName" : this.first_menu // 상품명
-            }
+            "clientIp" : '127.0.0.1',
+            "clientId" : sessionStorage.getItem("mem_no"),
+            "msgAuthValue" : id,
+            "cancelReqDate" : year+month+day,
         };
-        this.$http.post('https://pgapi.easypay.co.kr/api/trades/approval/batch', req_data,
+        this.$http.post('https://testpgapi.easypay.co.kr/api/trades/revise', req_data,
             {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
         ).then(
         (res) => {  
             console.log(res.data);
             if(res.data.resCd == "0000"){
-                console.log("결제성공");
-                console.log(res.data.resMsg);
+                console.log("취소성공");
                 this.waiting = false;
-                localStorage.setItem("is_type","onetime");
-                localStorage.setItem("tr_date",res.data.transactionDate);
-                localStorage.setItem("auth_no",res.data.pgCno);
-                localStorage.setItem("tr_no",res.data.shopTransactionId);
-                localStorage.setItem("token",token);
-                localStorage.setItem("card_no",res.data.paymentInfo.cardInfo.cardNo);
-                localStorage.setItem("card_name",res.data.paymentInfo.cardInfo.issuerName);
-                localStorage.setItem("what_pay","card");
-                this.$router.push({name : 'PayReceipt'});
+                // localStorage.setItem("is_type","onetime");
+                // localStorage.setItem("tr_date",res.data.transactionDate);
+                // localStorage.setItem("auth_no",res.data.pgCno);
+                // localStorage.setItem("tr_no",res.data.shopTransactionId);
+                // localStorage.setItem("token",token);
+                // localStorage.setItem("card_no",res.data.paymentInfo.cardInfo.cardNo);
+                // localStorage.setItem("card_name",res.data.paymentInfo.cardInfo.issuerName);
+                // localStorage.setItem("what_pay","card");
+                // this.$router.push({name : 'PayReceipt'});
             }
             else{
-            console.log(res.data);
-                console.log("결제 오류입니다. 관리자에게 문의하세요.");
-                // alert("결제 오류입니다. 관리자에게 문의하세요.");
-                this.waiting = false;
-                // this.$router.push({name : 'PayVue'});
+                console.log("취소 오류.");
 
             }
         })

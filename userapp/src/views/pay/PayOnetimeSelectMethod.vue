@@ -32,7 +32,7 @@
 				<div class="pay_register">
 					<!-- <a class="naverpay" @click ="naverpay('11')" href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 카드 결제</a> -->
 					<!-- <a class="naverpay" @click ="naverpay('50')" href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">네이버페이 포인트 결제</a> -->
-					<!-- <a class="kakaopay" @click ="kakaopay" href="javascript:void(0)"><img src="../../assets/img/content/payment03.png" alt="">카카오페이 결제</a> -->
+					<a class="kakaopay" @click ="kakaopay" href="javascript:void(0)"><img src="../../assets/img/content/payment03.png" alt="">카카오페이 결제</a>
 					<a class="naverpay"  href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">준비중입니다</a>
 					<a class="naverpay"  href="javascript:void(0)"><img src="../../assets/img/content/payment02.png" alt="">준비중입니다</a>
 					<a class="kakaopay"  href="javascript:void(0)"><img src="../../assets/img/content/payment03.png" alt="">준비중입니다</a>
@@ -77,32 +77,32 @@ export default {
         this.$router.push({name : 'PayOnetimeOrder01'});
     },
     kakaopay(){
-        // var req_data = {
-        //     "mall_id": "T0001997",
-        //     "mall_nm": "테스트가맹점",
-        //     "order_no": "20210827091028",
-        //     "product_nm": "테스트상품",
-        //     "product_amt": 100,
-        //     "return_url": this.$server+"/userapp/KakaoPay",
-        //     "charset": "UTF-8",
-        //     "usedcard_code": "",
-        //     "quota": "",
-        //     "noinst_term": "027-03:04",
-        //     "noinst_flag": "",
-        //     "window_type": "",
-        //     "service_call": "",
-        // };
-        // var formBody = [];
-        // for (var property in req_data) {
-        // var encodedKey = encodeURIComponent(property);
-        // var encodedValue = encodeURIComponent(req_data[property]);
-        // formBody.push(encodedKey + "=" + encodedValue);
-        // }
-        // formBody = formBody.join("&");
-        // console.log("https://testpg.easypay.co.kr/ep8/spay/kko/DirectKakaoPayReqAction.do?"+formBody);
-        // location.href="https://testpg.easypay.co.kr/ep8/spay/kko/DirectKakaoPayReqAction.do?"+formBody;
+        var req_data = {
+            "mall_id": "T0001997",
+            "mall_nm": "테스트가맹점",
+            "order_no": "20210827091028",
+            "product_nm": "테스트상품",
+            "product_amt": 100,
+            "return_url": this.$server+"/userapp/KakaoPay",
+            "charset": "UTF-8",
+            "usedcard_code": "",
+            "quota": "",
+            "noinst_term": "027-03:04",
+            "noinst_flag": "",
+            "window_type": "",
+            "service_call": "",
+        };
+        var formBody = [];
+        for (var property in req_data) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(req_data[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+        console.log("https://testpg.easypay.co.kr/ep8/spay/kko/DirectKakaoPayReqAction.do?"+formBody);
+        location.href="https://testpg.easypay.co.kr/ep8/spay/kko/DirectKakaoPayReqAction.do?"+formBody;
         
-                    this.$router.push({name : 'Service_Prepare'});
+                    // this.$router.push({name : 'Service_Prepare'});
 
     },
     naverpay(type){

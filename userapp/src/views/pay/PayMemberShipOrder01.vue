@@ -1,5 +1,12 @@
 <template>
   <div id="wrapper">
+    <div class="waiting" v-if="waiting">
+        <img src="../../assets/img/ZombieingDoodle.png" class="bored-image"/>
+        <div class="waiting-notice">
+            <img src="../../assets/img/sync.svg" class="sync-image"/>
+            처리중입니다.. 잠시만 기다려주세요.
+        </div>
+    </div>
     <div id="content_wrap" class="pay_onetime_order_01">
       <div id="top">
         <div id="nav">
@@ -59,6 +66,7 @@ export default {
       third_menu : '',
       brush_plc : JSON.parse(localStorage.getItem("brush_plc")) || '',
       tot_fee : 0,
+      waiting : false,
     }
   },
   mounted(){
@@ -198,3 +206,51 @@ export default {
   }
 };
 </script>
+<style>
+.waiting {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	margin : 0 auto;
+	background: rgba(0, 0, 0, .8);
+    text-align: center;
+}
+.bored-image {
+		margin-top: 15vh;
+		width: 30rem;
+		animation: rotateFlip 0.5s infinite steps(2);
+}
+.sync-image {
+		width: 1rem;
+		animation: rotation 2s infinite linear;
+		margin-right: .5rem;
+}
+.waiting-notice {
+  	position: absolute;
+		bottom: 10rem;
+		left: 50%;
+		transform: translate(-50%, 0px);
+		color: white;
+		background: #5f5fff;
+		padding: 1rem 2.5rem 1rem 2rem;
+		border-radius: .5rem;
+}
+@keyframes rotation {
+	from {
+		transform: rotate(359deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}
+@keyframes rotateFlip {
+	from {
+		transform: rotate(10deg);
+	}
+	to {
+		transform: rotate(-10deg);
+	}
+}
+</style>

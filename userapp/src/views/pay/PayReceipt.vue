@@ -28,11 +28,11 @@
                 <td>합계</td>
                 <td class="fontBold fRed">{{return_one(menu_fee+option_fee)}}원</td>
               </tr>
-              <tr class="total_price" style="border-top : none;" v-if="is_coupon.length">
+              <tr class="total_price" style="border-top : none;" v-if="is_coupon">
                 <td>할인금액</td>
                 <td class="table_price">{{return_one(is_discount)}}원</td>
               </tr>
-              <tr class="total_price" v-if="is_coupon.length">
+              <tr class="total_price" v-if="is_coupon">
                 <td>결제금액</td>
                 <td class="fontBold fRed">{{return_one(tot_fee)}}원</td>
               </tr>
@@ -69,7 +69,7 @@ export default {
   data (){
     return{
       receive_option : JSON.parse(localStorage.getItem("send_options")) || [],
-      pin_seq_no : JSON.parse(localStorage.getItem("pin_seq_no")),
+      pin_seq_no : JSON.parse(localStorage.getItem("pin_seq_no")) || "",
       first_menu : JSON.parse(localStorage.getItem("first_menu")) || "",
       menu_fee : JSON.parse(localStorage.getItem("menu_fee")) || 0,
       main_plc : JSON.parse(localStorage.getItem("main_plc")) || "",
@@ -107,14 +107,14 @@ export default {
     }
     else
       this.tot_fee = this.menu_fee + this.option_fee;
-
     // 승인 후 사용 결제 세차 정보 저장 처리
     this.$http.post(this.$server+'/userapp/setWashpay', {
+        mem_id : sessionStorage.getItem("mem_id"),
         mem_no : sessionStorage.getItem("mem_no"),
         is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
         use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : 'WUT002',
         prod_name : this.first_menu,
-        prod_code : this.pin_seq_no,
+        prod_code : this.pin_seq_no || '',
         option_code : this.pin2_seq_no || '',
         option_name : this.second_menu || '',
         is_brush : this.third_menu,
@@ -157,6 +157,38 @@ export default {
               (res) => {  // 
                   if(res.data.result_code=="Y"){
                       console.log("결제 승인 정보 저장 완료");
+                      if(localStorage.getItem("is_type") == "membership"){
+                        var today = new Date();
+                        var year = today.getFullYear();
+                        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                        var day = ('0' + today.getDate()).slice(-2);
+                        this.$http.post(this.$server+'/userapp/setMemberPay', {
+                          mem_no : sessionStorage.getItem("mem_no"),
+                          prod_name : this.first_menu,
+                          is_brush : this.third_menu,
+                          pay_day : day,
+                          reg_type : "MRT001",
+                          prod_code : this.pin_seq_no,
+                          pay_fee : this.tot_fee,
+                          start_date : year+'-'+month+'-'+day,
+                          end_date : (year+2)+'-'+month+'-'+day,
+                          mem_id : sessionStorage.getItem("mem_id"),
+                          token : localStorage.getItem("token"),
+                        },{
+                        headers : {
+                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        }
+                        }).then(
+                        (res) => {  // 
+                            if(res.data.result_code=="Y"){
+                                console.log("멤버쉽 구독 등록 완료");
+                                // this.confirm();
+                            }
+                            else{
+                              console.log("멤버쉽 구독 등록 오류");
+                            }
+                        });
+                      }
                       this.$http.post(this.$server+'/userapp/getCouponReg', {
                         mem_no : sessionStorage.getItem("mem_no"),
                         coupon_type : "CCT003",
@@ -223,6 +255,8 @@ export default {
         localStorage.removeItem("token");
         localStorage.removeItem("card_name");
         localStorage.removeItem("card_no");
+        localStorage.removeItem("use_coupon");
+        localStorage.removeItem("tot_fee");
         this.$router.push({name : 'PayVue'});
     },
     return_one(amount){
