@@ -16,7 +16,7 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title">{{coupon_in.coupon_name}}<p v-if="coupon_in.coupon_name == 'CCT004'">{{coupon_in.rest_cout}}</p></p>
+          <p class="title">{{coupon_in.coupon_name}}< v-if="coupon_in.coupon_name == 'CCT004'">{{coupon_in.rest_cout}}</p>
           <div class="info_table onetime_pay_table">
             <table>
               <tr>

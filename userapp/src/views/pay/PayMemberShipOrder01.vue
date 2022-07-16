@@ -1,5 +1,12 @@
 <template>
   <div id="wrapper">
+    <div class="waiting" v-if="waiting">
+        <img src="../../assets/img/ZombieingDoodle.png" class="bored-image"/>
+        <div class="waiting-notice">
+            <img src="../../assets/img/sync.svg" class="sync-image"/>
+            처리중입니다.. 잠시만 기다려주세요.
+        </div>
+    </div>
     <div id="content_wrap" class="pay_onetime_order_01">
       <div id="top">
         <div id="nav">
@@ -18,11 +25,11 @@
             <table>
               <tr>
                 <td class="table_name">{{first_menu}}</td>
-                <td class="table_price">{{menu_fee}}원</td>
+                <td class="table_price">{{return_one(menu_fee)}}원</td>
               </tr>
               <tr class="total_price">
                 <td>결제금액</td>
-                <td class="fontBold fRed">{{menu_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(menu_fee)}}원</td>
               </tr>
             </table>
           </div>
@@ -59,6 +66,7 @@ export default {
       third_menu : '',
       brush_plc : JSON.parse(localStorage.getItem("brush_plc")) || '',
       tot_fee : 0,
+      waiting : false,
     }
   },
   mounted(){
@@ -93,6 +101,7 @@ export default {
         (res) => {  // 
           if(res.data.result_code == "Y"){
             alert("등록된 카드가 없습니다. 카드를 등록해주세요.");
+            this.remove_items();
             this.$router.push({name : 'PaymentVue'});
           }
           else{ //결제진행
@@ -123,8 +132,8 @@ export default {
               var req_data = {
                 "mallId":"05562973", //KICC에서 발급한 상점ID
                 "shopTransactionId":trans_id, // 상점거래고유번호
-                "amount":this.tot_fee, // 가격
-                // "amount":10,
+                // "amount":this.tot_fee, // 가격
+                "amount":10,
                 "shopOrderNo" : trans_id, //상점 주문번호
                 "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                 "payMethodInfo":{ //결제수단관리정보
@@ -155,8 +164,10 @@ export default {
                   }
                   else{
                     console.log(res.data);
-                    alert("결제 오류입니다. 관리자에게 문의하세요.");
+                    alert("결제 오류입니다.");
                     this.waiting = false;
+                    this.remove_items();
+                    this.$router.push({name : 'PayVue'});
                     // this.$router.push({name : 'PayVue'});
 
                   }
@@ -169,7 +180,81 @@ export default {
         // this.$router.push({name : 'Service_Prepare'});
         // this.$router.push({name : 'PayReceipt'});
       }
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
+    },
+    remove_items(){
+      localStorage.removeItem("send_options");
+      localStorage.removeItem("pin_seq_no");
+      localStorage.removeItem("first_menu");
+      localStorage.removeItem("menu_fee");
+      localStorage.removeItem("main_plc");
+      localStorage.removeItem("pin2_seq_no");
+      localStorage.removeItem("second_menu");
+      localStorage.removeItem("option_fee");
+      localStorage.removeItem("option_plc");
+      localStorage.removeItem("third_menu");
+      localStorage.removeItem("brush_plc");
+      localStorage.removeItem("is_type");
+      localStorage.removeItem("tr_date");
+      localStorage.removeItem("auth_no");
+      localStorage.removeItem("tr_no");
+      localStorage.removeItem("token");
+      localStorage.removeItem("card_name");
+      localStorage.removeItem("card_no");
+      localStorage.removeItem("use_coupon");
+      localStorage.removeItem("tot_fee");
     }
   }
 };
 </script>
+<style>
+.waiting {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 100;
+	margin : 0 auto;
+	background: rgba(0, 0, 0, .8);
+    text-align: center;
+}
+.bored-image {
+		margin-top: 15vh;
+		width: 30rem;
+		animation: rotateFlip 0.5s infinite steps(2);
+}
+.sync-image {
+		width: 1rem;
+		animation: rotation 2s infinite linear;
+		margin-right: .5rem;
+}
+.waiting-notice {
+  	position: absolute;
+		bottom: 10rem;
+		left: 50%;
+		transform: translate(-50%, 0px);
+		color: white;
+		background: #5f5fff;
+		padding: 1rem 2.5rem 1rem 2rem;
+		border-radius: .5rem;
+}
+@keyframes rotation {
+	from {
+		transform: rotate(359deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}
+@keyframes rotateFlip {
+	from {
+		transform: rotate(10deg);
+	}
+	to {
+		transform: rotate(-10deg);
+	}
+}
+</style>

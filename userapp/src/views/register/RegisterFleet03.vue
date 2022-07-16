@@ -30,12 +30,11 @@
 
 
     <aside>
-      <div class="btn_next">
+      <div class="btn_next" style="bottom:0px;">
         <!-- <a href="./login.html">로그인</a> -->
         <router-link to="/">로그인</router-link>
       </div>
     </aside>
-    <FooterVue></FooterVue>
   </div>
 </template>
 

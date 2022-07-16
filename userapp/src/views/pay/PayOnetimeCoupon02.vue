@@ -22,6 +22,7 @@
           </div>
           <div class="coupon_list_wrap">
             <ul>
+              <p v-if="this.coupon_list.length == 0" style="text-align: center;">사용할 수 있는 쿠폰이 없습니다.</p>
               <li class="coupon_list" v-for="(coupon,index) in coupon_list" :key="index">
                 <div class="coupon_name">
                   <img src="../../assets/img/content/ico_coupon_percent.svg" alt="">

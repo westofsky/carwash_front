@@ -65,10 +65,10 @@ export default {
         }).then((res) => {
           console.log(res.data)
           if(res.data.result_code == 'Y'){
-            alert('정상적으로 탈퇴되었습니다.')
-            this.$router.go('/');
+            alert('정상적으로 탈퇴되었습니다.');
+            this.$router.push({name : 'LoginVue'});
           }else if (res.data.result_code == 'N'){
-            alert('오류가 발생하였습니다.')
+            alert('오류가 발생하였습니다.');
           }
         })
       }

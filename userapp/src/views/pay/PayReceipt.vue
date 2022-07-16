@@ -18,23 +18,23 @@
             <table>
               <tr>
                 <td class="table_name">{{first_menu}}</td>
-                <td class="table_price">{{menu_fee}}원</td>
+                <td class="table_price">{{return_one(menu_fee)}}원</td>
               </tr>
               <tr v-for="(option,index) in receive_option" :key="index">
                 <td class="table_name">옵션추가 / {{option.option_name}}</td>
-                <td class="table_price">{{option.option_fee}}원</td>
+                <td class="table_price">{{return_one(option.option_fee)}}원</td>
               </tr>
               <tr class="total_price">
                 <td>합계</td>
-                <td class="fontBold fRed">{{menu_fee+option_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(menu_fee+option_fee)}}원</td>
               </tr>
-              <tr class="total_price" style="border-top : none;" v-if="is_coupon.length">
+              <tr class="total_price" style="border-top : none;" v-if="is_coupon || is_taxi">
                 <td>할인금액</td>
-                <td class="table_price">{{is_discount}}원</td>
+                <td class="table_price">{{return_one(is_discount)}}원</td>
               </tr>
-              <tr class="total_price" v-if="is_coupon.length">
+              <tr class="total_price" v-if="is_coupon || is_taxi">
                 <td>결제금액</td>
-                <td class="fontBold fRed">{{tot_fee}}원</td>
+                <td class="fontBold fRed">{{return_one(tot_fee)}}원</td>
               </tr>
             </table>
           </div>
@@ -43,7 +43,7 @@
                 <ul>
                     <li>결제승인번호 : {{approve.auth_no}}</li>
                     <li>결제시간 : {{time}}</li>
-                    <li>결제수단 : {{approve.card_name}}카드 {{approve.card_no}}</li>
+                    <li>결제수단 : {{approve.card_name}} {{approve.card_no}}</li>
                     <li>결제밴사 : KICC</li>
                 </ul>
             </div>
@@ -69,19 +69,19 @@ export default {
   data (){
     return{
       receive_option : JSON.parse(localStorage.getItem("send_options")) || [],
-      pin_seq_no : JSON.parse(localStorage.getItem("pin_seq_no")),
+      pin_seq_no : JSON.parse(localStorage.getItem("pin_seq_no")) || "",
       first_menu : JSON.parse(localStorage.getItem("first_menu")) || "",
       menu_fee : JSON.parse(localStorage.getItem("menu_fee")) || 0,
       main_plc : JSON.parse(localStorage.getItem("main_plc")) || "",
       pin2_seq_no : JSON.parse(localStorage.getItem("pin2_seq_no")) || "" ,
-      second_menu : JSON.parse(localStorage.getItem("second_menu")) || [],
+      second_menu : JSON.parse(localStorage.getItem("second_menu")) || "",
       option_fee : JSON.parse(localStorage.getItem("option_fee")) || 0,
       option_plc : JSON.parse(localStorage.getItem("option_plc")) || '',
       third_menu : '',
       brush_plc : JSON.parse(localStorage.getItem("brush_plc")) || '',
       is_coupon : [],
       is_discount : 0,
-      tot_fee : 0,
+      tot_fee : JSON.parse(localStorage.getItem("tot_fee")) || 0,
       approve : {
         auth_no : ( localStorage.getItem("auth_no") != null) ?  localStorage.getItem("auth_no") : "",
         card_no : ( localStorage.getItem("card_no") != null) ?  localStorage.getItem("card_no").substring(0,4) +'-'+localStorage.getItem("card_no").substring(4,8)+'-****-****' : "",
@@ -89,6 +89,7 @@ export default {
         time :  ( localStorage.getItem("tr_date") != null) ?  localStorage.getItem("tr_date") : "",
       },
       time : (localStorage.getItem("tr_date") !=null) ? localStorage.getItem("tr_date").replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6') : "",
+      is_taxi : (sessionStorage.getItem("is_taxi") == "Y") ? true: false,
     }
   },
   beforeCreate(){
@@ -103,18 +104,18 @@ export default {
     if(JSON.parse(localStorage.getItem("use_coupon"))){
       this.is_coupon = JSON.parse(localStorage.getItem("use_coupon"));
       this.is_discount = (this.menu_fee+this.option_fee) * parseInt(this.is_coupon.dc_percent) / 100;
-      this.tot_fee = this.menu_fee + this.option_fee - this.is_discount;
     }
-    else
-      this.tot_fee = this.menu_fee + this.option_fee;
-
+    if(sessionStorage.getItem("is_taxi") == "Y"){
+      this.is_discount = (this.menu_fee+this.option_fee) * 0.5;
+    }
     // 승인 후 사용 결제 세차 정보 저장 처리
     this.$http.post(this.$server+'/userapp/setWashpay', {
+        mem_id : sessionStorage.getItem("mem_id"),
         mem_no : sessionStorage.getItem("mem_no"),
         is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
         use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : 'WUT002',
         prod_name : this.first_menu,
-        prod_code : this.pin_seq_no,
+        prod_code : this.pin_seq_no || '',
         option_code : this.pin2_seq_no || '',
         option_name : this.second_menu || '',
         is_brush : this.third_menu,
@@ -157,7 +158,83 @@ export default {
               (res) => {  // 
                   if(res.data.result_code=="Y"){
                       console.log("결제 승인 정보 저장 완료");
-                      // this.confirm();
+                      if(localStorage.getItem("is_type") == "membership"){
+                        var today = new Date();
+                        var year = today.getFullYear();
+                        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                        var day = ('0' + today.getDate()).slice(-2);
+                        this.$http.post(this.$server+'/userapp/setMemberPay', {
+                          mem_no : sessionStorage.getItem("mem_no"),
+                          prod_name : this.first_menu,
+                          is_brush : this.third_menu,
+                          pay_day : day,
+                          reg_type : "MRT001",
+                          prod_code : this.pin_seq_no,
+                          pay_fee : this.tot_fee,
+                          start_date : year+'-'+month+'-'+day,
+                          end_date : (year+2)+'-'+month+'-'+day,
+                          mem_id : sessionStorage.getItem("mem_id"),
+                          token : localStorage.getItem("token"),
+                        },{
+                        headers : {
+                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        }
+                        }).then(
+                        (res) => {  // 
+                            if(res.data.result_code=="Y"){
+                                console.log("멤버쉽 구독 등록 완료");
+                                sessionStorage.setItem("is_membership","Y");
+                                // this.confirm();
+                            }
+                            else{
+                              console.log("멤버쉽 구독 등록 오류");
+                            }
+                        });
+                      }
+                      else{
+                        if(sessionStorage.getItem("is_oneplus") && !this.second_menu){
+                          this.$http.post(this.$server+'/userapp/getCouponReg', {
+                            mem_no : sessionStorage.getItem("mem_no"),
+                            coupon_type : "CCT003",
+                            rest_count : 0,
+                            is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+                            prod_name : this.first_menu,
+                            dc_fee : 0,
+                            dc_percent:0,
+                            plc_code : this.main_plc,
+                          },{
+                          headers : {
+                              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                          }
+                          }).then(
+                          (res) => {  // 
+                              if(res.data.result_code=="Y"){
+                                  console.log("1+1등록완료");
+                                  // this.confirm();
+                              }
+                          });
+                        }
+                        this.$http.post(this.$server+'/userapp/getCouponReg', {
+                          mem_no : sessionStorage.getItem("mem_no"),
+                          coupon_type : "CCT003",
+                          rest_count : 0,
+                          is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+                          prod_name : this.first_menu,
+                          dc_fee : 0,
+                          dc_percent:0,
+                          plc_code : this.main_plc,
+                        },{
+                        headers : {
+                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        }
+                        }).then(
+                        (res) => {  // 
+                            if(res.data.result_code=="Y"){
+                                console.log("coupon등록완료");
+                                // this.confirm();
+                            }
+                        });
+                      }
                   }
               }
               );
@@ -167,7 +244,7 @@ export default {
     );
 
     //승인 후 사용 coupon 처리
-    if(JSON.parse(localStorage.getItem("use_coupon")) && 0){
+    if(JSON.parse(localStorage.getItem("use_coupon"))){
         this.$http.post(this.$server+'/userapp/setCouponUse', {
             coupon_code : JSON.parse(localStorage.getItem("use_coupon")).coupon_code,
         },{
@@ -178,7 +255,6 @@ export default {
         (res) => {  // 
             if(res.data.result_code=="Y")
                 console.log("coupon사용 완료");
-                this.confirm();
             }
         );
     }
@@ -203,8 +279,15 @@ export default {
         localStorage.removeItem("token");
         localStorage.removeItem("card_name");
         localStorage.removeItem("card_no");
+        localStorage.removeItem("use_coupon");
+        localStorage.removeItem("tot_fee");
+        localStorage.removeItem("what_pay");
         this.$router.push({name : 'PayVue'});
-    }
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
+    },
   }
 };
 </script>

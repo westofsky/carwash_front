@@ -28,26 +28,21 @@
       </article>
     </div>
     <aside>
-      <div class="btn_cancel2">
+      <div class="btn_cancel2" style="bottom:0px;">
         <!-- <a href="./register_basic01.html">취소</a> -->
         <router-link to="/">취소</router-link>
       </div>
-      <div class="btn_next2">
+      <div class="btn_next2" style="bottom:0px;">
         <a @click="registerbasic_phone">등록</a>
         <!-- <router-link to="/registerBasic03">등록</router-link> -->
       </div>
     </aside>
-    <FooterVue></FooterVue>
   </div>
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
 
 export default {
-  components: {
-    FooterVue
-  },
   data() {
     return {
       car_no: '',

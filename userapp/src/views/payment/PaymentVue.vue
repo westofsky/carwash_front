@@ -16,10 +16,73 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <div class="con_info">
-            <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
+          <p class="sec_txt" style="margin-bottom:6px;" v-if="card_state=='N'"><span class="black fontBold">등록된 결제 정보</span></p>
+          <div class="card-list" v-if="card_state=='N'">
+						<div class="card-item">
+						  <div class="card-item__side -front">
+							<div class="card-item__focus" ref="focusElement"></div>
+							<div class="card-item__cover">
+							  <img src="../../assets/img/creditcard/creditcard_bg.jpg" class="card-item__bg">
+							</div>
+
+							<div class="card-item__wrapper">
+							  <div class="card-item__top">
+								<img src="../../assets/img/creditcard/chip.png" class="card-item__chip">
+								<div class="card-item__type">
+								  <transition name="slide-fade-up">
+									<img src="../../assets/img/creditcard/logo.png" alt="" class="card-item__typeImg">
+								  </transition>
+								</div>
+							  </div>
+							  
+							  <!--S : 카드번호 -->	
+							  <label for="cardNumber" class="card-item__number" ref="cardNumber">
+							  <span><div class="card-item__numberItem">{{card.no[0]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[1]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[2]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[3]}}</div></span>
+								  
+							  <span><div class="card-item__numberItem -active"> </div></span>
+								  
+							  <span><div class="card-item__numberItem">{{card.no[4]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[5]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[6]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[7]}}</div></span>
+								  
+							  <span><div class="card-item__numberItem -active"> </div></span>
+								  
+							  <span><div class="card-item__numberItem">{{card.no[8]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[9]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[10]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[11]}}</div></span>
+							  <span><div class="card-item__numberItem -active"> </div></span>
+
+							  <span><div class="card-item__numberItem">{{card.no[12]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[13]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[14]}}</div></span>
+							  <span><div class="card-item__numberItem">{{card.no[15]}}</div></span>
+							  </label>
+							  <!--E : 카드번호 -->	
+							  <div class="card-item__content">
+                  <label for="cardName" class="card-item__info">
+                    <div class="card-item__holder">카드 회사</div>
+                    <transition name="slide-fade-up">
+                    <div class="card-item__name">{{card.company}}</div>
+                    </transition>
+                  </label>
+							  </div>
+							</div>
+						  </div>
+						</div>
+            
+					  </div>
+          <div v-else>
+            <div class="con_info">
+              <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
+            </div>
+            <a class="card" href="#" @click = "card_option"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
           </div>
-          <a class="card" href="#" @click = "card_option"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
+            
         </section>
         <!-- <section class="con2">
           <div class="con_info">
@@ -37,7 +100,7 @@
               <p>결제 정보를 등록해두시면 간편하게 이용하실 수있습니다.</p>
             </li>
             <li>
-              <p>신용/체크 카드 등록 시 에는 2회 세차권, Gift쿠폰, 멤버쉽 결제만 가능합니다.</p>
+              <p>신용/체크 카드 등록 시 에는 1회 세차권, Gift쿠폰, 멤버쉽 결제만 가능합니다.</p>
             </li>
           </ul>
         </section>
@@ -55,32 +118,52 @@ export default {
   components: {
     FooterVue
   },
+  data(){
+    return {
+      card_state_notice : "신용/체크 카드 등록",
+      card_state : "Y",
+      card : {
+        no : "",
+        company: "",
+
+      }
+    }
+  },
   mounted(){
+    if(this.$route.query.msg != undefined){
+      alert(this.$route.query.msg);
+    }
     this.$http.post(this.$server+'/userapp/ChkRegCard', {
       mem_no : sessionStorage.getItem("mem_no"),
     },{headers : {
     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
     }
     }).then(
-    (res) => {  // 
+    (res) => {  
       if (res.data.result_code == "Y"){
         console.log("등록해야함");
         this.card_state = "Y";
         this.card_state_notice = "신용/체크 카드 등록";
       }
       else{
+        this.$http.post(this.$server+'/userapp/getRegCard', {
+          mem_no : sessionStorage.getItem("mem_no"),
+        },{headers : {
+        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+        }
+        }).then(
+        (res) => {  
+          console.log(res.data);
+          this.card.no=res.data.card_no;
+          this.card.company = res.data.owner;
+          
+        })
         console.log("변경해야함");
         this.card_state = "N"; 
         this.card_state_notice = "신용/체크 카드 변경";
       }
       
     })
-  },
-  data(){
-    return {
-      card_state_notice : "신용/체크 카드 등록",
-      card_state : "Y",
-    }
   },
   methods : {
     card_option(){
@@ -105,7 +188,6 @@ export default {
       };
       this.$http.post('https://pgapi.easypay.co.kr/api/trades/webpay', data,
       {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}).then((res) => {
-        sessionStorage.setItem("url",res.data.authPageUrl);
         location.href=res.data.authPageUrl;
 
       })

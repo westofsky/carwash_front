@@ -203,7 +203,7 @@ import FooterVue from "../footer/FooterVue.vue";
 		},
 		methods : {
 			onlyNum(){
-				this.cardNumber = this.cardNumber.replace(/[^0-9]/g, '');
+				// this.cardNumber = this.cardNumber.replace(/[^0-9]/g, '');
 			},
 			card_update(){
 				if(!this.cardNumber){

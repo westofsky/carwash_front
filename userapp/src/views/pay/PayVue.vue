@@ -26,15 +26,15 @@
             1회권 간편 결제
           </router-link>
         </section>
-        <section class="con2" v-if="is_personal == 'MMT001'">
+        <section class="con2" v-if="is_personal == 'MMT001'" >
           <div class="con_info">
             <p class="sec_txt"><span class="black fontBold">멤버쉽 세차</span>는<br>매월 정기적으로 구독결제하여 멤버쉽에 가입되어, 세차서비스를 무제한으로
               사용할 수 있는 서비스입니다.</p>
           </div>
-          <router-link to="/payMembership" class="membership">
+          <a class="membership" @click="is_membership">
             <img src="../../assets/img/content/pay02.png" alt="">
             멤버쉽 결제
-          </router-link>
+          </a>
         </section>
         <section class="con2" v-if="is_personal == 'MMT002' || is_personal == 'MMT003'">
           <div class="con_info">
@@ -76,5 +76,16 @@ export default {
       is_personal : sessionStorage.getItem("mem_type")
     }
   },
+  methods : {
+    is_membership(){
+      if(sessionStorage.getItem("is_membership") == "Y"){
+        alert("이미 멤버쉽 이용 고객입니다.");
+      }
+      else{
+        this.$router.push({name : 'PayMemberShip'});
+      }
+    }
+  }
+
 };
 </script>

@@ -81,6 +81,9 @@
           sessionStorage.setItem("mem_type",localStorage.getItem("auto_mem_type"));
           sessionStorage.setItem("mem_name",localStorage.getItem("auto_mem_name"));
           sessionStorage.setItem("mem_id",localStorage.getItem("auto_mem_id"));
+          sessionStorage.setItem("is_membership",localStorage.getItem("is_membership"));
+          sessionStorage.setItem("is_taxi",localStorage.getItem("is_taxi"));
+          sessionStorage.setItem("is_oneplus",localStorage.getItem("is_oneplus"));
           this.$router.push({name : 'HomeBasic'});
         }
 
@@ -129,11 +132,17 @@
                           localStorage.setItem("auto_mem_type",res.data.mem_type);
                           localStorage.setItem("auto_mem_name",res.data.mem_name);
                           localStorage.setItem("auto_mem_id",res.data.mem_id);
+                          localStorage.setItem("is_membership",res.data.is_membership);
+                          localStorage.setItem("is_taxi",res.data.is_taxi);
+                          localStorage.setItem("is_oneplus",res.data.is_oneplus);
                         }
                         sessionStorage.setItem("mem_no",res.data.mem_no);
                         sessionStorage.setItem("mem_type",res.data.mem_type);
                         sessionStorage.setItem("mem_name",res.data.mem_name);
                         sessionStorage.setItem("mem_id",res.data.mem_id);
+                        sessionStorage.setItem("is_membership",res.data.is_membership);
+                        sessionStorage.setItem("is_taxi",res.data.is_taxi);
+                        sessionStorage.setItem("is_oneplus",res.data.is_oneplus);
                         this.$router.push({name : 'HomeBasic'});
                       })
                 }
@@ -173,11 +182,12 @@
                           localStorage.setItem("auto_mem_name",res.data.mem_name);
                           localStorage.setItem("auto_mem_id",res.data.mem_id);
                         }
+                        console.log(res.data.is_membership);
                         sessionStorage.setItem("mem_no",res.data.mem_no);
                         sessionStorage.setItem("mem_type",res.data.mem_type);
                         sessionStorage.setItem("mem_name",res.data.mem_name);
                         sessionStorage.setItem("mem_id",res.data.mem_id);
-                        this.$router.push({name : 'HomeBasic'});
+                        // this.$router.push({name : 'HomeBasic'});
                       })
                 }
                 else{

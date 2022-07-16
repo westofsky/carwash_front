@@ -23,6 +23,7 @@
           </div>
           <div class="coupon_list_wrap">
             <ul>
+              <p v-if="this.pay_list.length == 0" style="text-align: center;">결제 내역이 없습니다.</p>
               <li class="coupon_list" v-for="(pay_info , index) in pay_list" :key = "index">
                 <div class="coupon_name">
                   <img src="../../assets/img/content/pay_onetime04.png" alt="">
@@ -37,8 +38,8 @@
                 <div class="coupon_info">
                   <ul>
                     <!-- <li>결제일시 : <span class="order_unused_num">W0123156156</span></li> -->
-                    <li>결제일시 : <span class="order_unused_date">{{pay_info.pay_date}}</span></li>
-                    <li>결제금액 : <span class="order_unused_money">{{pay_info.pay_fee}}</span></li>
+                    <li>결제일시 : <span class="order_unused_date">{{return_date(pay_info.pay_date)}}</span></li>
+                    <li>결제금액 : <span class="order_unused_money">{{return_one(pay_info.pay_fee)}}</span></li>
                   </ul>
                   <button class="btn_arrow" type="button" @click="confirmReceipt(pay_info.pay_seq)">영수증 확인</button>
                 </div>
@@ -128,6 +129,15 @@ export default {
       })
   },
   methods: {
+    return_date(date){
+      var today = new Date(date);
+      today.setHours(today.getHours() + 9);
+      return today.toISOString().replace('T', ' ').substring(0, 19);  
+    },
+    return_one(amount){
+      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+      return one
+    },
     confirmReceipt(key) {
       console.log(key); 
       this.$router.push({name : 'OrderListReceipt',query :{

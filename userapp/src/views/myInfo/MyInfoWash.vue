@@ -106,13 +106,13 @@ export default {
   methods : {
     search(){
       this.washuse_in_date = [];
-      for(var i=0;i<washuse.length;i++){
-        var year = washuse[i].wash_date.split(' ')[0].split('-')[0];
-        var month = washuse[i].wash_date.split(' ')[0].split('-')[1];
-        var day = washuse[i].wash_date.split(' ')[0].split('-')[2];
+      for(var i=0;i<this.washuse.length;i++){
+        var year = this.washuse[i].wash_date.split(' ')[0].split('-')[0];
+        var month = this.washuse[i].wash_date.split(' ')[0].split('-')[1];
+        var day = this.washuse[i].wash_date.split(' ')[0].split('-')[2];
         var date = new Date(year,month,day);
         if(date>this.range.start && date<this.range.end)
-          this.washuse_in_date.push(washuse[i]);
+          this.washuse_in_date.push(this.washuse[i]);
       }
     },
     getSrc(value){
