@@ -66,9 +66,12 @@ export default {
         }).then((res) => {
           console.log(res.data)
           if(res.data.result_code == 'Y'){
-            alert('멤버쉽이 정상적으로 해지 되었습니다.')
+            alert('멤버쉽이 정상적으로 해지 되었습니다.');
+            sessionStorage.setItem("is_membership","N");
+            this.$router.push({name : 'myInfoList'});
           }else if (res.data.result_code == 'N'){
-            alert('오류가 발생하였습니다.')
+            alert('멤버쉽에 구독되어 있지 않습니다.');
+            this.$router.push({name : 'myInfoList'});
           }
         })
       }

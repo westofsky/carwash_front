@@ -478,7 +478,7 @@
 }
 @media screen and (max-width: 480px) {
   .card-list {
-    margin-bottom: -120px;
+    margin-bottom: -20px;
   }
 }
 
