@@ -4,11 +4,11 @@
       <div id="top">
         <div id="nav">
           <!-- <a class="btn_back" href="./register_basic02.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/loginVue" class="btn_back">
+          <router-link to="/" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">아이디/패스워드 찾기</p>
-          <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
+          <a></a>
         </div>
         <div id="top_info">
           <p class="info"></p>
@@ -37,7 +37,6 @@
         </section>
       </article>
     </div>
-    <FooterVue></FooterVue>
   </div>
 </template>
 
@@ -47,7 +46,6 @@
   //   .replace(/[^0-9]/g, '')
   //   .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
   // }
-import FooterVue from "../footer/FooterVue.vue";
 
 export default {
   data(){
@@ -55,9 +53,6 @@ export default {
       mobile_num : '',
       id_type : ''
     }
-  },
-  components: {
-    FooterVue
   },
   methods :{
     async send_form(){

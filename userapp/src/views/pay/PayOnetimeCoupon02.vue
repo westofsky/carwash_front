@@ -117,7 +117,6 @@ export default {
       }).then(
       (res) => {  // 
             this.coupon_list = res.data;
-            console.log(this.coupon_list);
       }
     );
   },

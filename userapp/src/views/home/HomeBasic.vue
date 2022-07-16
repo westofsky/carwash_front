@@ -186,7 +186,6 @@ export default {
         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
       }
     }).then((res) => {
-      console.log(res.data.write_date)
       this.info_list = res.data
     })
   },
@@ -194,7 +193,6 @@ export default {
     return_date(date){
       const write = new Date(date);
       let month = write.getMonth()+1;
-      console.log(month);
       month = month.toString().padStart(2,'0');
       const day = write.getDate().toString().padStart(2,'0');
 

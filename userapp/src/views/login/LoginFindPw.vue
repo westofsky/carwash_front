@@ -4,11 +4,11 @@
       <div id="top">
         <div id="nav">
           <!-- <a class="btn_back" href="./register_basic02.html"><img src="../../assets/img/btn_back.svg" alt="뒤로가기"></a> -->
-          <router-link to="/loginVue" class="btn_back">
+          <router-link to="/" class="btn_back">
             <img src="../../assets/img/btn_back.svg" alt="뒤로가기">
           </router-link>
           <p class="current">아이디/패스워드 찾기</p>
-          <a class="btn_alarm" href="#"><img src="../../assets/img/btn_alarm.svg" alt="알람"></a>
+          <a></a>
         </div>
         <div id="top_info">
           <p class="info"></p>
@@ -38,19 +38,17 @@
               </div>
               <div class="input_fleet_pw"><label for="fleetPW">휴대폰번호</label><input v-model="mobile_num" type="text" name="mobile"
                   id="fleetPW" placeholder="예) 01012345678" class="TxtaR"></div>
-              <input type="submit" @click="send_form" value="아이디 찾기">
+              <input type="submit" @click="send_form" value="비밀번호 재설정">
             </div>
 
           </div>
         </section>
       </article>
     </div>
-    <FooterVue></FooterVue>
   </div>
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
 
 export default {
   data(){
@@ -59,9 +57,6 @@ export default {
       id_type : '',
       mem_id : ''
     }
-  },
-  components: {
-    FooterVue
   },
   methods :{
     async send_form(){

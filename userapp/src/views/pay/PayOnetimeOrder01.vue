@@ -111,7 +111,6 @@ export default {
     if(sessionStorage.getItem("is_taxi") == "Y"){
       this.is_discount = this.tot_fee * 0.5;
       this.tot_fee = this.tot_fee - this.is_discount;
-      console.log("걸림");
     }
     localStorage.setItem("tot_fee",this.tot_fee);
   },

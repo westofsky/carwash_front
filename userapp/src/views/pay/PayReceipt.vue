@@ -133,11 +133,9 @@ export default {
     }).then(
     (res) => {  // 
         if(res.data.result_code=="Y"){
-            console.log("결제 정보 저장 완료");
             var pay_seq_no = res.data.pay_seq_no;
             //승인 후 사용 결제 승인 저장 처리
             if(this.menu_fee==0){ // 끝 
-              console.log("결제된 금액 없음");
               // this.confirm();
             }
             else{
@@ -157,7 +155,6 @@ export default {
               }).then(
               (res) => {  // 
                   if(res.data.result_code=="Y"){
-                      console.log("결제 승인 정보 저장 완료");
                       if(localStorage.getItem("is_type") == "membership"){
                         var today = new Date();
                         var year = today.getFullYear();
@@ -182,12 +179,10 @@ export default {
                         }).then(
                         (res) => {  // 
                             if(res.data.result_code=="Y"){
-                                console.log("멤버쉽 구독 등록 완료");
                                 sessionStorage.setItem("is_membership","Y");
                                 // this.confirm();
                             }
                             else{
-                              console.log("멤버쉽 구독 등록 오류");
                             }
                         });
                       }
@@ -209,7 +204,6 @@ export default {
                           }).then(
                           (res) => {  // 
                               if(res.data.result_code=="Y"){
-                                  console.log("1+1등록완료");
                                   // this.confirm();
                               }
                           });
@@ -230,7 +224,6 @@ export default {
                         }).then(
                         (res) => {  // 
                             if(res.data.result_code=="Y"){
-                                console.log("coupon등록완료");
                                 // this.confirm();
                             }
                         });
@@ -253,9 +246,10 @@ export default {
         }
         }).then(
         (res) => {  // 
-            if(res.data.result_code=="Y")
-                console.log("coupon사용 완료");
+            if(res.data.result_code=="Y"){
+
             }
+          }
         );
     }
   },

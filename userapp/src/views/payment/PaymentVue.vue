@@ -141,7 +141,6 @@ export default {
     }).then(
     (res) => {  
       if (res.data.result_code == "Y"){
-        console.log("등록해야함");
         this.card_state = "Y";
         this.card_state_notice = "신용/체크 카드 등록";
       }
@@ -153,12 +152,10 @@ export default {
         }
         }).then(
         (res) => {  
-          console.log(res.data);
           this.card.no=res.data.card_no;
           this.card.company = res.data.owner;
           
         })
-        console.log("변경해야함");
         this.card_state = "N"; 
         this.card_state_notice = "신용/체크 카드 변경";
       }

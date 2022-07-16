@@ -125,15 +125,11 @@ export default {
                 trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
               }while(trans_id.length!=6);
               trans_id = year+month+day+trans_id;
-              console.log('트랜잭션아이디 : ' +trans_id);
-              console.log('token ' +token);
-              console.log('메뉴이름 ' +this.first_menu);
-              console.log('날짜 '+year+month+day);
               var req_data = {
                 "mallId":"05562973", //KICC에서 발급한 상점ID
                 "shopTransactionId":trans_id, // 상점거래고유번호
-                // "amount":this.tot_fee, // 가격
-                "amount":10,
+                "amount":this.tot_fee, // 가격
+                // "amount":10,
                 "shopOrderNo" : trans_id, //상점 주문번호
                 "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                 "payMethodInfo":{ //결제수단관리정보
@@ -150,8 +146,6 @@ export default {
               ).then(
               (res) => {
                   if(res.data.resCd == "0000"){
-                    console.log("결제성공");
-                    console.log(res.data.resMsg);
                     this.waiting = false;
                     localStorage.setItem("is_type","membership");
                     localStorage.setItem("tr_date",res.data.transactionDate);
@@ -163,7 +157,6 @@ export default {
                     this.$router.push({name : 'PayReceipt'});
                   }
                   else{
-                    console.log(res.data);
                     alert("결제 오류입니다.");
                     this.waiting = false;
                     this.remove_items();

@@ -139,7 +139,6 @@ export default {
       return one
     },
     confirmReceipt(key) {
-      console.log(key); 
       this.$router.push({name : 'OrderListReceipt',query :{
         key : key,
       }});

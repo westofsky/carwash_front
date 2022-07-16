@@ -84,7 +84,6 @@ export default {
           }
           }).then(
           (res) => {
-            console.log("걸림2");
             if(res.data.result_code == "Y"){
               if(this.agree_check)
                 this.agree_privacy = "Y";
@@ -105,8 +104,6 @@ export default {
                 }).then(
                 (res) => {
                   if(res.data.result_code == "Y"){
-                    console.log(this.$route.query.car_no);
-                    console.log(res.data.mem_no);
                     this.$router.push({name : 'RegisterBasic04',params : {
                       car_no : this.$route.query.car_no,
                       mem_no : res.data.mem_no,

@@ -73,7 +73,6 @@ export default {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
       }).then((res) => {
-        console.log(res.data)
         if(res.data.result_code == 'Y'){
           this.flag = 1;
         }else if(res.data.result_code == 'N'){

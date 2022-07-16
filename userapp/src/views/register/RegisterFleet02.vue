@@ -158,7 +158,7 @@ export default {
 			}
 			}).then(
 			(res) => { 
-				console.log(res.data);
+				// console.log(res.data);
 			},
 			(err) => { // error 를 보여줌
 				console.log(err);
@@ -190,7 +190,6 @@ export default {
 		methods:{
 			chk_id_duplicate(){
 				if(this.warning.id == "" && this.fleet_id != ''){
-					console.log("걸림1");
 					this.$http.post(this.$server+'/upserapp/chkfleetid', {
 						fleet_id : this.fleet_id
 					},{headers : {
@@ -198,7 +197,6 @@ export default {
 					}
 					}).then(
 					(res) => {  //아이디 중복 확인 
-					console.log("걸림2");
 						if (res.data.result_code == "Y"){
 							alert("사용 가능한 아이디입니다.");
 							this.check.id = true;
@@ -273,7 +271,6 @@ export default {
 				}
 			},
 			certification_phone(){
-				console.log(this.fleet_usage);
 			},
 			certification_phone_chk(){
 				
@@ -342,7 +339,6 @@ export default {
 				for(var i=0;i<this.$route.query.selectList.length;i++){
 					switch(this.$route.query.selectList[i]){
 						case "1":
-						console.log("걸림");
 						this.agree_age = "Y";
 						break;
 						case "2":
@@ -359,8 +355,6 @@ export default {
 						break;
 					}
 				}
-				console.log(this.fleet_id + " || " + this.fleet_name + " || " + this.fleet_pw + " || " + this.fleet_usage + " || " + this.fleet_phone + " || " + this.fleet_email + " || " + this.fleet_business);
-				console.log(this.agree_age + " || " + this.agree_service + " || " + this.agree_privacy + " || " + this.agree_sms + " || " + this.agree_location);
 				this.$http.post(this.$server+'/userapp/setfmember', {
 					fleet_id : this.fleet_id,
 					fleet_name : this.fleet_name,

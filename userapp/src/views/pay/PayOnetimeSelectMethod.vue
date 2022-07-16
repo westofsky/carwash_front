@@ -65,11 +65,9 @@ export default {
   },
   mounted () {
     if(this.$route.query.type == "naver"){
-        console.log("들어옴");
         this.naver_approve();
     }
     else{
-        console.log("안들어옴");
     }
   },
   methods : {
@@ -99,7 +97,6 @@ export default {
         formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-        console.log("https://testpg.easypay.co.kr/ep8/spay/kko/DirectKakaoPayReqAction.do?"+formBody);
         location.href="https://testpg.easypay.co.kr/ep8/spay/kko/DirectKakaoPayReqAction.do?"+formBody;
         
                     // this.$router.push({name : 'Service_Prepare'});
@@ -107,7 +104,6 @@ export default {
     },
     naverpay(type){
         this.$router.push({name : 'Service_Prepare'});
-        // console.log(type);
         // var req_data = {
         //     "mall_id": "05562973",
         //     "pay_type": type,
@@ -165,8 +161,8 @@ export default {
                     var req_data = {
                         "mallId":"05562973", //KICC에서 발급한 상점ID
                         "shopTransactionId":trans_id, // 상점거래고유번호
-                        // "amount":this.tot_fee, // 가격
-                        "amount" : 10,
+                        "amount":this.tot_fee, // 가격
+                        // "amount" : 10,
                         "shopOrderNo" : trans_id, //상점 주문번호
                         "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                         "payMethodInfo":{ //결제수단관리정보
@@ -182,10 +178,7 @@ export default {
                         {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
                     ).then(
                     (res) => {  
-                        console.log(res.data);
                         if(res.data.resCd == "0000"){
-                            console.log("결제성공");
-                            console.log(res.data.resMsg);
                             this.waiting = false;
                             localStorage.setItem("is_type","onetime");
                             localStorage.setItem("tr_date",res.data.transactionDate);
@@ -198,7 +191,6 @@ export default {
                             this.$router.push({name : 'PayReceipt'});
                         }
                         else{
-                        console.log(res.data);
                             // console.log("결제 오류입니다. 관리자에게 문의하세요.");
                             alert("결제 오류입니다.");
                             this.waiting = false;
@@ -256,11 +248,8 @@ export default {
         this.$http.post('https://pgapi.easypay.co.kr/directapi/trades/directSpayApproval', req_data,
             {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
         ).then(
-        (res) => {  
-            console.log(res.data);
+        (res) => { 
             if(res.data.resCd == "0000"){
-                console.log("결제성공");
-                console.log(res.data.resMsg);
                 this.waiting = false;
                 localStorage.setItem("is_type","onetime");
                 localStorage.setItem("tr_date",res.data.transactionDate);
@@ -273,11 +262,9 @@ export default {
                 this.$router.push({name : 'PayReceipt'});
             }
             else{
-            console.log(res.data);
-                console.log("결제 오류입니다. 관리자에게 문의하세요.");
-                // alert("결제 오류입니다. 관리자에게 문의하세요.");
+                alert("결제 오류입니다. 관리자에게 문의하세요.");
                 this.waiting = false;
-                // this.$router.push({name : 'PayVue'});
+                this.$router.push({name : 'PayVue'});
 
             }
         })

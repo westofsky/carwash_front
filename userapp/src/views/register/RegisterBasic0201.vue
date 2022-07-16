@@ -72,7 +72,6 @@ export default {
             for(var i=0;i<this.$route.query.selectList.length;i++){
               switch(this.$route.query.selectList[i]){
                 case "1":
-                  console.log("걸림");
                   this.agree_age = "Y";
                   break;
                 case "2":
@@ -123,30 +122,23 @@ export default {
           for (var i = 0; i < arrCheckRegion.length; i++) {
             if (region == arrCheckRegion[i]) {
               str = str.substring(2, str.length);
-              console.log(str)
               if (/^\d{2}[가-힣]\d{4}/.exec(str) !== null && str.length === 7) {
-                console.log('1');
                 return true;
               }
               else if (/^\d{3}[가-힣]\d{4}/.exec(str) !== null && str.length === 8) {
-                console.log('2')
                 return true;
               }
               else{
-                console.log('3')
                 return true;
               }
               break;
             }
           }
         }else{
-          console.log(str)
             if (/^\d{2}[가-힣]\d{4}/.exec(str) !== null && str.length === 7) {
-              console.log('1');
               return true;
             }
             else if (/^\d{3}[가-힣]\d{4}/.exec(str) !== null && str.length === 8) {
-              console.log('2')
               return true;
             }
             else{

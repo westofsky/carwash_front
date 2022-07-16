@@ -120,7 +120,6 @@ export default {
         this.mem_pwd = res.data.mem_pwd;
         this.mem_type_name = res.data.mem_type_name;
         this.mem_name = res.data.mem_name;
-        console.log(res.data);
     })
   },
   methods :{
@@ -136,7 +135,6 @@ export default {
       this.check.newpw = false;
     },
     check_prepw(){
-      console.log(this.mem_pwd != this.change_prepw);
       if(this.mem_pwd != this.change_prepw)
         this.warn_mem_prepw = "기존 비밀번호와 일치하지 않습니다."
       else

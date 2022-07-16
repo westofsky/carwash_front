@@ -70,7 +70,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this.mem_no);
     this.get_couponlist();
   },
   methods: {
@@ -82,7 +81,6 @@ export default {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
       }).then((res) => {
-        console.log(res.data)
         this.coupon_list = res.data;
       })
     },

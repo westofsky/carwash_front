@@ -36,7 +36,7 @@
           </form>
           <div class="login_auto"><input type="checkbox" id="login_auto" name="login_auto" v-model="auto_login"><label
               for="login_auto">자동로그인</label></div>
-          <div class="login_find"><a href="#n">아이디/비밀번호 찾기</a></div>
+          <div class="login_find"><router-link to ="LoginFindId">아이디/비밀번호 찾기</router-link></div>
           <div class="login_regiBtns">
             <router-link to = "/RegisterBasic01" class = "regi_basic">
                 개인 회원가입

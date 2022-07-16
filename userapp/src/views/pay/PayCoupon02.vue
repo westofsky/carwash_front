@@ -16,7 +16,7 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title">{{coupon_in.coupon_name}}< v-if="coupon_in.coupon_name == 'CCT004'">{{coupon_in.rest_cout}}</p>
+          <p class="title">{{coupon_in.coupon_name}}<a v-if="coupon_in.coupon_name == 'CCT004'">{{coupon_in.rest_cout}}</a></p>
           <div class="info_table onetime_pay_table">
             <table>
               <tr>
@@ -97,7 +97,6 @@ export default {
           auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
         }
       }).then((res) => {
-        console.log(this.$route.query.code)
         this.qr_in = res.data;
       })
     }

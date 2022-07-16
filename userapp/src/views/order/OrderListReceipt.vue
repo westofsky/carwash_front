@@ -89,7 +89,6 @@ export default {
     }
     }).then(
     (res) => {  // 
-      console.log(res.data);
       this.prod_name = res.data.prod_name;
       this.option_name = res.data.option_name;
       this.pay_date = res.data.pay_date;
@@ -99,7 +98,6 @@ export default {
       this.trno = res.data.trno;
       this.auth_no = res.data.auth_no;
       this.pay_type = res.data.pay_type;
-      console.log(this.trno);
       this.orginal_fee = parseInt(this.pay_fee)+parseInt(this.dc_fee);
     });
     
@@ -139,9 +137,7 @@ export default {
             {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
         ).then(
         (res) => {  
-            console.log(res.data);
             if(res.data.resCd == "0000"){
-                console.log("취소성공");
                 this.waiting = false;
                 // localStorage.setItem("is_type","onetime");
                 // localStorage.setItem("tr_date",res.data.transactionDate);
@@ -154,7 +150,6 @@ export default {
                 // this.$router.push({name : 'PayReceipt'});
             }
             else{
-                console.log("취소 오류.");
 
             }
         })

@@ -64,7 +64,6 @@ export default {
             auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
           }
         }).then((res) => {
-          console.log(res.data)
           if(res.data.result_code == 'Y'){
             alert('멤버쉽이 정상적으로 해지 되었습니다.');
             sessionStorage.setItem("is_membership","N");

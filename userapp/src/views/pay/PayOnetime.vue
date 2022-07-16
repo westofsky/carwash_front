@@ -198,8 +198,6 @@ export default {
       }).then(
       (res) => {  // 
             this.product_list = res.data;
-            console.log("상품정보 가져옴");
-            console.log(res.data);
       }
     );
     this.$http.post(this.$server+'/userapp/getMainProduct', {
@@ -268,7 +266,6 @@ export default {
       }).then(
       (res) => {  // 
             this.option_list = res.data;
-            console.log("옵션 정보 가져옴");
       })
     },
     getSrcO(index){
@@ -318,7 +315,6 @@ export default {
         }
         else{
           for(var i=0;i<send_options.length;i++){
-            console.log("옵션 가공함");
             if(i==send_options.length-1){
               sum_option_plc += send_options[i].option_plc;
               sum_option_code += send_options[i].option_code;

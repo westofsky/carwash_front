@@ -55,9 +55,7 @@ export default {
     return_date(date){
       const write = new Date(date);
       let year = write.getFullYear();
-      console.log(year);
       let month = write.getMonth()+1;
-      console.log(month);
       month = month.toString().padStart(2,'0');
       const day = write.getDate().toString().padStart(2,'0');
 

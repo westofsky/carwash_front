@@ -114,7 +114,6 @@ export default {
       if(!this.isActive)
         alert("필수 약관에 동의 해 주세요.")
       else{
-        console.log(this.selectList);
         this.$router.push({name : 'RegisterBasic0201',query : {
           selectList : this.selectList
         }})
