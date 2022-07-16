@@ -136,6 +136,7 @@ const routes = [
   {
     path: '/myInfoList',
     component: MyInfoList,
+    name : 'myInfoList',
     beforeEnter : requireAuth()
   },
   {
@@ -257,6 +258,7 @@ const routes = [
   {
     path: '/PayOnetimeCoupon02',
     component: PayOnetimeCoupon02,
+    name: 'PayOnetimeCoupon02',
     beforeEnter : requireAuth()
   },
   {
