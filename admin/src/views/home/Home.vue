@@ -1,7 +1,6 @@
 <template>
 <div>
     <div id="wrapper">
-        <NavVue></NavVue>
         <HeaderVue></HeaderVue>
         <nav>
             <ul class="main_menu">
@@ -59,10 +58,8 @@
                 </li>
             </ul>
             <div class="info">
-                <p class="name">스파크플러스</p>
-                <p class="address">서울 금천구 범인로 1142 517</p>
-                <p class="tel">TEL 02-777-8888</p>
-                <p>© Spark Plus, Inc.</p>
+                <p>(주)엔티아이</p>
+                사업자등록번호 : 504-81-15358 ㅣ 대표이사 : 김도연<br>대구광역시 서구 와룡로 335 1층 스파크플러스
             </div>
         </nav>
         <div id="container">
@@ -79,13 +76,13 @@
                             <div>
                                 <p class="contents_area-title">당일 매출 현황 (2022년 05월 3일 현재)</p>
                                 <div class="contents_area-article">
-
+                                    <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.today_pay_amount)}} 원/ {{one_data.today_pay_count}} 건</p>
                                 </div>
                             </div>
                             <div>
                                 <p class="contents_area-title">당일 매출 현황 (2022년 05월 3일 현재)</p>
                                 <div class="contents_area-article">
-
+                                    <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.month_pay_amount)}} 원/ {{one_data.month_pay_count}} 건</p>
                                 </div>
                             </div>
                         </div>
@@ -93,35 +90,17 @@
                             <div>
                                 <p class="contents_area-title">당일 매출 현황 (2022년 05월 3일 현재)</p>
                                 <div class="contents_area-article">
-
+                                    <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.today_use_amount)}} 원/ {{one_data.today_use_count}} 건</p>
                                 </div>
                             </div>
                             <div>
                                 <p class="contents_area-title">공지사항</p>
                                 <div class="contents_area-article notice">
-                                    <a href="javascript:void(0)">
-                                        <p>공지사항 글제목 1번 입니다.</p>
-                                        <p>2022-03-10</p>
-                                    </a>
-                                    <a href="javascript:void(0)">
-                                        <p>공지사항 글제목 2번 입니다.</p>
-                                        <p>2022-03-10</p>
-                                    </a>
-                                    <a href="javascript:void(0)">
-                                        <p>공지사항 글제목 3번 입니다.</p>
-                                        <p>2022-03-10</p>
-                                    </a>
-                                    <a href="javascript:void(0)">
-                                        <p>공지사항 글제목 4번 입니다.</p>
-                                        <p>2022-03-10</p>
-                                    </a>
-                                    <a href="javascript:void(0)">
-                                        <p>공지사항 글제목 5번 입니다.</p>
-                                        <p>2022-03-10</p>
-                                    </a>
-                                    <a href="javascript:void(0)">
-                                        <p>공지사항 글제목 6번 입니다.</p>
-                                        <p>2022-03-10</p>
+                                    <a v-for="(info, index) in notice_data" :key="index">
+                                        <router-link :to="{name : 'Notice', query: {seq_no: info.seq_no}}">
+                                            <p>{{info.title}}</p>
+                                            <p>{{info.wirte_date}}</p>
+                                        </router-link>
                                     </a>
                                 </div>
                                 <button type="button" class="btn_more">더보기</button>
@@ -136,5 +115,44 @@
 </template>
 <script>
     export default{
+        data(){
+            return{
+                one_data : [],
+                notice_data : []
+            }
+        },
+        created(){
+            this.get_one();
+        },
+        methods : {
+            get_real(on_num){
+                if(on_num != undefined){
+                    let cn1 = on_num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                    return cn1
+                }  
+            },
+            get_one(){
+                this.$http.post(this.$server+'/admin/getStatic',{}
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    this.one_data = res.data
+                })
+            },
+            get_notice(){
+                this.$http.post(this.$server+'/admin/getNoticeMain',{
+                    list_count : '6'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    console.log('ok');
+                    console.log(res.body)
+                    this.notice_data = res.body
+                })
+            }
+        }
     }
 </script>

@@ -12,7 +12,8 @@ Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false
 Vue.use(VueHead)
-Vue.component('HeaderVue',HeaderVue);
+Vue.component("HeaderVue",HeaderVue);
+
 new Vue({
   router,
   render: h => h(App)

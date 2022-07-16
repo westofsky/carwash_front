@@ -79,53 +79,56 @@
                                 <div class="select MT20">
                                     <div class="input_box date">
                                         <label for="start">조회일자</label>
-                                        <input type="date" id="start" placeholder="" value="2022-03-16">
+                                        <input type="date" id="start" v-model="sea_date_start">
                                         <div class="hyphen">-</div>
-                                        <input type="date" id="end" value="2022-03-16">
+                                        <input type="date" id="end" v-model="sea_date_end">
                                         <div class="btn_group ML10 MR30">
-                                            <button type="button">전일</button>
-                                            <button type="button">당일</button>
-                                            <button type="button">일주일</button>
-                                            <button type="button">한달</button>
+                                            <button type="button" @click="set_yes">전일</button>
+                                            <button type="button" @click="set_today">당일</button>
+                                            <button type="button" @click="set_weak">일주일</button>
+                                            <button type="button" @click="set_month">한달</button>
                                         </div>
                                     </div>
                                     <div class="select_box MR30">
                                         <label for="">단말기</label>
-                                        <select name="" id="">
-                                            <option value="전체">전체</option>
-                                            <option value="선택1">선택1</option>
-                                            <option value="선택2">선택2</option>
+                                        <select v-model="sea_wtt">
+                                            <option disabled value="">단말기 선택</option>
+                                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1">
+                                                {{info.code_name}}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="select_box MR30">
                                         <label for="approve">승인구분</label>
-                                        <select name="" id="approve">
-                                            <option value="전체">전체</option>
-                                            <option value="선택1">선택1</option>
-                                            <option value="선택2">선택2</option>
+                                        <select name="" id="approve" v-model="sea_pat">
+                                            <option disabled value="">승인구분 선택</option>
+                                            <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
+                                                {{info.code_name}}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="select_box MR30">
                                         <label for="purchase">구매구분</label>
-                                        <select name="" id="purchase">
-                                            <option value="전체">세차 1회권</option>
-                                            <option value="선택1">선택1</option>
-                                            <option value="선택2">선택2</option>
+                                        <select name="" id="purchase" v-model="sea_wut">
+                                            <option disabled value="">구매구분 선택</option>
+                                            <option v-for="(info, index) in get_wut" :key="`o-${index}`" :value="info.code">
+                                                {{info.code_name}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="search MT30">
                                     <div class="input_box">
-                                        <label for="number">차량번호</label>
-                                        <input type="text" id="number" placeholder="차량번호 입력">
+                                        <label for="number" >차량번호</label>
+                                        <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum">
                                     </div>
-                                    <button type="button" class="btn_blue btn_search ML10 MR20">조회</button>
+                                    <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
                                     <button type="button" class="btn_yellow btn_excel">엑셀 다운로드</button>
                                 </div>
                             </div>
                         </form>
                         <div class="contents_area-table">
-                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span>99,999<span>건)</span></font></p>
+                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.amount_fee)}} 원 / {{get_paysum.account_fee}} 건)</font></p>
                             <table>
                                 <colgroup>
                                     <col width="4%"/>
@@ -148,249 +151,37 @@
                                 <thead>
                                     <tr>
                                         <th rowspan="2">NO</th>
-                                        <th rowspan="2">단말기 번호</th>
-                                        <th rowspan="2">영수번호</th>
-                                        <th rowspan="2">결제번호</th>
-                                        <th rowspan="2">결제일자</th>
-                                        <th rowspan="2">결제시간</th>
-                                        <th rowspan="2">매출구분</th>
-                                        <th rowspan="2">총매출</th>
-                                        <th rowspan="2">순매출</th>
-                                        <th rowspan="2">NET매출</th>
-                                        <th rowspan="2">부가세</th>
-                                        <th colspan="5">결제수단</th>
-                                    </tr>
-                                    <tr>
-                                        <th>현금매출</th>
-                                        <th>카드매출</th>
-                                        <th>간편결제</th>
-                                        <th>Gift쿠폰</th>
-                                        <th>선불권</th>
+                                        <th rowspan="2">거래번호</th>
+                                        <th rowspan="2">단말기</th>
+                                        <th rowspan="2">결제일시</th>
+                                        <th rowspan="2">승인구분</th>
+                                        <th rowspan="2">구매구분</th>
+                                        <th rowspan="2">세차메뉴</th>
+                                        <th rowspan="2">세차금액</th>
+                                        <th rowspan="2">옵션금액</th>
+                                        <th rowspan="2">할인금액</th>
+                                        <th rowspan="2">결제금액</th>
+                                        <th rowspan="2">결제구분</th>
+                                        <th rowspan="2">승인취소</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="grey">999</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">9</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="red">반품</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">8</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">7</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="red">반품</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">6</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="red">반품</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">5</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">4</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">3</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">2</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="grey">1</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
+                                    <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)">
+                                        <td class="right">{{ info.seq_no }}</td>
+                                        <td><a href="">{{ info.trno }}</a></td>
+                                        <td>{{ info.terminal_name }}</td>
+                                        <td>{{ return_date(info.pay_date) }}</td>
+                                        <td>{{ info.auth_name }}</td>
+                                        <td>{{ info.buy_name }}</td>
+                                        <td>{{ info.prod_name }}</td>
+                                        <td class="right">{{ return_one(info.wash_fee) }}</td>
+                                        <td class="right">{{ return_one(info.option_fee)}}</td>
+                                        <td class="right">{{ return_one(info.dc_fee)}}</td>
+                                        <td class="right">{{ return_one(info.pay_fee)}}</td>
+                                        <td>{{ info.pay_name}}</td>
+                                        <td><a v-if="info.auth_name == '승인'" @click="cancel(info.seq_no)">[승인취소]</a></td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
-                                    <tr class="sum1">
-                                        <td colspan="6">정상합계</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                    <tr class="sum2">
-                                        <td colspan="6">반품합계</td>
-                                        <td class="red">반품</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                        <td class="right red">99,999,999</td>
-                                    </tr>
-                                    <tr class="sum3">
-                                        <td colspan="6">전체합계</td>
-                                        <td class="grey"></td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -398,18 +189,9 @@
                         <!-- seleted : li.is-current -->
                         <!-- disable : li.disable -->
                         <ul>
-                            <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
-                            <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
-                            <li class="num is-current"><a href="javascript:void(0)">1</a></li>
-                            <li class="num"><a href="javascript:void(0)">2</a></li>
-                            <li class="num"><a href="javascript:void(0)">3</a></li>
-                            <li class="num"><a href="javascript:void(0)">4</a></li>
-                            <li class="num"><a href="javascript:void(0)">5</a></li>
-                            <li class="num"><a href="javascript:void(0)">6</a></li>
-                            <li class="num"><a href="javascript:void(0)">7</a></li>
-                            <li class="num"><a href="javascript:void(0)">8</a></li>
-                            <li class="num"><a href="javascript:void(0)">9</a></li>
-                            <li class="num"><a href="javascript:void(0)">10</a></li>
+                            <li class="page first"><a href="javascript:void(0)">first page</a></li>
+                            <li class="page prev"><a href="javascript:void(0)">prev page</a></li>
+                            <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}"> <a href="">{{ page_index }}</a> </li>
                             <li class="page next"><a href="javascript:void(0)">next page</a></li>
                             <li class="page last"><a href="javascript:void(0)">last page</a></li>
                         </ul>
@@ -421,4 +203,200 @@
 </div>
 </template>
 <script>
+    export default{
+        data(){
+            return{
+                get_wtt : '',
+                get_pat : '',
+                get_wut : '',
+                sea_date_start: '',
+                sea_date_end: '',
+                sea_wtt: '',
+                sea_pat: '',
+                sea_wut: '',
+                sea_carnum: '',
+                get_paysum: '',
+                get_payresult: '',
+                paginate : 50,
+                paginate_total: 0,
+                current: 1
+            }
+        },
+        created(){
+            this.get_select();
+        },
+        methods : {
+            async get_search(){
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+                console.log(this.sea_wtt)
+                console.log(this.sea_pat)
+                console.log(this.sea_wut)
+                console.log(this.sea_carnum)
+                this.$http.post(this.$server+'/admin/getPaySum',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    terminal_type : this.sea_wtt,
+                    auth_type : this.sea_pat,
+                    buy_type : this.sea_wut,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_paysum = res.data
+                })
+                this.$http.post(this.$server+'/admin/getPayList',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    terminal_type : this.sea_wtt,
+                    auth_type : this.sea_pat,
+                    buy_type : this.sea_wut,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    this.get_payresult = res.data
+                    console.log(this.get_payresult)
+                    console.log(this.get_payresult.length)
+                    this.paginate_total = Math.floor(this.get_payresult.length/this.paginate)
+                    console.log(this.paginate_total)
+                })
+
+            },
+            return_one(on_num){
+                if(on_num != undefined){
+                    let cn1 = on_num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                    return cn1
+                }  
+            },
+            get_select(){
+                this.$http.post(this.$server+'/admin/getCodeList',
+                {
+                    code_type : 'WTT'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    
+                    this.get_wtt = res.data
+                    console.log(typeof this.get_wtt)
+
+
+                })
+                this.$http.post(this.$server+'/admin/getCodeList',
+                {
+                    code_type : 'PAT'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    
+                    this.get_pat = res.data
+                })
+                this.$http.post(this.$server+'/admin/getCodeList',
+                {
+                    code_type : 'WUT'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    
+                    this.get_wut = res.data
+                })
+            },
+            setPaginate: function (i) {
+                if (this.current == 1) {
+                    return i < this.paginate;
+                }
+                else {
+                    return (i >= (this.paginate * (this.current - 1)) && i < (this.current * this.paginate));
+                }
+            },
+            updateCurrent: function (i) {
+                this.current = i;
+            },
+            set_yes: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+            },
+            set_today: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_weak: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-7).toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_month: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_year: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            cancel(no){
+                var result = confirm("해당 건을 취소하시겠습니까?");
+                console.log(no);
+                if(result){
+                    console.log('ok');
+                    this.$http.post(this.$server+'/admin/setPayCancel',
+                    {
+                        seq_no : no
+                    }
+                    ,{headers : {
+                        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        }
+                    }).then((res) => {
+                        console.log(res.data)
+                        if(res.body.result_code == 'Y'){
+                            alert('정상적으로 취소되었습니다.')
+                        }
+                        else if(res.body.result_code == 'N'){
+                            alert('취소 실패하였습니다.')
+                        }
+
+                    })
+                }
+            },
+            return_date(date){
+                var today = new Date(date);
+                today.setHours(today.getHours() + 9);
+                return today.toISOString().replace('T', ' ').substring(0, 19);
+            }
+        }
+    }
+
 </script>

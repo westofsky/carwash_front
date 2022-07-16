@@ -24,11 +24,11 @@ import Setting04 from '../views/setting/Setting04';
 Vue.use(VueRouter)
 
 const requireAuth = () => (to, from, next) =>{
-  if(localStorage.getItem("auto_admin_id")){
+  if(localStorage.getItem("auto_admin_no")){
     return next();
   }
 	else{
-    if (sessionStorage.getItem("admin_id")){
+    if (sessionStorage.getItem("admin_no")){
       return next();
     }
     alert('잘못된 접근입니다. 로그인 해주세요');
@@ -42,79 +42,98 @@ const routes = [
   },
   {
     path: '/Home',
-    component: Home
+    component: Home,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Sale01',
-    component: Sale01
+    component: Sale01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Sale02',
-    component: Sale02
+    component: Sale02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Customer01',
-    component: Customer01
+    component: Customer01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Customer02',
-    component: Customer02
+    component: Customer02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Customer03',
-    component: Customer03
+    component: Customer03,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Equ01',
-    component: Equ01
+    component: Equ01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Equ02',
-    component: Equ02
+    component: Equ02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Equ03',
-    component: Equ03
+    component: Equ03,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Popup',
-    component: Popup
+    component: Popup,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Product01',
-    component: Product01
+    component: Product01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Product02',
-    component: Product02
+    component: Product02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Product03',
-    component: Product03
+    component: Product03,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Promotion01',
-    component: Promotion01
+    component: Promotion01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Promotion02',
-    component: Promotion02
+    component: Promotion02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Setting01',
-    component: Setting01
+    component: Setting01,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Setting02',
-    component: Setting02
+    component: Setting02,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Setting03',
-    component: Setting03
+    component: Setting03,
+    beforeEnter : requireAuth()
   },
   {
     path: '/Setting04',
-    component: Setting04
+    component: Setting04,
+    beforeEnter : requireAuth()
   },
   
 ]

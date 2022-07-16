@@ -76,88 +76,42 @@
                         <div class="contents_area">
                             <form autocomplete="off">
                                 <div class="contents_area-search">
-                                    <div class="select MT20">
-                                        <div class="select_box">
-                                            <label for="">상품분류</label>
-                                            <select name="" id="product2" class="MR05">
-                                                <option value="전체">대분류 전체</option>
-                                                <option value="선택1">WASHDAY</option>
-                                            </select>
-                                        </div>
-                                        <div class="select_box">
-                                        <label for=""></label>
-                                            <select name="" id="product3" class="MR05">
-                                                <option value="">중분류 전체</option>
-                                                <option value="">세차</option>
-                                                <option value="">상품</option>
-                                                <option value="">서비스</option>
-                                                <option value="">추가</option>
-                                            </select>
-                                        </div>
-                                        <div class="select_box">
-                                            <label for="approve"></label>
-                                            <select name="" id="" class="MR30">
-                                                <option value="">소분류 전체</option>
-                                                <option value="">1회권</option>
-                                                <option value="">세차옵션</option>
-                                                <option value="">멤버쉽</option>
-                                                <option value="">Gift 쿠폰</option>
-                                                <option value="">무료 쿠폰</option>
-                                                <option value="">할인 쿠폰</option>
-                                                <option value="">선불권</option>
-                                            </select>
-                                        </div>
-                                        <div class="select_box">
-                                            <label for="">검색조건</label>
-                                            <select name="" id="" class="MR05">
-                                                <option value="">상품명 선택</option>
-                                                <option value="BASIC">BASIC</option>
-                                                <option value="BUBBLE">BUBBLE</option>
-                                                <option value="BEST">BEST</option>
-                                                <option value="PREMIUM">PREMIUM</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <div class="select_box">
-                                            <label for=""></label>
-                                            <input type="text" id="000" value="" placeholder="검색어 입력">
-                                        </div>
-                                        
-                                        
-                                    </div>
-                                    <div class="select MT40">
+                                    <div class="select MT30">
                                         <div class="input_box date">
                                             <label for="start">조회일자</label>
-                                            <input type="date" id="start" placeholder="" value="2022-03-16">
+                                            <input type="date" id="start" v-model="sea_date_start" @change="changeval(this)">
                                             <div class="hyphen">-</div>
-                                            <input type="date" id="end" value="2022-03-16">
+                                            <input type="date" id="end" v-model="sea_date_end">
+                                        
                                             <div class="btn_group ML10 MR30">
-                                                <button type="button">전일</button>
-                                                <button type="button">당일</button>
-                                                <button type="button">일주일</button>
-                                                <button type="button">한달</button>
+                                                <button type="button" @click="set_yes">전일</button>
+                                                <button type="button" @click="set_today">당일</button>
+                                                <button type="button" @click="set_weak">일주일</button>
+                                                <button type="button" @click="set_month">한달</button>
+                                            </div>
+                                            <div class="select_box MR30">
+                                                <label for="purchase">구매 구분</label>
+                                                <select name="" id="purchase" v-model="sea_wut">
+                                                    <option disabled value="">구매구분 선택</option>
+                                                    <option v-for="(info, index) in get_wut" :key="`o-${index}`" :value="info.code">
+                                                        {{info.code_name}}
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="select_box">
-                                            <label for="device">쿠폰적용</label>
-                                            <select name="" id="" class="MR30">
-                                                <option value="전체">전체</option>
-                                                <option value="선택1">쿠폰 적용</option>
-                                                <option value="선택2">쿠폰 미적용</option>
-                                            </select>
-                                        </div>
-                                        
-                                        
-
-                                        <button type="button" class="btn_blue btn_search MR20">조회</button>
-                                        <button type="button" class="btn_yellow btn_excel">엑셀 다운로드</button>
-
-                                        
                                     </div>
+                                    <div class="search MT30">
+                                    <div class="input_box">
+                                        <label for="number" >차량번호</label>
+                                        <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum">
+                                    </div>
+                                    <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
+                                    <button type="button" class="btn_yellow btn_excel">엑셀 다운로드</button>
+                                </div>
                                 </div>
                             </form>
                             <div class="contents_area-table">
-                                <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span>99,999<span>건)</span></font></p>
+                                <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.amount_fee)}} 원 / {{get_paysum.account_fee}} 건)</font></p>
                                 <table>
                                     <colgroup>
                                         <col width=""/>
@@ -177,208 +131,32 @@
                                     </colgroup>
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">대분류</th>
-                                            <th rowspan="2">중분류</th>
-                                            <th rowspan="2">소분류</th>
-                                            <th rowspan="2">상품명</th>
-                                            <th rowspan="2">쿠폰적용</th>
-                                            <th rowspan="2">총수량</th>
-                                            <th rowspan="2">총매출</th>
-                                            <th rowspan="2">순매출</th>
-                                            <th rowspan="2">부가세</th>
-                                            <th rowspan="2">비율(%)</th>
-                                            <th colspan="4">202201</th>
-                                        </tr>
-                                        <tr>
-                                            <th>수량</th>
-                                            <th>총매출</th>
-                                            <th>순매출</th>
-                                            <th>부가세</th>
+                                            <th rowspan="2">NO</th>
+                                            <th rowspan="2">차량번호</th>
+                                            <th rowspan="2">이용구분</th>
+                                            <th rowspan="2">이용일시</th>
+                                            <th rowspan="2">QR사용</th>
+                                            <th rowspan="2">세차메뉴</th>
+                                            <th rowspan="2">옵션명</th>
+                                            <th rowspan="2">건조브러쉬</th>
+                                            <th rowspan="2">결제금액</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BUBBLE</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BUBBLE</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">PREMIUM</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="grey">WASH DAY</td>
-                                            <td class="grey">세차</td>
-                                            <td class="grey">1회권</td>
-                                            <td class="grey">BASIC</td>
-                                            <td class="grey">전체</td>
-                                            <td class="grey">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">4</td>
-                                            <td class="right">293</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
+                                        <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)">
+                                            <td class="right">{{ info.seq_no }}</td>
+                                            <td>{{ info.car_no }}</td>
+                                            <td>{{ info.use_name }}</td>
+                                            <td>{{ info.use_date }}</td>
+                                            <td>{{ info.qr_is }}</td>
+                                            <td>{{ info.prod_name }}</td>
+                                            <td>{{ info.option_name }}</td>
+                                            <td>{{ info.brush_is }}</td>
+                                            <td class="right">{{ return_one(info.pay_fee)}}</td>
                                         </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr class="sum3">
-                                            <td colspan="5">전체합계</td>
-                                            <td class="grey">99999999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">100</td>
-                                            <td class="right">1817</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                            <td class="right">99,999,999</td>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
-                            
-                            
-                            
-
-
                         </div>
                         <div class="pagination">
                             <!-- seleted : li.is-current -->
@@ -400,16 +178,152 @@
                                 <li class="page last"><a href="javascript:void(0)">last page</a></li>
                             </ul>
                         </div>
-                        
-                        <!-- 챠트 들어갈 곳 -->
-                        <div class="chart_bottom">
-                            챠트 들어갈 곳 입니다. 
-                        </div>
-                        
-                        
                     </div>
                 </section>
             </div>
         </div>
     </div>
 </template>
+<script>
+    export default{
+        data(){
+            return{
+                get_wtt : '',
+                get_pat : '',
+                get_wut : '',
+                sea_date_start: '',
+                sea_date_end: '',
+                sea_wtt: '',
+                sea_pat: '',
+                sea_wut: '',
+                sea_carnum: '',
+                get_paysum: '',
+                get_payresult: '',
+                paginate : 50,
+                paginate_total: 0,
+                current: 1
+            }
+        },
+        created(){
+            this.get_select();
+        },
+        methods : {
+            async get_search(){
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+                console.log(this.sea_wtt)
+                console.log(this.sea_pat)
+                console.log(this.sea_wut)
+                console.log(this.sea_carnum)
+                this.$http.post(this.$server+'/admin/getUseSum',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    use_type : this.sea_wut,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_paysum = res.data
+                })
+                this.$http.post(this.$server+'/admin/getUseList',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    use_type : this.sea_wut,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    this.get_payresult = res.data
+                    console.log(this.get_payresult)
+                    console.log(this.get_payresult.length)
+                    this.paginate_total = Math.floor(this.get_payresult.length/this.paginate)
+                    console.log(this.paginate_total)
+                })
+
+            },
+            return_one(on_num){
+                if(on_num != undefined){
+                    let cn1 = on_num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                    return cn1
+                }  
+            },
+            get_select(){
+                this.$http.post(this.$server+'/admin/getCodeList',
+                {
+                    code_type : 'WUT'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    
+                    this.get_wut = res.data
+                })
+            },
+            setPaginate: function (i) {
+                if (this.current == 1) {
+                    return i < this.paginate;
+                }
+                else {
+                    return (i >= (this.paginate * (this.current - 1)) && i < (this.current * this.paginate));
+                }
+            },
+            updateCurrent: function (i) {
+                this.current = i;
+            },
+            set_yes: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+            },
+            set_today: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_weak: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-7).toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_month: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_year: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            changeval(e) {
+                console.log(e)				
+            }
+        }
+    }
+
+</script>

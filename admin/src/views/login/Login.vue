@@ -48,7 +48,6 @@ export default {
         }
     },
     mounted(){
-        console.log(1)
     },
 
     methods : {
@@ -59,7 +58,7 @@ export default {
             console.log(this.auto_login);
             this.$http.post(this.$server+'/admin/chkLogin', {
                 admin_id : this.admin_id,
-                admin_pw : this.admin_pw
+                admin_pwd : this.admin_pw
                 },{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
@@ -81,6 +80,7 @@ export default {
                                 localStorage.setItem("auto_admin_no",res.data.admin_id);
                                 localStorage.setItem("auto_admin_name",res.data.admin_name);
                             }
+                            console.log(localStorage.getItem("admin_no"))
                             this.$router.push('/Home')
                         })
                     }
