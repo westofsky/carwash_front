@@ -103,7 +103,7 @@
                                     <div class="search MT30">
                                     <div class="input_box">
                                         <label for="number" >차량번호</label>
-                                        <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum">
+                                        <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                     </div>
                                     <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
                                     <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
@@ -138,7 +138,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)">
+                                        <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                             <td class="right">{{ info.seq_no }}</td>
                                             <td>{{ info.car_no }}</td>
                                             <td>{{ info.use_name }}</td>
@@ -159,7 +159,7 @@
                             <ul>
                                 <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
                                 <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
-                                <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}"> <a href="">{{ page_index }}</a> </li>
+                                <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}" :key="page_index"> <a href="">{{ page_index }}</a> </li>
                                 <li class="page next"><a href="javascript:void(0)">next page</a></li>
                                 <li class="page last"><a href="javascript:void(0)">last page</a></li>
                             </ul>
@@ -193,6 +193,8 @@
         },
         created(){
             this.get_select();
+            this.set_yes();
+            this.get_search();
         },
         methods : {
             

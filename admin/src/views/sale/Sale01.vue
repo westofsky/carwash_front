@@ -93,7 +93,7 @@
                                         <label for="">단말기</label>
                                         <select v-model="sea_wtt">
                                             <option disabled value="">단말기 선택</option>
-                                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1">
+                                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
                                             </option>
                                         </select>
@@ -120,7 +120,7 @@
                                 <div class="search MT30">
                                     <div class="input_box">
                                         <label for="number" >차량번호</label>
-                                        <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum">
+                                        <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                     </div>
                                     <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
                                     <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
@@ -166,7 +166,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)">
+                                    <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ info.seq_no }}</td>
                                         <td><a href="">{{ info.trno }}</a></td>
                                         <td>{{ info.terminal_name }}</td>
@@ -191,7 +191,7 @@
                         <ul>
                             <li class="page first"><a href="javascript:void(0)">first page</a></li>
                             <li class="page prev"><a href="javascript:void(0)">prev page</a></li>
-                            <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}"> <a href="">{{ page_index }}</a> </li>
+                            <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}" :key="page_index"> <a href="">{{ page_index }}</a> </li>
                             <li class="page next"><a href="javascript:void(0)">next page</a></li>
                             <li class="page last"><a href="javascript:void(0)">last page</a></li>
                         </ul>
@@ -210,8 +210,8 @@
                 get_wtt : '',
                 get_pat : '',
                 get_wut : '',
-                sea_date_start: '',
-                sea_date_end: '',
+                sea_date_start: '2022-07-16',
+                sea_date_end: '20',
                 sea_wtt: '',
                 sea_pat: '',
                 sea_wut: '',
@@ -225,9 +225,12 @@
         },
         created(){
             this.get_select();
+            this.set_yes();
+            this.get_search();
         },
         methods : {
             async get_search(){
+                this.get_payresult = '';
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
                 console.log(this.sea_wtt)
@@ -403,15 +406,6 @@
                         if(res.data.resCd == "0000"){
                             console.log("취소성공");
                             this.waiting = false;
-                            // localStorage.setItem("is_type","onetime");
-                            // localStorage.setItem("tr_date",res.data.transactionDate);
-                            // localStorage.setItem("auth_no",res.data.pgCno);
-                            // localStorage.setItem("tr_no",res.data.shopTransactionId);
-                            // localStorage.setItem("token",token);
-                            // localStorage.setItem("card_no",res.data.paymentInfo.cardInfo.cardNo);
-                            // localStorage.setItem("card_name",res.data.paymentInfo.cardInfo.issuerName);
-                            // localStorage.setItem("what_pay","card");
-                            // this.$router.push({name : 'PayReceipt'});
                             console.log('ok');
                                 this.$http.post(this.$server+'/admin/setPayCancel',
                                 {

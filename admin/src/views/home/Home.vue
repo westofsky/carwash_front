@@ -74,13 +74,13 @@
                     <div class="contents_area">
                         <div class="first">
                             <div>
-                                <p class="contents_area-title">당일 매출 현황 (2022년 05월 3일 현재)</p>
+                                <p class="contents_area-title">당일 매출 현황 {{get_today()}}</p>
                                 <div class="contents_area-article">
                                     <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.today_pay_amount)}} 원/ {{one_data.today_pay_count}} 건</p>
                                 </div>
                             </div>
                             <div>
-                                <p class="contents_area-title">당일 매출 현황 (2022년 05월 3일 현재)</p>
+                                <p class="contents_area-title">당일 매출 현황 {{get_month()}}</p>
                                 <div class="contents_area-article">
                                     <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.month_pay_amount)}} 원/ {{one_data.month_pay_count}} 건</p>
                                 </div>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="second">
                             <div>
-                                <p class="contents_area-title">당일 매출 현황 (2022년 05월 3일 현재)</p>
+                                <p class="contents_area-title">당일 매출 현황 {{get_today()}}</p>
                                 <div class="contents_area-article">
                                     <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.today_use_amount)}} 원/ {{one_data.today_use_count}} 건</p>
                                 </div>
@@ -118,7 +118,8 @@
         data(){
             return{
                 one_data : [],
-                notice_data : []
+                notice_data : [],
+                
             }
         },
         created(){
@@ -152,7 +153,22 @@
                     console.log(res.body)
                     this.notice_data = res.body
                 })
-            }
+            },
+            get_today(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                return "("+year+"년 "+month+"월 "+day+"일 현재)"
+            },
+            get_month(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                return "("+year+"년 "+month+"월 현재)"
+
+            },
         }
     }
 </script>
