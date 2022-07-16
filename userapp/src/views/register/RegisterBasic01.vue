@@ -90,19 +90,17 @@
         </article>
       </div>
     <aside>
-      <div class="btn_next" v-bind:class = "{active : isActive}" style = "bottom : 56px;">
+      <div class="btn_next" v-bind:class = "{active : isActive}" style = "bottom : 0px;">
         <a @click = "registerbasic_carno">차량 번호 등록</a>
       </div>
       <!-- <div class="btn_next">
         <a @click = "register_disabled">차량 번호 등록(비활성화)</a>
       </div> -->
     </aside>
-    <FooterVue></FooterVue>
   </div>
 </template>
 
 <script>
-import FooterVue from "../footer/FooterVue.vue";
 
 export default {
   data() {
