@@ -79,7 +79,7 @@
                                     <div class="select MT30">
                                         <div class="input_box date">
                                             <label for="start">조회일자</label>
-                                            <input type="date" id="start" v-model="sea_date_start" @change="changeval(this)">
+                                            <input type="date" id="start" v-model="sea_date_start">
                                             <div class="hyphen">-</div>
                                             <input type="date" id="end" v-model="sea_date_end">
                                         
@@ -113,7 +113,7 @@
                             <div class="contents_area-table">
                                 <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.amount_fee)}} 원 / {{get_paysum.account_fee}} 건)</font></p>
                                 <table>
-                                    <colgroup>
+                                    <!-- <colgroup>
                                         <col width=""/>
                                         <col width="5%"/>
                                         <col width="5%"/>
@@ -123,12 +123,7 @@
                                         <col width=""/>
                                         <col width=""/>
                                         <col width=""/>
-                                        <col width="5%"/>
-                                        <col width="5%"/>
-                                        <col width=""/>
-                                        <col width=""/>
-                                        <col width=""/>
-                                    </colgroup>
+                                    </colgroup> -->
                                     <thead>
                                         <tr>
                                             <th rowspan="2">NO</th>
@@ -147,7 +142,7 @@
                                             <td class="right">{{ info.seq_no }}</td>
                                             <td>{{ info.car_no }}</td>
                                             <td>{{ info.use_name }}</td>
-                                            <td>{{ info.use_date }}</td>
+                                            <td>{{ return_date(info.use_date) }}</td>
                                             <td>{{ info.qr_is }}</td>
                                             <td>{{ info.prod_name }}</td>
                                             <td>{{ info.option_name }}</td>
@@ -164,16 +159,7 @@
                             <ul>
                                 <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
                                 <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
-                                <li class="num is-current"><a href="javascript:void(0)">1</a></li>
-                                <li class="num"><a href="javascript:void(0)">2</a></li>
-                                <li class="num"><a href="javascript:void(0)">3</a></li>
-                                <li class="num"><a href="javascript:void(0)">4</a></li>
-                                <li class="num"><a href="javascript:void(0)">5</a></li>
-                                <li class="num"><a href="javascript:void(0)">6</a></li>
-                                <li class="num"><a href="javascript:void(0)">7</a></li>
-                                <li class="num"><a href="javascript:void(0)">8</a></li>
-                                <li class="num"><a href="javascript:void(0)">9</a></li>
-                                <li class="num"><a href="javascript:void(0)">10</a></li>
+                                <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}"> <a href="">{{ page_index }}</a> </li>
                                 <li class="page next"><a href="javascript:void(0)">next page</a></li>
                                 <li class="page last"><a href="javascript:void(0)">last page</a></li>
                             </ul>
@@ -243,7 +229,7 @@
                     this.get_payresult = res.data
                     console.log(this.get_payresult)
                     console.log(this.get_payresult.length)
-                    this.paginate_total = Math.floor(this.get_payresult.length/this.paginate)
+                    this.paginate_total = Math.floor(this.get_payresult.length/this.paginate)+1
                     console.log(this.paginate_total)
                 })
 
@@ -320,8 +306,10 @@
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
-            changeval(e) {
-                console.log(e)				
+            return_date(date){
+                var today = new Date(date);
+                today.setHours(today.getHours() + 9);
+                return today.toISOString().replace('T', ' ').substring(0, 19);
             }
         }
     }

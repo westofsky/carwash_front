@@ -265,7 +265,7 @@
                     this.get_payresult = res.data
                     console.log(this.get_payresult)
                     console.log(this.get_payresult.length)
-                    this.paginate_total = Math.floor(this.get_payresult.length/this.paginate)
+                    this.paginate_total = Math.floor(this.get_payresult.length/this.paginate)+1
                     console.log(this.paginate_total)
                 })
 
