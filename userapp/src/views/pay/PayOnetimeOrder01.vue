@@ -29,11 +29,11 @@
                 <td>합계</td>
                 <td class="fontBold fRed">{{return_one(menu_fee+option_fee)}}원</td>
               </tr>
-              <tr class="total_price" style="border-top : none;" v-if="is_coupon">
+              <tr class="total_price" style="border-top : none;" v-if="is_coupon || is_taxi">
                 <td>할인금액</td>
                 <td class="table_price">{{return_one(is_discount)}}원</td>
               </tr>
-              <tr class="total_price" v-if="is_coupon">
+              <tr class="total_price" v-if="is_coupon || is_taxi">
                 <td>결제금액</td>
                 <td class="fontBold fRed">{{return_one(tot_fee)}}원</td>
               </tr>
@@ -50,10 +50,10 @@
       </div> -->
       <div class="btn_next3_left">
         <!-- <a href="#"><img src="../../assets/img/content/btn_coupon.svg">쿠폰사용</a> -->
-        <router-link to="/payOnetimeCoupon02">
+        <a @click="is_taxi_chk">
           <img src="../../assets/img/content/btn_coupon.svg">
           쿠폰사용
-        </router-link>
+        </a>
       </div>
       <div class="btn_next3_right" @click = "pay">
         <a><img src="../../assets/img/content/btn_pay.svg" >결제하기</a>
@@ -86,6 +86,7 @@ export default {
       is_coupon : [],
       is_discount : 0,
       tot_fee : 0,
+      is_taxi : (localStorage.getItem("is_taxi")=="Y") ? true:false,
     }
   },
   beforeCreate(){
@@ -106,6 +107,12 @@ export default {
     }
     else
       this.tot_fee = this.menu_fee + this.option_fee;
+    
+    if(sessionStorage.getItem("is_taxi") == "Y"){
+      this.is_discount = this.tot_fee * 0.5;
+      this.tot_fee = this.tot_fee - this.is_discount;
+      console.log("걸림");
+    }
     localStorage.setItem("tot_fee",this.tot_fee);
   },
   methods : {
@@ -137,6 +144,14 @@ export default {
       var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
       return one
     },
+    is_taxi_chk(){
+      if(sessionStorage.getItem("is_taxi") == "Y"){
+        alert("택시회원은 50%가 적용되어 쿠폰을 사용하실 수 없습니다.");
+      }
+      else{
+        this.$router.push({name : 'PayOnetimeCoupon02'});
+      }
+    }
   }
 };
 </script>

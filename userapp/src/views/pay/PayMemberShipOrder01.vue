@@ -101,6 +101,7 @@ export default {
         (res) => {  // 
           if(res.data.result_code == "Y"){
             alert("등록된 카드가 없습니다. 카드를 등록해주세요.");
+            this.remove_items();
             this.$router.push({name : 'PaymentVue'});
           }
           else{ //결제진행
@@ -165,26 +166,7 @@ export default {
                     console.log(res.data);
                     alert("결제 오류입니다.");
                     this.waiting = false;
-                    localStorage.removeItem("send_options");
-                    localStorage.removeItem("pin_seq_no");
-                    localStorage.removeItem("first_menu");
-                    localStorage.removeItem("menu_fee");
-                    localStorage.removeItem("main_plc");
-                    localStorage.removeItem("pin2_seq_no");
-                    localStorage.removeItem("second_menu");
-                    localStorage.removeItem("option_fee");
-                    localStorage.removeItem("option_plc");
-                    localStorage.removeItem("third_menu");
-                    localStorage.removeItem("brush_plc");
-                    localStorage.removeItem("is_type");
-                    localStorage.removeItem("tr_date");
-                    localStorage.removeItem("auth_no");
-                    localStorage.removeItem("tr_no");
-                    localStorage.removeItem("token");
-                    localStorage.removeItem("card_name");
-                    localStorage.removeItem("card_no");
-                    localStorage.removeItem("use_coupon");
-                    localStorage.removeItem("tot_fee");
+                    this.remove_items();
                     this.$router.push({name : 'PayVue'});
                     // this.$router.push({name : 'PayVue'});
 
@@ -203,6 +185,28 @@ export default {
       var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
       return one
     },
+    remove_items(){
+      localStorage.removeItem("send_options");
+      localStorage.removeItem("pin_seq_no");
+      localStorage.removeItem("first_menu");
+      localStorage.removeItem("menu_fee");
+      localStorage.removeItem("main_plc");
+      localStorage.removeItem("pin2_seq_no");
+      localStorage.removeItem("second_menu");
+      localStorage.removeItem("option_fee");
+      localStorage.removeItem("option_plc");
+      localStorage.removeItem("third_menu");
+      localStorage.removeItem("brush_plc");
+      localStorage.removeItem("is_type");
+      localStorage.removeItem("tr_date");
+      localStorage.removeItem("auth_no");
+      localStorage.removeItem("tr_no");
+      localStorage.removeItem("token");
+      localStorage.removeItem("card_name");
+      localStorage.removeItem("card_no");
+      localStorage.removeItem("use_coupon");
+      localStorage.removeItem("tot_fee");
+    }
   }
 };
 </script>

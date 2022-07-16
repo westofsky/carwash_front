@@ -199,6 +199,7 @@ export default {
       (res) => {  // 
             this.product_list = res.data;
             console.log("상품정보 가져옴");
+            console.log(res.data);
       }
     );
     this.$http.post(this.$server+'/userapp/getMainProduct', {

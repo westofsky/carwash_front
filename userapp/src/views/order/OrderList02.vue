@@ -23,6 +23,7 @@
           </div>
           <div class="coupon_list_wrap">
             <ul>
+              <p v-if="this.pay_list.length == 0" style="text-align: center;">결제 내역이 없습니다.</p>
               <li class="coupon_list" v-for="(pay_info , index) in pay_list" :key = "index">
                 <div class="coupon_name">
                   <img src="../../assets/img/content/pay_onetime04.png" alt="">

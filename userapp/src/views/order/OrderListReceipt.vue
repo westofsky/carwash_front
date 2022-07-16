@@ -22,7 +22,7 @@
             <table>
               <tr>
                 <td class="table_name">합계금액</td>
-                <td class="table_price">{{return_one(pay_fee)}}원</td>
+                <td class="table_price">{{return_one(orginal_fee)}}원</td>
               </tr>
               <tr>
                 <td class="table_name">할인금액</td>
@@ -30,7 +30,7 @@
               </tr>
               <tr class="total_price">
                 <td>합계</td>
-                <td class="fontBold">{{return_one(real_pay)}}원</td>
+                <td class="fontBold">{{return_one(pay_fee)}}원</td>
               </tr>
             </table>
           </div>
@@ -52,9 +52,9 @@
         <!-- <a href="#">확 인</a> -->
         <router-link to="/orderList02">확 인</router-link>
       </div>
-      <!-- <div class="btn_next" style="bottom: 102px;">
+      <div class="btn_next" style="bottom: 102px;">
         <a @click="cancel">취 소</a>
-      </div> -->
+      </div>
     </aside>
     <FooterVue></FooterVue>
   </div>
@@ -78,7 +78,7 @@ export default {
       trno : '',
       auth_no : '',
       pay_type : '',
-      real_pay : '',
+      orginal_fee : 0,
     }
   },
   mounted (){
@@ -100,7 +100,7 @@ export default {
       this.auth_no = res.data.auth_no;
       this.pay_type = res.data.pay_type;
       console.log(this.trno);
-      this.real_pay = this.pay_fee-this.dc_fee
+      this.orginal_fee = parseInt(this.pay_fee)+parseInt(this.dc_fee);
     });
     
   },
@@ -112,24 +112,30 @@ export default {
     cancel(){
       var result = confirm("취소하시겠습니까?");
       var key =  'easypay!O0OWO2Bb';
-      // const id = this.$CryptoJS.HmacSHA256(this.auth_no+"|"+this.trno, key).toString(this.$CryptoJS.enc.Hex);
       var today = new Date();
       var year = today.getFullYear();
       var month = ('0' + (today.getMonth() + 1)).slice(-2);
       var day = ('0' + today.getDate()).slice(-2);
+      var id = new Uint32Array(1);
+      var trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString();
+      do{
+        trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
+      }while(trans_id.length!=6);
+      trans_id = year+month+day+trans_id;
+      const msg = this.$CryptoJS.HmacSHA256(this.auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
       if(result){
         var req_data = {
             "mallId":"05562973", //KICC에서 발급한 상점ID
-            "shopTransactionId":this.trno, // 상점거래고유번호
+            "shopTransactionId":trans_id, // 상점거래고유번호
             "pgCno" : this.auth_no,
             "reviseTypeCode":'40',
             "amount" : this.pay_fee,
             "clientIp" : '127.0.0.1',
             "clientId" : sessionStorage.getItem("mem_no"),
-            "msgAuthValue" : id,
+            "msgAuthValue" : msg,
             "cancelReqDate" : year+month+day,
         };
-        this.$http.post('https://testpgapi.easypay.co.kr/api/trades/revise', req_data,
+        this.$http.post('https://pgapi.easypay.co.kr/api/trades/revise', req_data,
             {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
         ).then(
         (res) => {  

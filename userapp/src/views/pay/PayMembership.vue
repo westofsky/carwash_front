@@ -96,6 +96,7 @@ export default {
     localStorage.removeItem("card_name");
     localStorage.removeItem("card_no");
     localStorage.removeItem("use_coupon");
+    localStorage.removeItem("tot_fee");
   },
   beforeCreate(){
     this.$http.post(this.$server+'/userapp/getMainProduct', {
