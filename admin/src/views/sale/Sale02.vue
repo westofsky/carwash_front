@@ -106,7 +106,7 @@
                                         <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum">
                                     </div>
                                     <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
-                                    <button type="button" class="btn_yellow btn_excel">엑셀 다운로드</button>
+                                    <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
                                 </div>
                                 </div>
                             </form>
@@ -171,6 +171,7 @@
     </div>
 </template>
 <script>
+    import * as Xlsx from 'xlsx'
     export default{
         data(){
             return{
@@ -194,6 +195,7 @@
             this.get_select();
         },
         methods : {
+            
             async get_search(){
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
@@ -310,6 +312,12 @@
                 var today = new Date(date);
                 today.setHours(today.getHours() + 9);
                 return today.toISOString().replace('T', ' ').substring(0, 19);
+            },
+            makeExcelFile5 () {
+                const workBook = Xlsx.utils.book_new()
+                const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
+                Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
+                Xlsx.writeFile(workBook, 'output.xlsx')
             }
         }
     }

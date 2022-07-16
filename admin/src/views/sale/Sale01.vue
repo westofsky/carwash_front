@@ -123,7 +123,7 @@
                                         <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum">
                                     </div>
                                     <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
-                                    <button type="button" class="btn_yellow btn_excel">엑셀 다운로드</button>
+                                    <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
                                 </div>
                             </div>
                         </form>
@@ -179,7 +179,7 @@
                                         <td class="right">{{ return_one(info.dc_fee)}}</td>
                                         <td class="right">{{ return_one(info.pay_fee)}}</td>
                                         <td>{{ info.pay_name}}</td>
-                                        <td><a v-if="info.auth_name == '승인'" @click="cancel(info.seq_no)">[승인취소]</a></td>
+                                        <td><a v-if="info.auth_name == '승인'" @click="cancel(info.seq_no,info.auth_no,info.pay_fee, info.trno)">[승인취소]</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -203,6 +203,7 @@
 </div>
 </template>
 <script>
+    import * as Xlsx from 'xlsx'
     export default{
         data(){
             return{
@@ -367,34 +368,88 @@
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
-            cancel(no){
+            cancel(no, auth_no, pay_fee, tr_no){
                 var result = confirm("해당 건을 취소하시겠습니까?");
-                console.log(no);
                 if(result){
-                    console.log('ok');
-                    this.$http.post(this.$server+'/admin/setPayCancel',
-                    {
-                        seq_no : no
-                    }
-                    ,{headers : {
-                        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                        }
-                    }).then((res) => {
-                        console.log(res.data)
-                        if(res.body.result_code == 'Y'){
-                            alert('정상적으로 취소되었습니다.')
-                        }
-                        else if(res.body.result_code == 'N'){
-                            alert('취소 실패하였습니다.')
-                        }
+                var key =  'easypay!O0OWO2Bb';
+                var today = new Date();
+                var year = today.getFullYear();
+                var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                var day = ('0' + today.getDate()).slice(-2);
+                var id = new Uint32Array(1);
+                var trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString();
+                do{
+                    trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
+                }while(trans_id.length!=6);
+                trans_id = year+month+day+trans_id;
+                const msg = this.$CryptoJS.HmacSHA256(auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
+                if(result){
+                    var req_data = {
+                        "mallId":"05562973", //KICC에서 발급한 상점ID
+                        "shopTransactionId":trans_id, // 상점거래고유번호
+                        "pgCno" : auth_no,
+                        "reviseTypeCode":'40',
+                        "amount" : pay_fee,
+                        "clientIp" : '127.0.0.1',
+                        "clientId" : tr_no,
+                        "msgAuthValue" : msg,
+                        "cancelReqDate" : year+month+day,
+                    };
+                    this.$http.post('https://pgapi.easypay.co.kr/api/trades/revise', req_data,
+                        {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
+                    ).then(
+                    (res) => {  
+                        console.log(res.data);
+                        if(res.data.resCd == "0000"){
+                            console.log("취소성공");
+                            this.waiting = false;
+                            // localStorage.setItem("is_type","onetime");
+                            // localStorage.setItem("tr_date",res.data.transactionDate);
+                            // localStorage.setItem("auth_no",res.data.pgCno);
+                            // localStorage.setItem("tr_no",res.data.shopTransactionId);
+                            // localStorage.setItem("token",token);
+                            // localStorage.setItem("card_no",res.data.paymentInfo.cardInfo.cardNo);
+                            // localStorage.setItem("card_name",res.data.paymentInfo.cardInfo.issuerName);
+                            // localStorage.setItem("what_pay","card");
+                            // this.$router.push({name : 'PayReceipt'});
+                            console.log('ok');
+                                this.$http.post(this.$server+'/admin/setPayCancel',
+                                {
+                                    seq_no : no
+                                }
+                                ,{headers : {
+                                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                                    }
+                                }).then((res) => {
+                                    var flags_suc = res.data.result_code;
+                                    if(flags_suc == 'Y'){
+                                        alert('정상적으로 취소되었습니다.')
+                                    }
+                                    else if(flags_suc == 'N'){
+                                        alert('취소 실패하였습니다.')
+                                    }
 
-                    })
+                            })
+                        }
+                        else{
+                            console.log("취소 오류.");
+
+                        }
+                        })
+                    }
+
                 }
             },
             return_date(date){
                 var today = new Date(date);
                 today.setHours(today.getHours() + 9);
                 return today.toISOString().replace('T', ' ').substring(0, 19);
+            },
+            makeExcelFile5 () {
+                const workBook = Xlsx.utils.book_new()
+                const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
+                Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
+                Xlsx.writeFile(workBook, 'output.xlsx')
             }
         }
     }
