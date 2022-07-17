@@ -153,9 +153,9 @@ export default {
                   auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
               }
               }).then(
-              (res) => {  // 
+              (res) => {  
                   if(res.data.result_code=="Y"){
-                      if(localStorage.getItem("is_type") == "membership"){
+                      if(localStorage.getItem("is_type") == "membership"){ //멤버쉽구매
                         var today = new Date();
                         var year = today.getFullYear();
                         var month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -185,48 +185,55 @@ export default {
                             else{
                             }
                         });
-                      }
-                      else{
-                        if(sessionStorage.getItem("is_oneplus") && !this.second_menu){
-                          this.$http.post(this.$server+'/userapp/getCouponReg', {
-                            mem_no : sessionStorage.getItem("mem_no"),
-                            coupon_type : "CCT003",
-                            rest_count : 0,
-                            is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
-                            prod_name : this.first_menu,
-                            dc_fee : 0,
-                            dc_percent:0,
-                            plc_code : this.main_plc,
-                          },{
-                          headers : {
-                              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                          }
-                          }).then(
-                          (res) => {  // 
-                              if(res.data.result_code=="Y"){
-                                  // this.confirm();
-                              }
-                          });
-                        }
-                        this.$http.post(this.$server+'/userapp/getCouponReg', {
-                          mem_no : sessionStorage.getItem("mem_no"),
-                          coupon_type : "CCT003",
-                          rest_count : 0,
-                          is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
-                          prod_name : this.first_menu,
-                          dc_fee : 0,
-                          dc_percent:0,
-                          plc_code : this.main_plc,
-                        },{
-                        headers : {
-                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                        }
-                        }).then(
-                        (res) => {  // 
-                            if(res.data.result_code=="Y"){
-                                // this.confirm();
+                        if(this.first_menu == "PREMIUM spa 무제한"){
+                            let type = "CCT002";
+                            let plc = this.main_plc;
+                            if(this.third_menu =="Y"){
+                              plc = plc+"::"+this.brush_plc;
                             }
-                        });
+                            this.get_coupon(type,plc); //사은품
+                            this.get_coupon(type,plc); //사은품
+                            this.get_coupon(type,plc); //사은품
+                            this.get_coupon(type,plc); //사은품
+                            console.log("멤버쉽 가입시 plc    --->" + plc);
+                        }
+                      }
+                      else{ //일반구매       
+                        if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
+                            let plc = this.main_plc;
+                            if(this.third_menu =="Y"){
+                              plc = plc+"::"+this.brush_plc;
+                            }
+                            this.get_coupon("CCT003",plc); //사은품
+                            console.log("1+1에 들어가는 plc ---->" + plc);
+                        }
+
+
+                        let mainplc = this.main_plc;
+                        if(this.second_menu){
+                          mainplc = mainplc + "::" + this.option_plc;
+                          if(this.third_menu == "Y"){
+                            mainplc = mainplc + "::" + this.brush_plc;
+                          }
+                            console.log("옵션이 있으면 들어가는 plc---->" + mainplc);
+                        }
+                        else{
+                          if(this.third_menu == "Y"){
+                            mainplc = mainplc + "::" + this.brush_plc;
+                          }
+                          console.log("옵션 없을 때 coupon 발행 plc ----->" +mainplc);
+                        }
+                        this.get_coupon("CCT003",mainplc);
+
+                        if(this.first_menu == "PREMIUM spa"){
+                            let type = "CCT002";
+                            let plc = this.main_plc;
+                            if(this.third_menu =="Y"){
+                              plc = plc+"::"+this.brush_plc;
+                            }
+                            this.get_coupon(type,plc); //사은품
+                            console.log("사은품 plc------>" + plc);
+                        }
                       }
                   }
               }
@@ -285,6 +292,27 @@ export default {
             return parts.join('.');
         }  
     },
+    get_coupon(coupon_type,plc){
+      this.$http.post(this.$server+'/userapp/getCouponReg', {
+        mem_no : sessionStorage.getItem("mem_no"),
+        coupon_type : coupon_type,
+        rest_count : 0,
+        is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+        prod_name : this.first_menu,
+        dc_fee : 0,
+        dc_percent:0,
+        plc_code : plc,
+      },{
+      headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+          if(res.data.result_code=="Y"){
+              // this.confirm();
+          }
+      });
+    }
   }
 };
 </script>
