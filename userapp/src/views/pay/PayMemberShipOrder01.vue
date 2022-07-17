@@ -128,8 +128,8 @@ export default {
               var req_data = {
                 "mallId":"05562973", //KICC에서 발급한 상점ID
                 "shopTransactionId":trans_id, // 상점거래고유번호
-                "amount":this.tot_fee, // 가격
-                // "amount":10,
+                // "amount":this.tot_fee, // 가격
+                "amount":10,
                 "shopOrderNo" : trans_id, //상점 주문번호
                 "approvalReqDate": year+month+day, //승인요청일자 YYYYMMDD
                 "payMethodInfo":{ //결제수단관리정보
@@ -174,9 +174,12 @@ export default {
         // this.$router.push({name : 'PayReceipt'});
       }
     },
-    return_one(amount){
-      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-      return one
+    return_one(on_num){
+        if(on_num != undefined){
+            const parts = on_num.toString().split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }  
     },
     remove_items(){
       localStorage.removeItem("send_options");

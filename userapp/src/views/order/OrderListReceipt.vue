@@ -103,9 +103,12 @@ export default {
     
   },
   methods:{
-    return_one(amount){
-      var one = amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-      return one
+    return_one(on_num){
+        if(on_num != undefined){
+            const parts = on_num.toString().split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            return parts.join('.');
+        }  
     },
     cancel(){
       var result = confirm("취소하시겠습니까?");
