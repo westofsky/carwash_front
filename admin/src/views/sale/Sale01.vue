@@ -276,8 +276,9 @@
             },
             return_one(on_num){
                 if(on_num != undefined){
-                    let cn1 = on_num.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-                    return cn1
+                    const parts = on_num.toString().split('.');
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    return parts.join('.');
                 }  
             },
             get_select(){
