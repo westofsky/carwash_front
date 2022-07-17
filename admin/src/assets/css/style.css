@@ -82,7 +82,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { background: transparent;
 .blind { overflow: hidden; position: absolute; top: 0; left: 0; width: 1px; height: 1px; font-size: 0; line-height: 0; }
 
 body, html { font-family: 'SpoqaHanSansNeo'; font-weight: 500; font-size: 14px; }
-input, select, button, ul, li, table, tr, td, div, span { font-family: 'SpoqaHanSansNeo'; font-weight: 500; box-sizing: border-box; }
+input, select, button, ul, li, table, tr, td, div, span { font-family: 'SpoqaHanSansNeo'; font-weight: 500; box-sizing: border-box; font-size: small;}
 
 body { min-width: 1400px; }
 
