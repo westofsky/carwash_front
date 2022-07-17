@@ -136,10 +136,10 @@ export default {
     },
     return_one(on_num){
         if(on_num != undefined){
-            const parts = on_num.toString().split('.');
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            return parts.join('.');
-        }  
+          const parts = on_num.toString().split('.');
+          parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          return parts.join('.');
+    } 
     },
     confirmReceipt(key) {
       this.$router.push({name : 'OrderListReceipt',query :{
