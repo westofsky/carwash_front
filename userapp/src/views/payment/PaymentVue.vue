@@ -35,7 +35,6 @@
 								</div>
 							  </div>
 							  
-							  <!--S : 카드번호 -->	
 							  <label for="cardNumber" class="card-item__number" ref="cardNumber">
 							  <span><div class="card-item__numberItem">{{card.no[0]}}</div></span>
 							  <span><div class="card-item__numberItem">{{card.no[1]}}</div></span>
@@ -61,8 +60,7 @@
 							  <span><div class="card-item__numberItem">{{card.no[13]}}</div></span>
 							  <span><div class="card-item__numberItem">{{card.no[14]}}</div></span>
 							  <span><div class="card-item__numberItem">{{card.no[15]}}</div></span>
-							  </label>
-							  <!--E : 카드번호 -->	
+							  </label>	
 							  <div class="card-item__content">
                   <label for="cardName" class="card-item__info">
                     <div class="card-item__holder">카드 회사</div>
@@ -74,14 +72,11 @@
 							</div>
 						  </div>
 						</div>
-            
 					  </div>
-          <div v-else>
-            <div class="con_info">
-              <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
-            </div>
-            <a class="card" href="#" @click = "card_option"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
+          <div class="con_info" v-if="card_state=='Y'">
+            <p class="sec_txt"><span class="black fontBold">신용/체크 카드 등록 시<br></span>1회 세차권, Gift쿠폰, 멤버쉽<br>결제 가능합니다.</p>
           </div>
+          <a class="card" href="#" @click = "card_option" style="margin-top:50px"><img src="../../assets/img/content/payment01.png" alt="">{{card_state_notice}}</a>
             
         </section>
         <!-- <section class="con2">
