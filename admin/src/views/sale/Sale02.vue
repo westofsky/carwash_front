@@ -157,11 +157,34 @@
                             <!-- seleted : li.is-current -->
                             <!-- disable : li.disable -->
                             <ul>
-                                <li class="page first"><a href="javascript:void(0)">first page</a></li>
-                                <li class="page prev"><a href="javascript:void(0)">prev page</a></li>
-                                <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}" :key="page_index"> <a href="">{{ page_index }}</a> </li>
-                                <li class="page next"><a href="javascript:void(0)">next page</a></li>
-                                <li class="page last"><a href="javascript:void(0)">last page</a></li>
+                                <li class="page first" :class="{'disable' : current == 1}">
+                                    <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(1)">first page</a>
+                                    <a v-else>first page</a>
+                                </li>
+                                <li class="page prev" :class="{'disable' : current == 1}">
+                                    <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(current-1)">prev page</a>
+                                    <a v-else>prev page</a>
+                                </li>
+
+
+                                <div v-for="page_index in paginate_total_unit" :key="page_index">
+                                    <li class="num" @click.prevent="updateCurrent(page_index)" 
+                                    :class="{'num is-current': page_index == current}" :key="page_index"> 
+                                        <a href="">{{ page_index }}</a> 
+                                    </li>
+                                </div>
+                                
+
+
+
+                                <li class="page next" :class="{'disable' : current == paginate_total}">
+                                    <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(current+1)">next page</a>
+                                    <a v-else>next page</a>
+                                </li>
+                                <li class="page last" :class="{'disable' : current == paginate_total}">
+                                    <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(paginate_total)">last page</a>
+                                    <a v-else>last page</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -173,6 +196,25 @@
 <script>
     import * as Xlsx from 'xlsx'
     export default{
+        computed:{
+            maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
+                return this.paginate_total
+            },
+            startPage() { // 페이지 시작 번호
+                return (Math.trunc((this.current - 1) / this.pageCount) * this.pageCount) + 1
+            },
+            endPage() { // 페이지 끝 번호
+                let end = this.startPage + this.pageCount - 1
+                return end < this.maxPage ? end : this.maxPage
+            },
+            paginate_total_unit(){
+                let units = [];
+                for(let num = this.startPage;num <=this.endPage;num++){
+                    units.push(num);
+                }
+                return units;
+            }
+        },
         data(){
             return{
                 get_wtt : '',
@@ -188,7 +230,8 @@
                 get_payresult: '',
                 paginate : 25,
                 paginate_total: 0,
-                current: 1
+                current: 1,
+                pageCount : 10, // 페이지 버튼 최대 개수
             }
         },
         created(){
