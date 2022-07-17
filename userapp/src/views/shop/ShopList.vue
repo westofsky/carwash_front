@@ -22,7 +22,7 @@
             <ul>
               <li class="shop_spot">
                 <div class="shop_name">
-                  <p>WASH DAY 와룡로점</p>
+                  <p>SPARKPLUS 중리점</p>
                 </div>
                 <div class="shop_info">
                   <ul>

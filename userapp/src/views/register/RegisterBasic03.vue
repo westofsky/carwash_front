@@ -84,7 +84,6 @@ export default {
           }
           }).then(
           (res) => {
-            if(res.data.result_code == "Y"){
               if(this.agree_check)
                 this.agree_privacy = "Y";
               else
@@ -118,10 +117,6 @@ export default {
               }).catch((err) => {
                 console.log(err);
               });
-                  }
-            else if(res.data.result_code == "N"){
-              alert("중복된 핸드폰 번호입니다.");
-            }
           },
           (err) => { // error 를 보여줌
             console.log(err);
