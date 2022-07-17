@@ -16,16 +16,26 @@
       </div>
       <article class="scontainer">
         <section class="con1">
+          
           <div class="section_tab">
             <!-- <a class="active" href="#">아이디 찾기</a> -->
             <router-link to="/loginFindId" class="active">아이디 찾기</router-link>
             <!-- <a href="login_find_pw.html">비밀번호 재설정</a> -->
             <router-link to="/loginFindPw">비밀번호 재설정</router-link>
           </div>
-          <div class="coupon_list_wrap">
+          SPARKPLUS 고객센터로 문의하시기 바랍니다.
+          <div class="PdT30">
+              <ul style="list-style-type: circle;">
+                <li>영업시간 : AM 06:00~PM 10:00 까지</li>
+                <li>휴무일 : 연중무휴</li>
+                <li>소재지 : 대구광역시 서구 와룡로 335 스파크플러스</li>
+                <li>전화번호 : <a href="tel:053-573-8008">053)573-8008</a></li>
+              </ul>
+          </div>
+          <!-- <div class="coupon_list_wrap">
             <p class="title">가입 시 등록한 휴대폰번호를 입력하세요.</p>
             <p class="PdT30">
-              <input type="radio" id="01" value="01" name="memtype" v-model="id_type"><label for="01">개인회원</label>
+              <input type="radio" id="01" value="01" name="memtype" v-model="id_type" checked><label for="01">개인회원</label>
               <input type="radio" id="02" value="02" name="memtype" v-model="id_type"><label for="02">FLEET회원</label>
             </p>
             <div class="login_form fleet">
@@ -33,13 +43,12 @@
                   id="fleetPW" placeholder="예) 01012345678" class="TxtaR"></div>
               <input type="submit" @click="send_form" value="아이디 찾기">
             </div>
-          </div>
+          </div> -->
         </section>
       </article>
     </div>
   </div>
 </template>
-
 <script>
   // const autoHyphen = (target) => {
   // target.value = target.value
@@ -51,8 +60,11 @@ export default {
   data(){
     return{
       mobile_num : '',
-      id_type : ''
+      id_type : '01'
     }
+  },
+  mounted(){
+
   },
   methods :{
     async send_form(){

@@ -54,7 +54,7 @@ export default {
   data(){
     return{
       mobile_num : '',
-      id_type : '',
+      id_type : '01',
       mem_id : ''
     }
   },
@@ -65,7 +65,7 @@ export default {
       console.log(this.mem_id)
       if(this.mobile_num != '' && this.id_type != '' && this.mem_id){
         console.log('ok')
-        this.$http.post(this.$server+'/userapp/chkLostPw', {
+        this.$http.post(this.$server+'/userapp/chkLostPW', {
           mem_type : this.id_type,
           phone_no : this.mobile_num,
           mem_id : this.mem_id
@@ -73,8 +73,21 @@ export default {
             auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
           }
         }).then((res) => {
-          console.log('ok2')
-          console.log(res)
+          if(res.data.result_code == 'Y'){
+            alert('알림톡으로 정보가 전송되었습니다.')
+          //   this.$http.post(this.$server+'', {
+          //   temp_pwd : res.data.temp_pwd
+          // },{headers : {
+          //     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+          //   }
+          // }).then((res) => {
+          //   console.log(res)
+          //   alert('알림톡으로 정보가 전송되었습니다.')
+          // })
+
+          }else if(res.data.result_code == 'N'){
+            alert('일치하는 아이디 또는 휴대폰 번호가 없습니다.')
+          }
         })
       }
       else{
