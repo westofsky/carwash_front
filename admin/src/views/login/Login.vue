@@ -19,10 +19,10 @@
                         </div>
                         <div class="input_box password">
                             <label for="password">비밀번호</label>
-                            <input type="password" autocomplete="on" id="password" v-model="admin_pw" placeholder="비밀번호">
+                            <input type="password" autocomplete="on" id="password" v-model="admin_pw" placeholder="비밀번호" v-on:keydown.enter.prevent="login_method">
                             <!-- <span class="MT-25">*잘못된 비밀번호입니다.</span> -->
                         </div>
-                        <div class="btns PDT20"><a @click="login_method" class="Btn-blue-Large">로그인</a></div>
+                        <div class="btns PDT20"><a @click="login_method" class="Btn-blue-Large" >로그인</a></div>
                         <div class="btns PDT20"></div>
                         <div class="contents_bottom">
                             <div class="check_box" style="">

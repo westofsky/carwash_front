@@ -5,9 +5,24 @@
             <h1 class="logo"><a href="javascript:void(0)">spark plus<span>스파크 플러스 관리자</span></a></h1>
             <div class="user">
                 <p class="name">홍길동</p>
-                <button type="button" class="btn_logout"><router-link to="/">로그아웃</router-link></button>
+                <button type="button" class="btn_logout"><a @click="logout">로그아웃</a></button>
             </div>
         </div>
     </header>
 </div>
 </template>
+<script>
+    export default {
+        methods:{
+            logout(){
+                alert("로그아웃 되었습니다.");
+                localStorage.removeItem("admin_name");
+                localStorage.removeItem("admin_no");
+                sessionStorage.removeItem("admin_name");
+                sessionStorage.removeItem("admin_no");
+                this.$router.push({name : 'Login'});
+            }
+        }
+    }
+    
+</script>

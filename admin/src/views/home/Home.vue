@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                             <div>
-                                <p class="contents_area-title">당일 매출 현황 {{get_month()}}</p>
+                                <p class="contents_area-title">당월 매출 현황 {{get_month()}}</p>
                                 <div class="contents_area-article">
                                     <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.month_pay_amount)}} 원/ {{one_data.month_pay_count}} 건</p>
                                 </div>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="second">
                             <div>
-                                <p class="contents_area-title">당일 매출 현황 {{get_today()}}</p>
+                                <p class="contents_area-title">당일 이용 현황 {{get_today()}}</p>
                                 <div class="contents_area-article">
                                     <p style="height: 100%;font-size: 40px;text-align: center;">{{get_real(one_data.today_use_amount)}} 원/ {{one_data.today_use_count}} 건</p>
                                 </div>
