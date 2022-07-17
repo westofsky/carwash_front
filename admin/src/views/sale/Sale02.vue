@@ -139,7 +139,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
-                                            <td class="right">{{ info.seq_no }}</td>
+                                            <td class="right">{{ get_payresult.length - index }}</td>
                                             <td>{{ info.car_no }}</td>
                                             <td>{{ info.use_name }}</td>
                                             <td>{{ return_date(info.use_date) }}</td>
@@ -157,8 +157,8 @@
                             <!-- seleted : li.is-current -->
                             <!-- disable : li.disable -->
                             <ul>
-                                <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
-                                <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
+                                <li class="page first"><a href="javascript:void(0)">first page</a></li>
+                                <li class="page prev"><a href="javascript:void(0)">prev page</a></li>
                                 <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}" :key="page_index"> <a href="">{{ page_index }}</a> </li>
                                 <li class="page next"><a href="javascript:void(0)">next page</a></li>
                                 <li class="page last"><a href="javascript:void(0)">last page</a></li>
@@ -186,7 +186,7 @@
                 sea_carnum: '',
                 get_paysum: '',
                 get_payresult: '',
-                paginate : 50,
+                paginate : 25,
                 paginate_total: 0,
                 current: 1
             }
@@ -275,7 +275,7 @@
                 const month = (d.getMonth()+1);   // 월
                 const day = d.getDate();
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
-                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
             },

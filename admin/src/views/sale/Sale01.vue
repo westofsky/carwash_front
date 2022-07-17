@@ -152,6 +152,7 @@
                                     <tr>
                                         <th rowspan="2">NO</th>
                                         <th rowspan="2">거래번호</th>
+                                        <th rowspan="2">차량번호</th>
                                         <th rowspan="2">단말기</th>
                                         <th rowspan="2">결제일시</th>
                                         <th rowspan="2">승인구분</th>
@@ -167,8 +168,9 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
-                                        <td class="right">{{ info.seq_no }}</td>
+                                        <td class="right">{{ get_payresult.length - index }}</td>
                                         <td><a href="">{{ info.trno }}</a></td>
+                                        <td>{{ info.car_no }}</td>
                                         <td>{{ info.terminal_name }}</td>
                                         <td>{{ return_date(info.pay_date) }}</td>
                                         <td>{{ info.auth_name }}</td>
@@ -210,15 +212,15 @@
                 get_wtt : '',
                 get_pat : '',
                 get_wut : '',
-                sea_date_start: '2022-07-16',
-                sea_date_end: '20',
+                sea_date_start: '',
+                sea_date_end: '',
                 sea_wtt: '',
                 sea_pat: '',
                 sea_wut: '',
                 sea_carnum: '',
                 get_paysum: '',
                 get_payresult: '',
-                paginate : 50,
+                paginate : 25,
                 paginate_total: 0,
                 current: 1
             }
@@ -230,6 +232,7 @@
         },
         methods : {
             async get_search(){
+                this.current = 1
                 this.get_payresult = '';
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
@@ -336,7 +339,7 @@
                 const month = (d.getMonth()+1);   // 월
                 const day = d.getDate();
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
-                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
             },
