@@ -16,7 +16,7 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title">SPARKPLUS 와룡로점</p>
+          <p class="title">SPARKPLUS 중리점</p>
           <div id="map" style="width: 500px height: 500px;">
             <img src="../../assets/img/sparkpliswa_map.png" style="width: 100%" alt="" srcset="">
           </div>
