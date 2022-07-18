@@ -20,8 +20,8 @@
                     <a href="#">고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer02">공지사항</router-link></li>
-                        <li><router-link to = "/Customer03">SNS관리</router-link></li>
+                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer03">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
@@ -436,7 +436,6 @@
                 }while(trans_id.length!=6);
                 trans_id = year+month+day+trans_id;
                 const msg = this.$CryptoJS.HmacSHA256(auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
-
                 if(result){
                     var req_data = {
                         "mallId":"05562973", //KICC에서 발급한 상점ID
