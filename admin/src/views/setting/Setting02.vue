@@ -179,7 +179,7 @@
                     </div>
                     <div class="input_box MT40">
                         <label for="pin_confirm">근무자 상태</label>
-                        <select name="" id="approve" v-model="reg_sel">
+                        <select name="" id="approve" v-model="res_sel">
                             <option disabled value="">근무자상태 선택</option>
                             <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
                                 {{info.code_name}}
@@ -224,7 +224,7 @@
                     </div>
                     <div class="input_box MT40">
                         <label for="pin_confirm">근무자 상태</label>
-                        <select name="" id="approve" v-model="reg_sel">
+                        <select name="" id="approve" v-model="res_sel">
                             <option disabled value="">근무자상태 선택</option>
                             <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
                                 {{info.code_name}}
@@ -297,7 +297,7 @@ export default{
             pageCount : 10,
             paginate : 25,
             get_memnow : '',
-            reg_sel : '',
+            res_sel : '',
             res_phone: '',
             res_name: '',
             res_pas: '',
@@ -371,12 +371,12 @@ export default{
             })
         },
         reg_admin : function(){
-            this.$http.post(this.$server+'/admin/getAdminInsert',
+            this.$http.post(this.$server+'/admin/setAdminInsert',
             {
-                admin_id : this.reg_id,
-                admin_pwd : this.reg_pas,
-                admin_name : this.reg_name, 
-                admin_status : this.reg_sel,
+                admin_id : this.res_id,
+                admin_pwd : this.res_pas,
+                admin_name : this.res_name, 
+                admin_status : this.res_sel,
                 admin_tel : this.res_phone,
             }
             ,{headers : {
@@ -393,7 +393,7 @@ export default{
         },
         get_adminde: function(i){
             this.get_mem_now()
-            this.$http.post(this.$server+'/admin/getAdminDetail',
+            this.$http.post(this.$server+'/admin/setAdminDetail',
             {
                 seq_no : i
             }
@@ -410,11 +410,11 @@ export default{
             })
         },
         set_adminadd: function(i){
-            this.$http.post(this.$server+'/admin/getAdminUpdate',
+            this.$http.post(this.$server+'/admin/setAdminUpdate',
             {
-                admin_pwd : this.reg_pas,
-                admin_name : this.reg_name, 
-                admin_status : this.reg_sel,
+                admin_pwd : this.res_pas,
+                admin_name : this.res_name, 
+                admin_status : this.res_sel,
                 admin_tel : this.res_phone,
             }
             ,{headers : {

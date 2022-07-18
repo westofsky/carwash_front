@@ -124,6 +124,7 @@ const routes = [
   {
     path: '/Setting02',
     component: Setting02,
+    name : 'Setting02',
     beforeEnter : requireAuth()
   },
   {
