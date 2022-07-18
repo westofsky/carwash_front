@@ -10,17 +10,17 @@
                     <router-link to = "/Home">HOME</router-link>
                 </li>
                 <li class="sales is-sub">
-                    <a href = "#">매출관리</a>
+                    <a>매출관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Sale01">매출관리</router-link></li>
                         <li><router-link to = "/Sale02">이용현황</router-link></li>
                     </ul>
                 </li>
-                <li class="customer is-sub is-current">
+                <li class="customer is-sub is-current" >
                     <a>고객관리</a>
                     <ul class="sub_menu">
-                        <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li class="is-current"><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li class="is-current"><router-link to = "/Customer01">회원조회</router-link></li>
+                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
                         <li><router-link to = "/Customer03">공지사항</router-link></li>
                     </ul>
                 </li>
@@ -76,160 +76,556 @@
                     <div class="contents_area">
                         <form autocomplete="off">
                             <div class="contents_area-search">
-                                
-                                <div class="select DispBl">
-                                
-                                    <!--<div class="select_box">
-                                        <label for="device">템플릿 선택</label>
-                                        <select name="" id="" class="WD250 MR20">
-                                            <option value="전체">결제 완료</option>
-                                            <option value="선택1">감사 인사</option>
-                                            <option value="선택2">긴급 공지</option>
+                                <div class="select MT20">
+                                    <div class="input_box date">
+                                        <label for="start">조회일자</label>
+                                        <input type="date" id="start" v-model="sea_date_start">
+                                        <div class="hyphen">-</div>
+                                        <input type="date" id="end" v-model="sea_date_end">
+                                        <div class="btn_group ML10 MR30">
+                                            <button type="button" @click="set_yes">전일</button>
+                                            <button type="button" @click="set_today">당일</button>
+                                            <button type="button" @click="set_weak">일주일</button>
+                                            <button type="button" @click="set_month">한달</button>
+                                        </div>
+                                    </div>
+                                    <div class="select_box MR30">
+                                        <label for="">이용상태</label>
+                                        <select v-model="sea_wtt">
+                                            <option disabled value="">이용상태 선택</option>
+                                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
+                                                {{info.code_name}}
+                                            </option>
                                         </select>
-                                    </div>-->
-                                    
-                                    <button type="button" class="btn_blue btn_search WD150 MR40">템플릿 조회</button>
-                                    
-                                    <button type="button" class="btn_add btn_yellow btn_excel" onclick="layerOpen('.layer_sns_register');">수정/추가 등록</button>
-
-                                    
+                                    </div>
+                                    <div class="select_box MR30">
+                                        <label for="approve">결제등록구분</label>
+                                        <select name="" id="approve" v-model="sea_pat">
+                                            <option disabled value="">결제등록구분</option>
+                                            <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
+                                                {{info.code_name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div> 
+                                
+                                <div class="select MT40">
+                                <div class="input_box">
+                                        <label for="number">차량번호</label>
+                                        <input type="text" id="" placeholder=""  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                 </div>
-                            </div>
-                        </form>
-                        <div class="contents_area-box">
-                            <table class="tableTypeB MB35">
-                                <tr>
-                                    <td class="tLeft">템플릿 선택</td>
-                                    <td class="tRight">
-                                        <div class="select_box">
-                                        <select name="" id="" class="WD250 MR20 MT04">
-                                            <option value="전체">결제 완료</option>
-                                            <option value="선택1">감사 인사</option>
-                                            <option value="선택2">긴급 공지</option>
-                                        </select>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tLeft">발송 제목</td>
-                                    <td class="tRight"><input type="text" id="" placeholder="제목을 입력하세요" class="WD100-20 MT04"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tLeft">수신자 선택</td>
-                                    <td class="tRight">
-                                        
-                                        <div class="checksRadio MT08">
-                                            <input type="radio" id="ex_rd1" name="radiobtn" checked>
-                                            <label for="ex_rd1">회원 선택</label>
-                                            <span class="Add-btn">
-                                                <button type="button" class="btn_blue btn_add WD150">선택하기</button> <div class="number">(선택회원 : 00명)</div>
-                                            </span>
-                                        
-                                            <input type="radio" id="ex_rd2" name="radiobtn">
-                                            <label for="ex_rd2">회원번호 직접입력</label>
-                                            <div class="MT-37 ML160"><input type="text" id="" placeholder="010-1234-5678"  class="WD150 MR20"></div>
-
-                                        </div>
-
-                                        
-                                        
                                 
-                                        
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tLeft">발송 내용</td>
-                                    <td class="tRight"><textarea class="TextBox"></textarea></td>
-                                </tr>
-                                <tr>
-                                    <td class="tLeft">문자 내용</td>
-                                    <td class="tRight"><textarea class="TextBox"></textarea></td>
-                                </tr>
+                                    
+                                <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
+                                <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
+                                
+                            </div>
+                                
+                            </div>
+                            
+                            
+                        </form>
+                        <div class="contents_area-table">
+                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.account_fee)}} 건)</font></p>
+                            <!-- <p class="fl_right"><button type="button" class="btn_add btn_red" onclick="layerOpen('.layer_member_signup')">회원등록</button></p> -->
+                            
+                            <table>
+                                <colgroup>
+                                    <col width="4%"/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="thht">NO</th>
+                                        <th>차량번호</th>
+                                        <th>회원번호</th>
+                                        <th>세차메뉴</th>
+                                        <th>건조브러쉬</th>
+                                        <th>이용상태</th>
+                                        <th>결제금액</th>
+                                        <th>결제일</th>
+                                        <th>등록단말기</th>
+                                        <th>결제일자</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
+                                        <td class="right">{{ get_payresult.length - index }}</td>
+                                        <td class="left"><a href="">{{ info.car_no }}</a></td>
+                                        <td class="left">{{ info.mem_no }}</td>
+                                        <td class="left">{{ info.prod_name }}</td>
+                                        <td>{{ info.is_brush }}</td>
+                                        <td>{{ info.use_status }}</td>
+                                        <td>{{ info.pay_fee }}</td>
+                                        <td class="right">{{ info.pay_day }}일%</td>
+                                        <td class="right">{{ info.terminal_name }}매</td>
+                                        <td>{{ info.pay_date}}</td>
+                                    </tr>
+                                </tbody>
                             </table>
-                            
-                            <p class="MB20 fl_left">
-                            <button type="button" class="btn_yellow WD150 ML20">알림톡 발송</button>
-                            </p>
-                            
-                            <p class="MB20 ta_right">
-                            <button type="button" class="btn_blue WD150">확인</button>
-                            <button type="button" class="btn_blue WD150 MR20">수정/추가 등록</button>
-                            </p>
-                        
                         </div>
                     </div>
-                    
+                    <div class="pagination">
+                        <!-- seleted : li.is-current -->
+                        <!-- disable : li.disable -->
+                        <ul>
+                            <li class="page first" :class="{'disable' : current == 1}">
+                                <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(1)">first page</a>
+                                <a v-else>first page</a>
+                            </li>
+                            <li class="page prev" :class="{'disable' : current == 1}">
+                                <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(current-1)">prev page</a>
+                                <a v-else>prev page</a>
+                            </li>
+
+
+                            <div v-for="page_index in paginate_total_unit" :key="page_index">
+                                <li class="num" @click.prevent="updateCurrent(page_index)" 
+                                :class="{'num is-current': page_index == current}" :key="page_index"> 
+                                    <a href="">{{ page_index }}</a> 
+                                </li>
+                            </div>
+                            
+
+
+
+                            <li class="page next" :class="{'disable' : current == paginate_total}">
+                                <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(current+1)">next page</a>
+                                <a v-else>next page</a>
+                            </li>
+                            <li class="page last" :class="{'disable' : current == paginate_total}">
+                                <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(paginate_total)">last page</a>
+                                <a v-else>last page</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </div>
-        <div class="layer layer_sns_register is-hidden">
-            <form autocomplete="off">
-                <div class="inner">
-                    <div class="top">
-                        <p class="popup_title">SNS 등록</p>
-                    </div>
-                    <div class="contents">
-                        <div class="contents_area">
-                            <div class="contents_area-box">
-                                <table class="tableTypeB MB35">
-                                    <tr>
-                                        <td class="tLeft">템플릿 선택</td>
-                                        <td class="tRight">
-                                            <div class="select_box">
-                                            <select name="" id="" class="WD250 MR20 MT04">
-                                                <option value="전체">결제 완료</option>
-                                                <option value="선택1">감사 인사</option>
-                                                <option value="선택2">긴급 공지</option>
-                                            </select>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tLeft">발송 제목</td>
-                                        <td class="tRight"><input type="text" id="" placeholder="제목을 입력하세요" class="WD100-20 MT04"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tLeft">수신자 선택</td>
-                                        <td class="tRight">
-                                            
-                                            <div class="checksRadio MT08">
-                                                <input type="radio" id="ex_rd3" name="radiobtn" checked>
-                                                <label for="ex_rd3">회원 선택</label>
-                                                <span class="Add-btn">
-                                                    <button type="button" class="btn_blue btn_add WD150">선택하기</button> <div class="number">(선택회원 : 00명)</div>
-                                                </span>
-                                                <input type="radio" id="ex_rd4" name="radiobtn">
-                                                <label for="ex_rd4">회원번호 직접입력</label>
-                                                <div class="MT-37 ML160"><input type="text" id="" placeholder="010-1234-5678"  class="WD150 MR20"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tLeft">발송 내용</td>
-                                        <td class="tRight"><textarea class="TextBox"></textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tLeft">문자 내용</td>
-                                        <td class="tRight"><textarea class="TextBox"></textarea></td>
-                                    </tr>
-                                </table>
-                                
-                                <p class="MB20 fl_left">
-                                <button type="button" class="btn_yellow WD150 ML20">알림톡 발송</button>
-                                </p>
-                                
-                                <p class="MB20 ta_right">
-                                <button type="button" class="btn_white WD104 MR8">삭제</button>
-                                <button type="button" class="btn_blue WD104 MR20">저장</button>
-                                </p>
-                            
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn_close" onclick="layerClose('.layer_sns_register');">닫기</button>
+    </div>
+    <!-- 쿠폰 보유 내역 -->
+    <div class="layer layer_coupon is-hidden"> 
+        <div class="inner">
+            <div class="top">
+                <p class="popup_title">쿠폰 보유 내역</p>
+            </div>
+            <div class="contents">
+                <div class="coupon_area">
+                    <ul class="coupon">
+                        <li class="number">쿠폰번호 : WDC2022050401</li>
+                        <li class="name">쿠폰종류 : <span>Gift_BASIC 1장</span></li>
+                        <li class="date">유효기간 : 2022/06/03 24:00:00</li>
+                    </ul>
+                    <ul class="coupon">
+                        <li class="number">쿠폰번호 : WDC2022050401</li>
+                        <li class="name">쿠폰종류 : <span>Gift_BASIC 1장</span></li>
+                        <li class="date">유효기간 : 2022/06/03 24:00:00</li>
+                    </ul>
+                    <ul class="coupon">
+                        <li class="number">쿠폰번호 : WDC2022050401</li>
+                        <li class="name">쿠폰종류 : <span>Gift_BASIC 1장</span></li>
+                        <li class="date">유효기간 : 2022/06/03 24:00:00</li>
+                    </ul>
                 </div>
-            </form>
+            </div>
+            <button type="button" class="btn_close" onclick="layerClose('.layer_coupon')">닫기</button>
         </div>
+    </div>
+    <!-- 회원정보 수정 -->
+    <div class="layer layer_member_modify is-hidden">
+        <form autocomplete="off">
+            <div class="inner">
+                <div class="top">
+                    <p class="popup_title">회원정보 수정</p>
+                </div>
+                <div class="contents input MT20">
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="number1">회원번호</label>
+                        <input type="text" id="number1" placeholder="회원번호 입력" value="YGP22021600000001">
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="number2">차량번호</label>
+                        <input type="text" id="number2" placeholder="차량번호 입력" value="서울 123나 1234">
+                    </div>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="select1">회원유무</label>
+                        <select name="" id="select1">
+                            <option value="비회원">비회원</option>
+                            <option value="회원">회원</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MB40">
+                        <label for="select2">회원유형</label>
+                        <select name="" id="select2">
+                            <option value="FLEET할인전용">FLEET할인전용</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="select3">회원등급</label>
+                        <select name="" id="select3">
+                            <option value="일반">일반</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MB40">
+                        <label for="select4">FLEET 승인</label>
+                        <select name="" id="select4">
+                            <option value="승인대기">승인대기</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="id">FLEET ID</label>
+                        <input type="text" id="id" placeholder="아이디 입력" value="베이직">
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="phone">휴대폰 번호</label>
+                        <input type="text" id="phone" placeholder="휴대폰 번호 입력" value="010-1234-5678">
+                    </div>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="coupon">보유쿠폰</label>
+                        <input type="text" id="coupon" value="3" class="red" disabled>
+                    </div>
+                    <div class="input_box fl_left w200 MB50">
+                        <label for="join_date">회원가입일</label>
+                        <input type="text" id="join_date" value="2022/04/22" disabled>
+                    </div>
+                </div>
+                <div class="btn_group2" style="clear:both;">
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_member_modify')">취소</button>
+                    <button type="button" class="btn_blue">저장</button>
+                </div>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_member_modify')">닫기</button>
+            </div>
+        </form>
+    </div>
+    <!-- 회원 등록 -->
+    <div class="layer layer_member_signup is-hidden">
+        <form autocomplete="off">
+            <div class="inner">
+                <div class="top">
+                    <p class="popup_title">회원 등록</p>
+                </div>
+                <div class="contents input MT20">
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="number1">회원번호</label>
+                        <input type="text" id="number1" placeholder="회원번호 입력">
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="number2">차량번호</label>
+                        <input type="text" id="number2" placeholder="차량번호 입력">
+                    </div>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="select1">회원유형</label>
+                        <select name="" id="select1">
+                            <option value="비회원">비회원</option>
+                            <option value="회원">회원</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MB40">
+                        <label for="select2">회원등급</label>
+                        <select name="" id="select2">
+                            <option value="일반">일반</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="select3">FLEET 승인</label>
+                        <select name="" id="select3">
+                            <option value="일반">승인대기</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="id">FLEET ID</label>
+                        <input type="text" id="id" placeholder="FLEET ID 입력">
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="phone">휴대폰 번호</label>
+                        <input type="text" id="phone" placeholder="휴대폰번호 입력">
+                    </div>
+                </div>
+                <div class="btn_group2" style="clear:both;">
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_member_signup')">취소</button>
+                    <button type="button" class="btn_blue">등록</button>
+                </div>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_member_signup')">닫기</button>
+            </div>
+        </form>
     </div>
 </div>
 </template>
+<script>
+    import * as Xlsx from 'xlsx'
+    export default{
+        computed:{
+            maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
+                return this.paginate_total
+            },
+            startPage() { // 페이지 시작 번호
+                return (Math.trunc((this.current - 1) / this.pageCount) * this.pageCount) + 1
+            },
+            endPage() { // 페이지 끝 번호
+                let end = this.startPage + this.pageCount - 1
+                return end < this.maxPage ? end : this.maxPage
+            },
+            paginate_total_unit(){
+                let units = [];
+                for(let num = this.startPage;num <=this.endPage;num++){
+                    units.push(num);
+                }
+                return units;
+            }
+        },
+        data(){
+            return{
+                get_wtt : '',
+                get_pat : '',
+                get_wut : '',
+                sea_date_start: '',
+                sea_date_end: '',
+                sea_wtt: '',
+                sea_pat: '',
+                sea_phonenum: '',
+                sea_carnum: '',
+                get_paysum: '',
+                get_payresult: '',
+                paginate : 25,
+                sea_id : '',
+                paginate_total: 0,
+                current: 1,
+                pageCount : 10, // 페이지 버튼 최대 개수
+            }
+        },
+        created(){
+            this.get_select();
+            this.set_yes();
+            this.get_search();
+        },
+        methods : {
+            get_search(){
+                if(this.sea_date_start > this.sea_date_end){
+                    alert("날짜 선택이 잘못되었습니다.");
+                    return false;
+                }
+                this.current = 1
+                this.get_payresult = '';
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+                console.log(this.sea_wtt)
+                console.log(this.sea_pat)
+                console.log(this.sea_id)
+                console.log(this.sea_carnum)
+                this.$http.post(this.$server+'/admin/getMembershipSum',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    use_status : this.sea_wtt,
+                    reg_type : this.sea_pat,
+                    mem_id : this.sea_id,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_paysum = res.data
+                });
+                this.$http.post(this.$server+'/admin/getMembershipList',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    use_status : this.sea_wtt,
+                    reg_type : this.sea_pat,
+                    mem_id : this.sea_id,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    this.get_payresult = res.data
+                    console.log(this.get_payresult)
+                    console.log(this.get_payresult.length)
+                    this.paginate_total = Math.ceil(this.get_payresult.length/this.paginate)
+                    console.log(this.paginate_total)
+                })
+
+            },
+            return_one(on_num){
+                if(on_num != undefined){
+                    const parts = on_num.toString().split('.');
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    return parts.join('.');
+                }  
+            },
+            get_select(){
+                this.$http.post(this.$server+'/admin/getCodeList',
+                {
+                    code_type : 'MUS'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    
+                    this.get_wtt = res.data
+                    console.log(typeof this.get_wtt)
+
+
+                })
+                this.$http.post(this.$server+'/admin/getCodeList',
+                {
+                    code_type : 'MRT'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    
+                    this.get_pat = res.data
+                })
+            },
+            setPaginate: function (i) {
+                if (this.current == 1) {
+                    return i < this.paginate;
+                }
+                else {
+                    return (i >= (this.paginate * (this.current - 1)) && i < (this.current * this.paginate));
+                }
+            },
+            updateCurrent: function (i) {
+                this.current = i;
+
+            },
+            set_yes: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+            },
+            set_today: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_weak: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-7).toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_month: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_year: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            cancel(no, auth_no, pay_fee, tr_no){
+                var result = confirm("해당 건을 취소하시겠습니까?");
+                if(result){
+                var key =  'easypay!O0OWO2Bb';
+                var today = new Date();
+                var year = today.getFullYear();
+                var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                var day = ('0' + today.getDate()).slice(-2);
+                var id = new Uint32Array(1);
+                var trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString();
+                do{
+                    trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
+                }while(trans_id.length!=6);
+                trans_id = year+month+day+trans_id;
+                const msg = this.$CryptoJS.HmacSHA256(auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
+                if(result){
+                    var req_data = {
+                        "mallId":"05562973", //KICC에서 발급한 상점ID
+                        "shopTransactionId":trans_id, // 상점거래고유번호
+                        "pgCno" : auth_no,
+                        "reviseTypeCode":'40',
+                        "amount" : pay_fee,
+                        "clientIp" : '127.0.0.1',
+                        "clientId" : tr_no,
+                        "msgAuthValue" : msg,
+                        "cancelReqDate" : year+month+day,
+                    };
+                    this.$http.post('https://pgapi.easypay.co.kr/api/trades/revise', req_data,
+                        {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
+                    ).then(
+                    (res) => {  
+                        console.log(res.data);
+                        if(res.data.resCd == "0000"){
+                            console.log("취소성공");
+                            this.waiting = false;
+                            console.log('ok');
+                                this.$http.post(this.$server+'/admin/setPayCancel',
+                                {
+                                    seq_no : no
+                                }
+                                ,{headers : {
+                                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                                    }
+                                }).then((res) => {
+                                    var flags_suc = res.data.result_code;
+                                    if(flags_suc == 'Y'){
+                                        alert('정상적으로 취소되었습니다.')
+                                    }
+                                    else if(flags_suc == 'N'){
+                                        alert('취소 실패하였습니다.')
+                                    }
+
+                            })
+                        }
+                        else{
+                            console.log("취소 오류.");
+
+                        }
+                        })
+                    }
+
+                }
+            },
+            return_date(date){
+                var today = new Date(date);
+                today.setHours(today.getHours() + 9);
+                return today.toISOString().replace('T', ' ').substring(0, 19);
+            },
+            makeExcelFile5 () {
+                const workBook = Xlsx.utils.book_new()
+                const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
+                Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
+                Xlsx.writeFile(workBook, 'output.xlsx')
+            }
+        }
+    }
+
+</script>
