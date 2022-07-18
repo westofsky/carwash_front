@@ -10,7 +10,7 @@
                     <router-link to = "/Home">HOME</router-link>
                 </li>
                 <li class="sales is-sub">
-                    <a>매출관리</a>
+                    <a href = "#">매출관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Sale01">매출관리</router-link></li>
                         <li><router-link to = "/Sale02">이용현황</router-link></li>
@@ -20,8 +20,8 @@
                     <a>고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li class="is-current"><router-link to = "/Customer02">공지사항</router-link></li>
-                        <li><router-link to = "/Customer03">SNS관리</router-link></li>
+                        <li class="is-current"><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer03">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
@@ -69,165 +69,167 @@
                 <div class="breadcrumb">
                     <router-link to = "/Home">HOME</router-link>
                     <p>고객관리</p>
-                    <p>공지사항</p>
+                    <p>멤버쉽조회</p>
                 </div>
                 <div class="contents">
-                    <h2 class="title title_user">공지사항</h2>
+                    <h2 class="title title_user">멤버쉽조회</h2>
                     <div class="contents_area">
                         <form autocomplete="off">
                             <div class="contents_area-search">
-                                    
-                                        <select name="" id="">
-                                            <option value="전체">전체</option>
-                                            <option value="선택1">제목</option>
-                                            <option value="선택1">내용</option>
-                                            <option value="선택2">기간별</option>
-                                        </select>
-                                        <input type="text" id="" placeholder="검색어 입력" class="WD250 MR10">
-                                        
-                                        <button type="button" class="btn_blue btn_search">조회</button>
                                 
+                                <div class="select DispBl">
+                                
+                                    <!--<div class="select_box">
+                                        <label for="device">템플릿 선택</label>
+                                        <select name="" id="" class="WD250 MR20">
+                                            <option value="전체">결제 완료</option>
+                                            <option value="선택1">감사 인사</option>
+                                            <option value="선택2">긴급 공지</option>
+                                        </select>
+                                    </div>-->
+                                    
+                                    <button type="button" class="btn_blue btn_search WD150 MR40">템플릿 조회</button>
+                                    
+                                    <button type="button" class="btn_add btn_yellow btn_excel" onclick="layerOpen('.layer_sns_register');">수정/추가 등록</button>
+
+                                    
+                                </div>
                             </div>
                         </form>
-                        <div class="contents_area-table">
-                            <p class="contents_area-title">전체공지 <font class="fs14"><span>(</span>99,999<span>건)</span></font></p>
-                            
-                            <p class="btnRight">
-                            <button type="button" class="btn_blue">삭제</button>
-                            <button type="button" class="btn_add btn_red" onclick="layerOpen('.layer_notice_register')">공지등록</button>
-                            </p>
-                            <table>
-                                <colgroup>
-                                    <col width="40"/>
-                                    <col width="4%"/>
-                                    <col width=""/>
-                                    <col width=""/>
-                                    <col width=""/>
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                        <th class="thht">선택</th>
-                                        <th>NO</th>
-                                        <th>제목</th>
-                                        <th>등록자</th>
-                                        <th>등록일</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="checkbox" id="check1"><label for="check1"></label></td>
-                                        <td>1</td>
-                                        <td class="subject"><a href="javascript:void(0)" onclick="layerOpen('.layer_notice_modify')">글제목 글제목 공지글제목 입니다.</a></td>
-                                        <td>관리자</td>
-                                        <td>2022/04/22</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="check2" checked><label for="check2"></label></td>
-                                        <td>999</td>
-                                        <td class="subject"><a href="javascript:void(0)" onclick="layerOpen('.layer_notice_modify')">글제목 글제목 공지글제목 입니다.</a></td>
-                                        <td>관리자</td>
-                                        <td>2022/04/22</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="check3"><label for="check3"></label></td>
-                                        <td>999</td>
-                                        <td class="subject"><a href="javascript:void(0)" onclick="layerOpen('.layer_notice_modify')">글제목 글제목 공지글제목 입니다.</a></td>
-                                        <td>관리자</td>
-                                        <td>2022/04/22</td>
-                                    </tr>
-                                </tbody>
+                        <div class="contents_area-box">
+                            <table class="tableTypeB MB35">
+                                <tr>
+                                    <td class="tLeft">템플릿 선택</td>
+                                    <td class="tRight">
+                                        <div class="select_box">
+                                        <select name="" id="" class="WD250 MR20 MT04">
+                                            <option value="전체">결제 완료</option>
+                                            <option value="선택1">감사 인사</option>
+                                            <option value="선택2">긴급 공지</option>
+                                        </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tLeft">발송 제목</td>
+                                    <td class="tRight"><input type="text" id="" placeholder="제목을 입력하세요" class="WD100-20 MT04"></td>
+                                </tr>
+                                <tr>
+                                    <td class="tLeft">수신자 선택</td>
+                                    <td class="tRight">
+                                        
+                                        <div class="checksRadio MT08">
+                                            <input type="radio" id="ex_rd1" name="radiobtn" checked>
+                                            <label for="ex_rd1">회원 선택</label>
+                                            <span class="Add-btn">
+                                                <button type="button" class="btn_blue btn_add WD150">선택하기</button> <div class="number">(선택회원 : 00명)</div>
+                                            </span>
+                                        
+                                            <input type="radio" id="ex_rd2" name="radiobtn">
+                                            <label for="ex_rd2">회원번호 직접입력</label>
+                                            <div class="MT-37 ML160"><input type="text" id="" placeholder="010-1234-5678"  class="WD150 MR20"></div>
+
+                                        </div>
+
+                                        
+                                        
+                                
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tLeft">발송 내용</td>
+                                    <td class="tRight"><textarea class="TextBox"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td class="tLeft">문자 내용</td>
+                                    <td class="tRight"><textarea class="TextBox"></textarea></td>
+                                </tr>
                             </table>
+                            
+                            <p class="MB20 fl_left">
+                            <button type="button" class="btn_yellow WD150 ML20">알림톡 발송</button>
+                            </p>
+                            
+                            <p class="MB20 ta_right">
+                            <button type="button" class="btn_blue WD150">확인</button>
+                            <button type="button" class="btn_blue WD150 MR20">수정/추가 등록</button>
+                            </p>
+                        
                         </div>
                     </div>
-                    <div class="pagination">
-                        <!-- seleted : li.is-current -->
-                        <!-- disable : li.disable -->
-                        <ul>
-                            <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
-                            <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
-                            <li class="num is-current"><a href="javascript:void(0)">1</a></li>
-                            <li class="num"><a href="javascript:void(0)">2</a></li>
-                            <li class="num"><a href="javascript:void(0)">3</a></li>
-                            <li class="num"><a href="javascript:void(0)">4</a></li>
-                            <li class="num"><a href="javascript:void(0)">5</a></li>
-                            <li class="num"><a href="javascript:void(0)">6</a></li>
-                            <li class="num"><a href="javascript:void(0)">7</a></li>
-                            <li class="num"><a href="javascript:void(0)">8</a></li>
-                            <li class="num"><a href="javascript:void(0)">9</a></li>
-                            <li class="num"><a href="javascript:void(0)">10</a></li>
-                            <li class="page next"><a href="javascript:void(0)">next page</a></li>
-                            <li class="page last"><a href="javascript:void(0)">last page</a></li>
-                        </ul>
-                    </div>
+                    
                 </div>
             </section>
         </div>
-    </div>
-    <!-- 공지사항 수정-->
-    <div class="layer layer_notice_modify is-hidden">
-        <form autocomplete="off">
-            <div class="inner">
-                <div class="top">
-                    <p class="popup_title">공지사항</p>
+        <div class="layer layer_sns_register is-hidden">
+            <form autocomplete="off">
+                <div class="inner">
+                    <div class="top">
+                        <p class="popup_title">SNS 등록</p>
+                    </div>
+                    <div class="contents">
+                        <div class="contents_area">
+                            <div class="contents_area-box">
+                                <table class="tableTypeB MB35">
+                                    <tr>
+                                        <td class="tLeft">템플릿 선택</td>
+                                        <td class="tRight">
+                                            <div class="select_box">
+                                            <select name="" id="" class="WD250 MR20 MT04">
+                                                <option value="전체">결제 완료</option>
+                                                <option value="선택1">감사 인사</option>
+                                                <option value="선택2">긴급 공지</option>
+                                            </select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tLeft">발송 제목</td>
+                                        <td class="tRight"><input type="text" id="" placeholder="제목을 입력하세요" class="WD100-20 MT04"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tLeft">수신자 선택</td>
+                                        <td class="tRight">
+                                            
+                                            <div class="checksRadio MT08">
+                                                <input type="radio" id="ex_rd3" name="radiobtn" checked>
+                                                <label for="ex_rd3">회원 선택</label>
+                                                <span class="Add-btn">
+                                                    <button type="button" class="btn_blue btn_add WD150">선택하기</button> <div class="number">(선택회원 : 00명)</div>
+                                                </span>
+                                                <input type="radio" id="ex_rd4" name="radiobtn">
+                                                <label for="ex_rd4">회원번호 직접입력</label>
+                                                <div class="MT-37 ML160"><input type="text" id="" placeholder="010-1234-5678"  class="WD150 MR20"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tLeft">발송 내용</td>
+                                        <td class="tRight"><textarea class="TextBox"></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tLeft">문자 내용</td>
+                                        <td class="tRight"><textarea class="TextBox"></textarea></td>
+                                    </tr>
+                                </table>
+                                
+                                <p class="MB20 fl_left">
+                                <button type="button" class="btn_yellow WD150 ML20">알림톡 발송</button>
+                                </p>
+                                
+                                <p class="MB20 ta_right">
+                                <button type="button" class="btn_white WD104 MR8">삭제</button>
+                                <button type="button" class="btn_blue WD104 MR20">저장</button>
+                                </p>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn_close" onclick="layerClose('.layer_sns_register');">닫기</button>
                 </div>
-                <div class="contents input MT20">
-                    <div class="input_box MB40">
-                        <label for="title">제목</label>
-                        <input type="text" id="title" placeholder="제목 입력" value="위시데이에서 알려드립니다.">
-                    </div>
-                    <div class="input_box w200 MR10 fl_left">
-                        <label for="name">등록자</label>
-                        <input type="text" id="name" value="관리자명" disabled>
-                    </div>
-                    <div class="input_box w200 fl_left MB40">
-                        <label for="date">작성일</label>
-                        <input type="text" id="date" value="2022/04/22" disabled>
-                    </div>
-                    <div class="textarea clear MB40">
-                        <label for="content">내용</label>
-                        <textarea name="" id="content" placeholder="내용 입력">위시데이에서 알려드립니다.</textarea>
-                    </div>
-                </div>
-                <div class="btn_group2">
-                    <button type="button" class="btn_white" onclick="layerClose('.layer_notice_modify')">취소</button>
-                    <button type="button" class="btn_blue">수정</button>
-                </div>
-                <button type="button" class="btn_close" onclick="layerClose('.layer_notice_modify')">닫기</button>
-            </div>
-        </form>
-    </div>
-    <!-- 공지사항 등록-->
-    <div class="layer layer_notice_register is-hidden">
-        <form autocomplete="off">
-            <div class="inner">
-                <div class="top">
-                    <p class="popup_title">공지사항</p>
-                </div>
-                <div class="contents input MT20">
-                    <div class="input_box MB40">
-                        <label for="title">제목</label>
-                        <input type="text" id="title" placeholder="제목 입력">
-                    </div>
-                    <div class="input_box w200 MR10 fl_left">
-                        <label for="name">등록자</label>
-                        <input type="text" id="name" value="로그인한등록자" disabled>
-                    </div>
-                    <div class="input_box w200 fl_left MB40">
-                        <label for="date">작성일</label>
-                        <input type="text" id="date" value="2022/04/22" disabled>
-                    </div>
-                    <div class="textarea clear MB40">
-                        <label for="content">내용</label>
-                        <textarea name="" id="content" placeholder="내용 입력"></textarea>
-                    </div>
-                </div>
-                <div class="btn_group2">
-                    <button type="button" class="btn_white" onclick="layerClose('.layer_notice_register')">취소</button>
-                    <button type="button" class="btn_blue">등록</button>
-                </div>
-                <button type="button" class="btn_close" onclick="layerClose('.layer_notice_register')">닫기</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 </template>

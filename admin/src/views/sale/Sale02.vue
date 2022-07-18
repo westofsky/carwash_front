@@ -20,8 +20,8 @@
                         <a href="#">고객관리</a>
                         <ul class="sub_menu">
                             <li><router-link to = "/Customer01">회원조회</router-link></li>
-                            <li><router-link to = "/Customer02">공지사항</router-link></li>
-                            <li><router-link to = "/Customer03">SNS관리</router-link></li>
+                            <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer03">공지사항</router-link></li>
                         </ul>
                     </li>
                     <li class="promotion is-sub">
@@ -241,7 +241,11 @@
         },
         methods : {
             
-            get_search(){
+            async get_search(){
+                if(this.sea_date_start > this.sea_date_end){
+                    alert("날짜 선택이 잘못되었습니다.");
+                    return false;
+                }
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
                 console.log(this.sea_wtt)
