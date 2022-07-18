@@ -168,11 +168,7 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
-<<<<<<< HEAD
                                         <td class="left"><a onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.mem_no }}</a></td>
-=======
-                                        <td class="left"><a href="" @click="modify_no=index">{{ info.mem_no }}</a></td>
->>>>>>> 3bf46c5af907bc6ed439f33c9dc7000e9719a7e7
                                         <td class="left">{{ info.mem_id }}</td>
                                         <td class="left">{{ info.mem_name }}</td>
                                         <td>{{ info.mem_status }}</td>
