@@ -168,7 +168,7 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
-                                        <td class="left"><a href=""><{{ info.mem_no }}></a></td>
+                                        <td class="left"><a href="" @click="modify_no=index">{{ info.mem_no }}</a></td>
                                         <td class="left">{{ info.mem_id }}</td>
                                         <td class="left">{{ info.mem_name }}</td>
                                         <td>{{ info.mem_status }}</td>
@@ -413,6 +413,17 @@
                 paginate_total: 0,
                 current: 1,
                 pageCount : 10, // 페이지 버튼 최대 개수
+                revise : {
+                    mem_no : '',
+                    mem_id : '',
+                    mem_type : '',
+                    mem_status : '',
+                    mem_name : '',
+                    mem_tel : '',
+                    mem_email : '',
+                    
+                    
+                }
             }
         },
         created(){
