@@ -19,8 +19,8 @@
                 <li class="customer is-sub is-current" >
                     <a>고객관리</a>
                     <ul class="sub_menu">
-                        <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li class="is-current"><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li class="is-current"><router-link to = "/Customer01">회원조회</router-link></li>
+                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
                         <li><router-link to = "/Customer03">공지사항</router-link></li>
                     </ul>
                 </li>
