@@ -112,11 +112,11 @@
                                 <div class="select MT40">
                                 <div class="input_box">
                                         <label for="number">차량번호</label>
-                                        <input type="text" id="" placeholder=""  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
+                                        <input type="text" id="" placeholder="차량번호 입력"  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                 </div>
                                 <div class="input_box">
                                         <label for="number">회원아이디(fleet 사용자)</label>
-                                        <input type="text" id="" placeholder=""  class="WD180 MR20" v-model="sea_id" v-on:keydown.enter.prevent="get_search">
+                                        <input type="text" id="" placeholder="회원아이디 입력"  class="WD180 MR20" v-model="sea_id" v-on:keydown.enter.prevent="get_search">
                                 </div>
                                 <div class="input_box">
                                         <label for="number">연락처</label>
@@ -168,14 +168,14 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
-                                        <td class="left"><a href="">{{ info.no }}</a></td>
+                                        <td class="left"><a href=""><{{ info.mem_no }}></a></td>
                                         <td class="left">{{ info.mem_id }}</td>
                                         <td class="left">{{ info.mem_name }}</td>
                                         <td>{{ info.mem_status }}</td>
                                         <td>{{ info.mem_type }}</td>
                                         <td>{{ info.mem_tel }}</td>
                                         <td class="right">{{ info.fleet_dc }}%</td>
-                                        <td class="right">{{ info.prepay }}매</td>
+                                        <td class="right">{{ info.fleet_prepay }}매</td>
                                         <td>{{ info.reg_date}}</td>
                                     </tr>
                                 </tbody>
