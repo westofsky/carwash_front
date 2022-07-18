@@ -88,7 +88,7 @@
                             </div>
                         </form>
                         <div class="contents_area-table">
-                            <p class="contents_area-title">전체공지 <font class="fs14"><span>(</span>{{return_sum.account_fee}}<span>건)</span></font></p>
+                            <p class="contents_area-title">전체공지 <font class="fs14"><span>(</span>{{return_sum.account_seq}}<span>건)</span></font></p>
                             
                             <p class="btnRight">
                             <button type="button" class="btn_add btn_red" onclick="layerOpen('.layer_notice_register')">공지등록</button>
@@ -179,7 +179,7 @@
                     </div>
                     <div class="textarea clear MB40">
                         <label for="content">내용</label>
-                        <textarea name="" id="content" v-model="mod_contents" placeholder="내용 입력"></textarea>
+                        <textarea name="" id="content" v-model = "mod_contents"  placeholder="내용 입력"></textarea>
                     </div>
                 </div>
                 <div class="btn_group2" style="justify-content : space-around">
@@ -209,7 +209,7 @@
                     </div>
                     <div class="textarea clear MB40">
                         <label for="content">내용</label>
-                        <textarea name="" id="content" v-model="contents" placeholder="내용 입력" v-on:keydown.enter.prevent="register_notice"></textarea>
+                        <textarea name="" id="content" v-model="contents" placeholder="내용 입력"></textarea>
                     </div>
                 </div>
                 <div class="btn_group2">
@@ -361,7 +361,7 @@ export default{
                 console.log(res.data);
                 this.mod_admin_id = res.data.admin_id;
                 this.mod_title = res.data.title;
-                this.mod_contents = res.data.contents;
+                this.mod_contents = String(res.data.contents).replace(/,+/g,'\n');
                 this.mod_write_date = res.data.write_date;
             });
         },
