@@ -19,8 +19,8 @@
                 <li class="customer is-sub is-current" >
                     <a>고객관리</a>
                     <ul class="sub_menu">
-                        <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li class="is-current"><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li class="is-current"><router-link to = "/Customer01">회원조회</router-link></li>
+                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
                         <li><router-link to = "/Customer03">공지사항</router-link></li>
                     </ul>
                 </li>
@@ -168,11 +168,7 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
-<<<<<<< HEAD
                                         <td class="left"><a onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.mem_no }}</a></td>
-=======
-                                        <td class="left"><a href="" @click="modify_no=index">{{ info.mem_no }}</a></td>
->>>>>>> 3bf46c5af907bc6ed439f33c9dc7000e9719a7e7
                                         <td class="left">{{ info.mem_id }}</td>
                                         <td class="left">{{ info.mem_name }}</td>
                                         <td>{{ info.mem_status }}</td>
@@ -265,8 +261,8 @@
                         <input type="text" id="number1" placeholder="회원번호 입력" v-model="revise.mem_no" disabled>
                     </div>
                     <div class="input_box fl_left w200 MB40">
-                        <label for="number2">차량번호(수정불가)</label>
-                        <input type="text" id="number2" placeholder="차량번호 입력" v-model="revise.mem_id" disabled>
+                        <label for="number2">회원아이디(수정불가)</label>
+                        <input type="text" id="number2" placeholder="회원아이디 입력" v-model="revise.mem_id" disabled>
                     </div>
                     <div class="select_box fl_left w200 MR10">
                         <label for="">회원구분</label>
@@ -302,19 +298,19 @@
                     </div>
                     <div class="input_box fl_left w200 MB50">
                         <label for="compnum">사업자번호</label>
-                        <input type="text" id="compnum" v-model="revise.mem_com_no">
+                        <input type="text" id="compnum" v-model="revise.com_no">
                     </div>
                     <div class="input_box fl_left w200 MR10">
                         <label for="discount">Fleet 할인율(%)</label>
-                        <input type="text" id="discount" placeholder="%없이 입력" v-model="revise.fleet_dc">
+                        <input type="number" id="discount" placeholder="%없이 입력" v-model="revise.fleet_dc">
                     </div>
                     <div class="input_box fl_left w200 MB40">
                         <label for="remain">Fleet 선불 세차 잔여수</label>
-                        <input type="text" id="remain" placeholder="잔여수 입력" v-model="revise.fleet_prepay">
+                        <input type="number" id="remain" placeholder="잔여수 입력" v-model="revise.fleet_prepay">
                     </div>
                     <div class="input_box fl_left w200 MR10">
                         <label for="use">Fleet 선불 이용건수</label>
-                        <input type="text" id="use" placeholder="이용건수 입력" v-model="revise.fleet_prepay_use">
+                        <input type="number" id="use" placeholder="이용건수 입력" v-model="revise.fleet_prepay_use">
                     </div>
                     <div class="input_box fl_left w200 MB50">
                         <label for="join_date">회원가입일(수정불가)</label>
@@ -386,7 +382,7 @@
 </div>
 </template>
 <script>
-    import * as Xlsx from 'xlsx'
+import * as Xlsx from 'xlsx'
     export default{
         computed:{
             maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
@@ -441,6 +437,8 @@
                     reg_date : '',
                     seq_no : '',
                     index : '',
+                    t_name : '',
+                    s_name : '',
                 }
             }
         },
@@ -631,6 +629,46 @@
                 
             },
             mem_Update(){
+                console.log(this.revise.mem_type);
+                console.log(this.revise.mem_status);
+                if(this.revise.mem_type == "MMT"){
+                    alert("회원구분을 선택해주세요.");
+                    return false;
+                }
+                if(this.revise.mem_status == "MMS"){
+                    alert("회원상태를 선택해주세요.");
+                    return false;
+                }
+                if(!this.revise.mem_name){
+                    alert("회원명을 입력해주세요.");
+                    return false;
+                }
+                if(!this.revise.mem_tel){
+                    alert("연락처를 입력해주세요.");
+                    return false;
+                }
+                if(this.revise.mem_type != "MMT001"){
+                    if(!this.revise.mem_email){
+                        alert("이메일을 입력해주세요.");
+                        return false;
+                    }
+                    if(!this.revise.com_no){
+                        alert("사업자번호를 입력해주세요.");
+                        return false;
+                    }
+                    if(!this.revise.fleet_dc){
+                        alert("Fleet 할인율을 입력해주세요.");
+                        return false;
+                    }
+                    if(!this.revise.fleet_prepay){
+                        alert("Fleet 선불 세차 잔여수를 입력해주세요.");
+                        return false;
+                    }
+                    if(!this.revise.fleet_prepay_use){
+                        alert("Fleet선불 이용건수를 입력해주세요.");
+                        return false;
+                    }
+                }
                 this.$http.post(this.$server+'/admin/setUpdateMem',
                 {
                     mem_type : this.revise.mem_type,
@@ -652,12 +690,23 @@
                     console.log(res.data);
                     if(res.data.result_code == "Y"){
                         alert("회원정보 수정이 완료되었습니다.");
+                        for(var i =0;i<this.get_wtt.length;i++){
+                            if(this.get_wtt[i].code == this.revise.mem_type)
+                                this.revise.t_name = this.get_wtt[i].code_name;
+                        }
+                        for(var i =0;i<this.get_pat.length;i++){
+                            if(this.get_pat[i].code == this.revise.mem_status)
+                                this.revise.s_name = this.get_pat[i].code_name;
+                        }
                         this.get_payresult[this.revise.index].mem_name = this.revise.mem_name;
-                        this.get_payresult[this.revise.index].mem_status = this.revise.mem_status;
-                        this.get_payresult[this.revise.index].mem_type = this.revise.mem_type;
+                        this.get_payresult[this.revise.index].mem_status = this.revise.s_name;
+                        this.get_payresult[this.revise.index].mem_type = this.revise.t_name;
                         this.get_payresult[this.revise.index].mem_tel = this.revise.mem_tel;
                         this.get_payresult[this.revise.index].fleet_dc = this.revise.fleet_dc;
                         this.get_payresult[this.revise.index].fleet_prepay = this.revise.fleet_prepay;
+                        $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
+                        $('body').removeClass('layer-opens');
+                        return false;
                     }
                 });
             }
