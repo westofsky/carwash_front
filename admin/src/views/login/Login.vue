@@ -48,6 +48,12 @@ export default {
         }
     },
     mounted(){
+        if(localStorage.getItem("auto_admin_no")){
+            sessionStorage.setItem("admin_no",localStorage.getItem("auto_admin_no"));
+            sessionStorage.setItem("admin_name",localStorage.getItem("auto_admin_name"));
+            this.$router.push('/Home')
+        }
+
     },
 
     methods : {
