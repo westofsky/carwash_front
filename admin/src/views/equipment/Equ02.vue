@@ -78,50 +78,17 @@
                             <p class="contents_area-title">세차 진입 차량 순서 제어</p>
                             <div class="carwash_equ">세차기</div>
                             <div class="contents_area-queue">
-                                <div>
-                                    <div><img src="../../assets/images/carcam.png"  class="carcam" alt="carcam"></div>
+                                <div v-for="(info,index) in get_washCar" :key="index">
+                                    <!-- <div><img src="../../assets/images/carcam.png"  class="carcam" alt="carcam"></div> -->
                                     <div>
-                                        <p>123가 4568</p>
+                                        <p>{{info.car_no}}</p>
                                         <ul class="process">
-                                            <li>세차메뉴 : 프리미엄</li>
-                                            <li>옵션 : 옵션내용, 옵션내용 옵션내용</li>
-                                            <li>회원구분 : 멤버쉽</li>
-                                            <li>가격 : 25,000원</li>
+                                            <li>세차메뉴 : {{info.prod_name}}</li>
+                                            <li>옵션 : {{info.option_name}}</li>
+                                            <li>건조브러쉬 : {{info.is_brush}}</li>
                                         </ul>
-                                        <button class="btn_red">회차처리</button>
+                                        <button class="btn_red" @click="set_washCtrl(info.use_seq,info.wash_seq)">회차처리</button>
                                     </div>
-                                </div>
-                                <div>
-                                    <div><img src="../../assets/images/carcam.png"  class="carcam" alt="carcam"></div>
-                                    <div>
-                                        <p>123가 4568</p>
-                                        <ul class="process">
-                                            <li>세차메뉴 : 프리미엄</li>
-                                            <li>옵션 : 옵션내용, 옵션내용 옵션내용</li>
-                                            <li>회원구분 : 멤버쉽</li>
-                                            <li>가격 : 25,000원</li>
-                                        </ul>
-                                        <button class="btn_red">회차처리</button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div><img src="../../assets/images/carcam.png"  class="carcam" alt="carcam"></div>
-                                    <div>
-                                        <p>123가 4568</p>
-                                        <ul class="process">
-                                            <li>세차메뉴 : 프리미엄</li>
-                                            <li>옵션 : 옵션내용, 옵션내용 옵션내용</li>
-                                            <li>회원구분 : 멤버쉽</li>
-                                            <li>가격 : 25,000원</li>
-                                        </ul>
-                                        <button class="btn_red">회차처리</button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <input type="radio" id="wash1" name="togglewash" value="wash1">	
-                                    <label for="wash1" class="MR40">진행 멈춤<br>STOP</label>
-                                    <input type="radio" id="wash2" name="togglewash" value="wash2">
-                                    <label for="wash2">재 진행<br>RESTART</label>
                                 </div>
                             </div>
                         </div>
@@ -132,3 +99,45 @@
     </div>
 </div>
 </template>
+<script>
+    export default{
+        data(){
+            return{
+                get_washCar : '',
+
+            }
+        },
+        mounted(){
+
+        },
+        methods :{
+            get_washCtrl(){
+                this.$http.post(this.$server+'/admin/getWashCtrl',
+                {
+                    
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    this.get_washCar = res.data;
+                });
+            },
+            set_washCtrl(use_seq,wash_seq){
+                this.$http.post(this.$server+'/admin/setWashCtrl',
+                {
+                    use_seq : use_seq,
+                    wash_seq : wash_seq,
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    if(res.data.result_code == "Y"){
+                        alert("회차처리 성공");
+                    }
+                });
+            }
+        }
+    }
+</script>
