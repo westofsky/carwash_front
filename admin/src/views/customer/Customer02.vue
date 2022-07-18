@@ -160,14 +160,15 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
-                                        <td class="left"><a href="">{{ info.car_no }}</a></td>
+                                        <td class="left"><a onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.car_no }}</a></td>
                                         <td class="left">{{ info.mem_no }}</td>
                                         <td class="left">{{ info.prod_name }}</td>
-                                        <td>{{ info.is_brush }}</td>
+                                        <td v-if="info.is_brush=='Y'">사용</td>
+                                        <td v-if="info.is_brush=='N'">미사용</td>
                                         <td>{{ info.use_status }}</td>
                                         <td>{{ info.pay_fee }}</td>
-                                        <td class="right">{{ info.pay_day }}일%</td>
-                                        <td class="right">{{ info.terminal_name }}매</td>
+                                        <td class="right">{{ info.pay_day }}일</td>
+                                        <td class="right">{{ info.terminal_name }}</td>
                                         <td>{{ info.pay_date}}</td>
                                     </tr>
                                 </tbody>
@@ -249,61 +250,48 @@
                 </div>
                 <div class="contents input MT20">
                     <div class="input_box fl_left w200 MR10">
-                        <label for="number1">회원번호</label>
-                        <input type="text" id="number1" placeholder="회원번호 입력" value="YGP22021600000001">
+                        <label for="number1">회원번호(수정불가)</label>
+                        <input type="text" id="number1" placeholder="회원번호 입력" v-model="revise.mem_no" disabled>
                     </div>
                     <div class="input_box fl_left w200 MB40">
-                        <label for="number2">차량번호</label>
-                        <input type="text" id="number2" placeholder="차량번호 입력" value="서울 123나 1234">
+                        <label for="number2">차량번호(수정불가)</label>
+                        <input type="text" id="number2" placeholder="차량번호 입력" v-model="revise.car_no" disabled>
                     </div>
-                    <div class="select_box fl_left w200 MR10">
-                        <label for="select1">회원유무</label>
-                        <select name="" id="select1">
-                            <option value="비회원">비회원</option>
-                            <option value="회원">회원</option>
-                        </select>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="number3">세차메뉴(수정불가)</label>
+                        <input type="text" id="number3" placeholder="세차메뉴 입력" v-model="revise.prod_name" disabled>
                     </div>
                     <div class="select_box fl_left w200 MB40">
-                        <label for="select2">회원유형</label>
-                        <select name="" id="select2">
-                            <option value="FLEET할인전용">FLEET할인전용</option>
-                            <option value="선택2">선택2</option>
+                        <label for="">이용상태</label>
+                        <select v-model="revise.use_status">
+                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
+                                {{info.code_name}}
+                            </option>
                         </select>
                     </div>
                     <div class="select_box fl_left w200 MR10">
-                        <label for="select3">회원등급</label>
-                        <select name="" id="select3">
-                            <option value="일반">일반</option>
-                            <option value="선택2">선택2</option>
+                        <label for="">건조브러쉬</label>
+                        <select v-model="revise.is_brush">
+                            <option value="Y">사용</option>
+                            <option value="N">미사용</option>
                         </select>
-                    </div>
-                    <div class="select_box fl_left w200 MB40">
-                        <label for="select4">FLEET 승인</label>
-                        <select name="" id="select4">
-                            <option value="승인대기">승인대기</option>
-                            <option value="선택2">선택2</option>
-                        </select>
-                    </div>
-                    <div class="input_box fl_left w200 MR10">
-                        <label for="id">FLEET ID</label>
-                        <input type="text" id="id" placeholder="아이디 입력" value="베이직">
                     </div>
                     <div class="input_box fl_left w200 MB40">
-                        <label for="phone">휴대폰 번호</label>
-                        <input type="text" id="phone" placeholder="휴대폰 번호 입력" value="010-1234-5678">
+                        <label for="pay_fee">결제금액(수정불가)</label>
+                        <input type="text" id="pay_fee" v-model="revise.pay_fee" disabled>
                     </div>
                     <div class="input_box fl_left w200 MR10">
-                        <label for="coupon">보유쿠폰</label>
-                        <input type="text" id="coupon" value="3" class="red" disabled>
+                        <label for="pay_date1">결제일(수정불가)</label>
+                        <input type="text" id="pay_date1" v-model="revise.pay_date" disabled>
                     </div>
-                    <div class="input_box fl_left w200 MB50">
-                        <label for="join_date">회원가입일</label>
-                        <input type="text" id="join_date" value="2022/04/22" disabled>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="pay_date2">결제일자(수정불가)</label>
+                        <input type="text" id="pay_date2" v-model="revise.pay_date" disabled>
                     </div>
                 </div>
                 <div class="btn_group2" style="clear:both;">
                     <button type="button" class="btn_white" onclick="layerClose('.layer_member_modify')">취소</button>
-                    <button type="button" class="btn_blue">저장</button>
+                    <button type="button" class="btn_blue" @click="mem_Update">저장</button>
                 </div>
                 <button type="button" class="btn_close" onclick="layerClose('.layer_member_modify')">닫기</button>
             </div>
@@ -405,6 +393,19 @@
                 paginate_total: 0,
                 current: 1,
                 pageCount : 10, // 페이지 버튼 최대 개수
+                get_memdetail : '',
+                revise : {
+                    mem_no : '',
+                    car_no : '',
+                    prod_name : '',
+                    use_status : '',
+                    is_brush:'',
+                    pay_fee : '',
+                    pay_date:'',
+                    seq_no : '',
+                    index : '',
+                    s_name : '',
+                }
             }
         },
         created(){
@@ -432,7 +433,6 @@
                     end_date : this.sea_date_end,
                     use_status : this.sea_wtt,
                     reg_type : this.sea_pat,
-                    mem_id : this.sea_id,
                     car_no : this.sea_carnum
                 }
                 ,{headers : {
@@ -448,7 +448,6 @@
                     end_date : this.sea_date_end,
                     use_status : this.sea_wtt,
                     reg_type : this.sea_pat,
-                    mem_id : this.sea_id,
                     car_no : this.sea_carnum
                 }
                 ,{headers : {
@@ -481,7 +480,7 @@
                 }).then((res) => {
                     
                     this.get_wtt = res.data
-                    console.log(typeof this.get_wtt)
+                    console.log(this.get_wtt);
 
 
                 })
@@ -551,69 +550,6 @@
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
-            cancel(no, auth_no, pay_fee, tr_no){
-                var result = confirm("해당 건을 취소하시겠습니까?");
-                if(result){
-                var key =  'easypay!O0OWO2Bb';
-                var today = new Date();
-                var year = today.getFullYear();
-                var month = ('0' + (today.getMonth() + 1)).slice(-2);
-                var day = ('0' + today.getDate()).slice(-2);
-                var id = new Uint32Array(1);
-                var trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString();
-                do{
-                    trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
-                }while(trans_id.length!=6);
-                trans_id = year+month+day+trans_id;
-                const msg = this.$CryptoJS.HmacSHA256(auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
-                if(result){
-                    var req_data = {
-                        "mallId":"05562973", //KICC에서 발급한 상점ID
-                        "shopTransactionId":trans_id, // 상점거래고유번호
-                        "pgCno" : auth_no,
-                        "reviseTypeCode":'40',
-                        "amount" : pay_fee,
-                        "clientIp" : '127.0.0.1',
-                        "clientId" : tr_no,
-                        "msgAuthValue" : msg,
-                        "cancelReqDate" : year+month+day,
-                    };
-                    this.$http.post('https://pgapi.easypay.co.kr/api/trades/revise', req_data,
-                        {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
-                    ).then(
-                    (res) => {  
-                        console.log(res.data);
-                        if(res.data.resCd == "0000"){
-                            console.log("취소성공");
-                            this.waiting = false;
-                            console.log('ok');
-                                this.$http.post(this.$server+'/admin/setPayCancel',
-                                {
-                                    seq_no : no
-                                }
-                                ,{headers : {
-                                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                                    }
-                                }).then((res) => {
-                                    var flags_suc = res.data.result_code;
-                                    if(flags_suc == 'Y'){
-                                        alert('정상적으로 취소되었습니다.')
-                                    }
-                                    else if(flags_suc == 'N'){
-                                        alert('취소 실패하였습니다.')
-                                    }
-
-                            })
-                        }
-                        else{
-                            console.log("취소 오류.");
-
-                        }
-                        })
-                    }
-
-                }
-            },
             return_date(date){
                 var today = new Date(date);
                 today.setHours(today.getHours() + 9);
@@ -624,6 +560,60 @@
                 const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
                 Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
                 Xlsx.writeFile(workBook, 'output.xlsx')
+            },
+            setReviseInfo(seq_no,index){
+                this.revise.index = index;
+                this.$http.post(this.$server+'/admin/getMembershipDetail',
+                {
+                    seq_no : seq_no,
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_memdetail = res.data;
+                    this.revise.mem_no = this.get_memdetail.mem_no;
+                    this.revise.car_no = this.get_memdetail.car_no;
+                    this.revise.prod_name = this.get_memdetail.prod_name;
+                    this.revise.use_status = this.get_memdetail.use_status;
+                    this.revise.is_brush = this.get_memdetail.is_brush;
+                    this.revise.pay_fee = this.get_memdetail.pay_fee;
+                    this.revise.pay_date = this.get_memdetail.pay_date;
+                    this.revise.seq_no = seq_no;
+                });
+                
+            },
+            mem_Update(){
+                if(this.revise.use_status == "MUS"){
+                    alert("이용상태를 선택해주세요.");
+                    return false;
+                }
+                this.$http.post(this.$server+'/admin/setMembershipUpdate',
+                {
+                    use_status : this.revise.use_status,
+                    is_brush : this.revise.is_brush,
+                    seq_no : this.revise.seq_no
+
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data);
+                    if(res.data.result_code == "Y"){
+                        alert("멤버쉽정보 수정이 완료되었습니다.");
+                        for(var i =0;i<this.get_wtt.length;i++){
+                            if(this.get_wtt[i].code == this.revise.use_status)
+                                this.revise.s_name = this.get_wtt[i].code_name;
+                        }
+                        this.get_payresult[this.revise.index].use_status = this.revise.s_name;
+                        this.get_payresult[this.revise.index].is_brush = this.revise.is_brush;
+                        $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
+                        $('body').removeClass('layer-opens');
+                        return false;
+                    }
+                });
             }
         }
     }
