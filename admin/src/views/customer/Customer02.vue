@@ -112,7 +112,7 @@
                                 <div class="select MT40">
                                 <div class="input_box">
                                         <label for="number">차량번호</label>
-                                        <input type="text" id="" placeholder=""  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
+                                        <input type="text" id="" placeholder="차량번호 입력"  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                 </div>
                                 
                                     
