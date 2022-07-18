@@ -74,7 +74,7 @@
                 <div class="contents">
                     <h2 class="title title_user">공지사항</h2>
                     <div class="contents_area">
-                        <form autocomplete="off">
+                        <form autocomplete="off" v-on:keydown.enter.prevent="search_notice" >
                             <div class="contents_area-search">
                                     
                                 <select name="" id="" v-model="search_for">
@@ -102,7 +102,7 @@
                                 </colgroup>
                                 <thead>
                                     <tr>
-                                        <th class="thht">선택</th>
+                                        <th class="thht">NO</th>
                                         <th>제목</th>
                                         <th>등록자</th>
                                         <th>등록일</th>
@@ -159,7 +159,7 @@
     </div>
     <!-- 공지사항 수정-->
     <div class="layer layer_notice_modify is-hidden">
-        <form autocomplete="off">
+        <form autocomplete="off" onSubmit="return false;">
             <div class="inner">
                 <div class="top">
                     <p class="popup_title">공지사항</p>
@@ -182,9 +182,10 @@
                         <textarea name="" id="content" v-model="mod_contents" placeholder="내용 입력"></textarea>
                     </div>
                 </div>
-                <div class="btn_group2">
+                <div class="btn_group2" style="justify-content : space-around">
                     <button type="button" class="btn_white" onclick="layerClose('.layer_notice_modify')">취소</button>
                     <button type="button" class="btn_blue" @click="mod_notice">수정</button>
+                    <button type="button" class="btn_blue" style="background-color:red " @click="delete_notice">삭제</button>
                 </div>
                 <button type="button" class="btn_close" onclick="layerClose('.layer_notice_modify')">닫기</button>
             </div>
@@ -192,7 +193,7 @@
     </div>
     <!-- 공지사항 등록-->
     <div class="layer layer_notice_register is-hidden">
-        <form autocomplete="off">
+        <form autocomplete="off" onSubmit="return false;">
             <div class="inner">
                 <div class="top">
                     <p class="popup_title">공지사항</p>
@@ -279,6 +280,7 @@ export default{
                     this.return_sum = res.data
                     console.log(this.return_sum)
                 })
+
                 this.$http.post(this.$server+'/admin/getNoticeList',
                 {
                     title : '',
@@ -308,16 +310,17 @@ export default{
                 })
                 this.$http.post(this.$server+'/admin/getNoticeList',
                 {
-                    title : this.search_info
+                    title : this.search_info,
+                    contents : '',
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
                     this.return_result = res.data
-                    console.log(this.return_result)
+                    console.log(this.return_result);
+                    console.log(this.return_result.length);
                     this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
-                    console.log(this.paginate_total)
                 })
             }
 
@@ -358,7 +361,7 @@ export default{
                 console.log(res.data);
                 this.mod_admin_id = res.data.admin_id;
                 this.mod_title = res.data.title;
-                this.mod_cotents = res.data.contents;
+                this.mod_contents = res.data.contents;
                 this.mod_write_date = res.data.write_date;
             });
         },
@@ -394,10 +397,61 @@ export default{
                     }
                 });
             }
-            
         },
         mod_notice(){
+            if(!this.mod_title){
+                alert("제목을 입력하세요.");
+                return false;
+            }
+            if(!this.mod_contents){
+                alert("내용을 입력하세요.");
+                return false;
+            }
+            var result = confirm("공지를 수정하시겠습니까?");
+            if(result){
+                this.$http.post(this.$server+'/admin/setNoticeUpdate',
+                {
+                    admin_id : this.mod_admin_id,
+                    title : this.mod_title,
+                    contents : this.mod_contents,
+                    seq_no : this.mod_seq_no,
 
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data);
+                    if(res.data.result_code == "Y"){
+                        alert("수정되었습니다.");
+                        location.reload();
+                        $('.layer_notice_modify').removeClass('is-open').addClass('is-hidden');
+                        $('body').removeClass('layer-opens');
+                        return false;
+                    }
+                });
+            }
+        },
+        delete_notice(){
+            var result = confirm("공지를 삭제하시겠습니까?");
+            if(result){
+                this.$http.post(this.$server+'/admin/setNoticeDelete',
+                {
+                    seq_no : this.mod_seq_no,
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    if(res.data.result_code =="Y"){
+                        alert("삭제되었습니다.");
+                        location.reload();
+                        $('.layer_notice_modify').removeClass('is-open').addClass('is-hidden');
+                        $('body').removeClass('layer-opens');
+                        return false;
+                    }
+                });
+            }
         }
 
     }
