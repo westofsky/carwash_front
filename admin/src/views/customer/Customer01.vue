@@ -20,8 +20,8 @@
                     <a>고객관리</a>
                     <ul class="sub_menu">
                         <li class="is-current"><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer02">공지사항</router-link></li>
-                        <li><router-link to = "/Customer03">SNS관리</router-link></li>
+                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer03">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
