@@ -159,7 +159,9 @@
                             <ul>
                                 <li class="page first"><a href="javascript:void(0)">first page</a></li>
                                 <li class="page prev"><a href="javascript:void(0)">prev page</a></li>
-                                <li class="num" v-for="page_index in paginate_total" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}" :key="page_index"> <a href="">{{ page_index }}</a> </li>
+                                <p v-for="page_index in paginate_total">
+                                <li class="num" v-if="page_index > (current-5)" @click.prevent="updateCurrent(page_index)" :class="{'num is-current': page_index == current}" :key="page_index"> <a href="">{{ page_index }}</a> </li>
+                                </p>
                                 <li class="page next"><a href="javascript:void(0)">next page</a></li>
                                 <li class="page last"><a href="javascript:void(0)">last page</a></li>
                             </ul>
