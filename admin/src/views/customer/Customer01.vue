@@ -168,7 +168,11 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
+<<<<<<< HEAD
+                                        <td class="left"><a onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.mem_no }}</a></td>
+=======
                                         <td class="left"><a href="" @click="modify_no=index">{{ info.mem_no }}</a></td>
+>>>>>>> 3bf46c5af907bc6ed439f33c9dc7000e9719a7e7
                                         <td class="left">{{ info.mem_id }}</td>
                                         <td class="left">{{ info.mem_name }}</td>
                                         <td>{{ info.mem_status }}</td>
@@ -257,61 +261,69 @@
                 </div>
                 <div class="contents input MT20">
                     <div class="input_box fl_left w200 MR10">
-                        <label for="number1">회원번호</label>
-                        <input type="text" id="number1" placeholder="회원번호 입력" value="YGP22021600000001">
+                        <label for="number1">회원번호(수정불가)</label>
+                        <input type="text" id="number1" placeholder="회원번호 입력" v-model="revise.mem_no" disabled>
                     </div>
                     <div class="input_box fl_left w200 MB40">
-                        <label for="number2">차량번호</label>
-                        <input type="text" id="number2" placeholder="차량번호 입력" value="서울 123나 1234">
+                        <label for="number2">차량번호(수정불가)</label>
+                        <input type="text" id="number2" placeholder="차량번호 입력" v-model="revise.mem_id" disabled>
                     </div>
                     <div class="select_box fl_left w200 MR10">
-                        <label for="select1">회원유무</label>
-                        <select name="" id="select1">
-                            <option value="비회원">비회원</option>
-                            <option value="회원">회원</option>
+                        <label for="">회원구분</label>
+                        <select v-model="revise.mem_type">
+                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
+                                {{info.code_name}}
+                            </option>
                         </select>
                     </div>
                     <div class="select_box fl_left w200 MB40">
-                        <label for="select2">회원유형</label>
-                        <select name="" id="select2">
-                            <option value="FLEET할인전용">FLEET할인전용</option>
-                            <option value="선택2">선택2</option>
-                        </select>
-                    </div>
-                    <div class="select_box fl_left w200 MR10">
-                        <label for="select3">회원등급</label>
-                        <select name="" id="select3">
-                            <option value="일반">일반</option>
-                            <option value="선택2">선택2</option>
-                        </select>
-                    </div>
-                    <div class="select_box fl_left w200 MB40">
-                        <label for="select4">FLEET 승인</label>
-                        <select name="" id="select4">
-                            <option value="승인대기">승인대기</option>
-                            <option value="선택2">선택2</option>
+                        <label for="">회원상태</label>
+                        <select v-model="revise.mem_status">
+                            <option v-for="(info, index) in get_pat" :value="info.code" :selected="index == 1" :key="index">
+                                {{info.code_name}}
+                            </option>
                         </select>
                     </div>
                     <div class="input_box fl_left w200 MR10">
-                        <label for="id">FLEET ID</label>
-                        <input type="text" id="id" placeholder="아이디 입력" value="베이직">
+                        <label for="name">회원명</label>
+                        <input type="text" id="name" placeholder="회원명 입력" v-model="revise.mem_name">
                     </div>
                     <div class="input_box fl_left w200 MB40">
-                        <label for="phone">휴대폰 번호</label>
-                        <input type="text" id="phone" placeholder="휴대폰 번호 입력" value="010-1234-5678">
+                        <label for="phone">연락처</label>
+                        <input type="text" id="phone" placeholder="연락처 입력" v-model="revise.mem_tel">
                     </div>
-                    <div class="input_box fl_left w200 MR10">
-                        <label for="coupon">보유쿠폰</label>
+                    <!-- <div class="input_box fl_left w200 MR10">
+                        <label for="coupon">이메일</label>
                         <input type="text" id="coupon" value="3" class="red" disabled>
+                    </div> -->
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="email">이메일</label>
+                        <input type="text" id="email" placeholder="이메일 입력" v-model="revise.mem_email">
                     </div>
                     <div class="input_box fl_left w200 MB50">
-                        <label for="join_date">회원가입일</label>
-                        <input type="text" id="join_date" value="2022/04/22" disabled>
+                        <label for="compnum">사업자번호</label>
+                        <input type="text" id="compnum" v-model="revise.mem_com_no">
+                    </div>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="discount">Fleet 할인율(%)</label>
+                        <input type="text" id="discount" placeholder="%없이 입력" v-model="revise.fleet_dc">
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="remain">Fleet 선불 세차 잔여수</label>
+                        <input type="text" id="remain" placeholder="잔여수 입력" v-model="revise.fleet_prepay">
+                    </div>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="use">Fleet 선불 이용건수</label>
+                        <input type="text" id="use" placeholder="이용건수 입력" v-model="revise.fleet_prepay_use">
+                    </div>
+                    <div class="input_box fl_left w200 MB50">
+                        <label for="join_date">회원가입일(수정불가)</label>
+                        <input type="text" id="join_date" v-model="revise.reg_date" disabled>
                     </div>
                 </div>
                 <div class="btn_group2" style="clear:both;">
                     <button type="button" class="btn_white" onclick="layerClose('.layer_member_modify')">취소</button>
-                    <button type="button" class="btn_blue">저장</button>
+                    <button type="button" class="btn_blue" @click="mem_Update">저장</button>
                 </div>
                 <button type="button" class="btn_close" onclick="layerClose('.layer_member_modify')">닫기</button>
             </div>
@@ -413,6 +425,7 @@
                 paginate_total: 0,
                 current: 1,
                 pageCount : 10, // 페이지 버튼 최대 개수
+                get_memdetail : '',
                 revise : {
                     mem_no : '',
                     mem_id : '',
@@ -421,8 +434,13 @@
                     mem_name : '',
                     mem_tel : '',
                     mem_email : '',
-                    
-                    
+                    com_no : '',
+                    fleet_dc : '',
+                    fleet_prepay : '',
+                    fleet_prepay_use : '',
+                    reg_date : '',
+                    seq_no : '',
+                    index : '',
                 }
             }
         },
@@ -573,69 +591,6 @@
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
-            cancel(no, auth_no, pay_fee, tr_no){
-                var result = confirm("해당 건을 취소하시겠습니까?");
-                if(result){
-                var key =  'easypay!O0OWO2Bb';
-                var today = new Date();
-                var year = today.getFullYear();
-                var month = ('0' + (today.getMonth() + 1)).slice(-2);
-                var day = ('0' + today.getDate()).slice(-2);
-                var id = new Uint32Array(1);
-                var trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString();
-                do{
-                    trans_id = (window.crypto.getRandomValues(id)[0]%1000000).toString()
-                }while(trans_id.length!=6);
-                trans_id = year+month+day+trans_id;
-                const msg = this.$CryptoJS.HmacSHA256(auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
-                if(result){
-                    var req_data = {
-                        "mallId":"05562973", //KICC에서 발급한 상점ID
-                        "shopTransactionId":trans_id, // 상점거래고유번호
-                        "pgCno" : auth_no,
-                        "reviseTypeCode":'40',
-                        "amount" : pay_fee,
-                        "clientIp" : '127.0.0.1',
-                        "clientId" : tr_no,
-                        "msgAuthValue" : msg,
-                        "cancelReqDate" : year+month+day,
-                    };
-                    this.$http.post('https://pgapi.easypay.co.kr/api/trades/revise', req_data,
-                        {headers : {"Content-type" : "application/json", "Charset" : "utf-8"}}
-                    ).then(
-                    (res) => {  
-                        console.log(res.data);
-                        if(res.data.resCd == "0000"){
-                            console.log("취소성공");
-                            this.waiting = false;
-                            console.log('ok');
-                                this.$http.post(this.$server+'/admin/setPayCancel',
-                                {
-                                    seq_no : no
-                                }
-                                ,{headers : {
-                                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                                    }
-                                }).then((res) => {
-                                    var flags_suc = res.data.result_code;
-                                    if(flags_suc == 'Y'){
-                                        alert('정상적으로 취소되었습니다.')
-                                    }
-                                    else if(flags_suc == 'N'){
-                                        alert('취소 실패하였습니다.')
-                                    }
-
-                            })
-                        }
-                        else{
-                            console.log("취소 오류.");
-
-                        }
-                        })
-                    }
-
-                }
-            },
             return_date(date){
                 var today = new Date(date);
                 today.setHours(today.getHours() + 9);
@@ -646,6 +601,65 @@
                 const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
                 Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
                 Xlsx.writeFile(workBook, 'output.xlsx')
+            },
+            setReviseInfo(seq_no,index){
+                this.revise.index = index;
+                this.$http.post(this.$server+'/admin/getMemDetail',
+                {
+                    seq_no : seq_no,
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_memdetail = res.data;
+                    this.revise.mem_no = this.get_memdetail.mem_no;
+                    this.revise.mem_id = this.get_memdetail.mem_id;
+                    this.revise.mem_type = this.get_memdetail.mem_type;
+                    this.revise.mem_status = this.get_memdetail.mem_status;
+                    this.revise.mem_name = this.get_memdetail.mem_name;
+                    this.revise.mem_tel = this.get_memdetail.mem_tel;
+                    this.revise.mem_email = this.get_memdetail.mem_email;
+                    this.revise.com_no = this.get_memdetail.com_no;
+                    this.revise.fleet_dc = this.get_memdetail.fleet_dc;
+                    this.revise.fleet_prepay = this.get_memdetail.fleet_prepay;
+                    this.revise.fleet_prepay_use = this.get_memdetail.fleet_prepay_use;
+                    this.revise.reg_date = this.get_memdetail.reg_date;
+                    this.revise.seq_no = seq_no;
+                });
+                
+            },
+            mem_Update(){
+                this.$http.post(this.$server+'/admin/setUpdateMem',
+                {
+                    mem_type : this.revise.mem_type,
+                    mem_status : this.revise.mem_status,
+                    mem_name : this.revise.mem_name,
+                    mem_tel : this.revise.mem_tel,
+                    mem_email : this.revise.mem_email,
+                    com_no : this.revise.com_no,
+                    fleet_dc : this.revise.fleet_dc,
+                    fleet_prepay : this.revise.fleet_prepay,
+                    fleet_prepay_use : this.revise.fleet_prepay_use,
+                    seq_no : this.revise.seq_no,
+
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data);
+                    if(res.data.result_code == "Y"){
+                        alert("회원정보 수정이 완료되었습니다.");
+                        this.get_payresult[this.revise.index].mem_name = this.revise.mem_name;
+                        this.get_payresult[this.revise.index].mem_status = this.revise.mem_status;
+                        this.get_payresult[this.revise.index].mem_type = this.revise.mem_type;
+                        this.get_payresult[this.revise.index].mem_tel = this.revise.mem_tel;
+                        this.get_payresult[this.revise.index].fleet_dc = this.revise.fleet_dc;
+                        this.get_payresult[this.revise.index].fleet_prepay = this.revise.fleet_prepay;
+                    }
+                });
             }
         }
     }
