@@ -109,9 +109,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(info,index) in result_for" v-show="setPaginate(index)" :key="index">
-                                        <td>{{result_for.length - index}}</td>
-                                        <td>{{info.notice_title}}</td>
+                                    <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
+                                        <td>{{return_result.length - index}}</td>
+                                        <td onclick="layerOpen('.layer_notice_modify')" @click="set_noticeDetail(info.seq_no)">{{info.notice_title}}</td>
                                         <td>{{info.write_admin}}</td>
                                         <td>{{info.write_date}}</td>
                                     </tr>
@@ -167,24 +167,24 @@
                 <div class="contents input MT20">
                     <div class="input_box MB40">
                         <label for="title">제목</label>
-                        <input type="text" id="title" placeholder="제목 입력" value="위시데이에서 알려드립니다.">
+                        <input type="text" id="title" placeholder="제목 입력" v-model = "mod_title">
                     </div>
                     <div class="input_box w200 MR10 fl_left">
                         <label for="name">등록자</label>
-                        <input type="text" id="name" value="관리자명" disabled>
+                        <input type="text" id="name" v-model = "mod_admin_id" disabled>
                     </div>
                     <div class="input_box w200 fl_left MB40">
                         <label for="date">작성일</label>
-                        <input type="text" id="date" value="2022/04/22" disabled>
+                        <input type="text" id="date" v-model = "mod_write_date" disabled>
                     </div>
                     <div class="textarea clear MB40">
                         <label for="content">내용</label>
-                        <textarea name="" id="content" placeholder="내용 입력">위시데이에서 알려드립니다.</textarea>
+                        <textarea name="" id="content" v-model="mod_contents" placeholder="내용 입력"></textarea>
                     </div>
                 </div>
                 <div class="btn_group2">
                     <button type="button" class="btn_white" onclick="layerClose('.layer_notice_modify')">취소</button>
-                    <button type="button" class="btn_blue">수정</button>
+                    <button type="button" class="btn_blue" @click="mod_notice">수정</button>
                 </div>
                 <button type="button" class="btn_close" onclick="layerClose('.layer_notice_modify')">닫기</button>
             </div>
@@ -200,26 +200,22 @@
                 <div class="contents input MT20">
                     <div class="input_box MB40">
                         <label for="title">제목</label>
-                        <input type="text" id="title" placeholder="제목 입력">
+                        <input type="text" id="title" v-model ="title" placeholder="제목 입력">
                     </div>
-                    <div class="input_box w200 MR10 fl_left">
+                    <div class="input_box w200 MB40 fl_left">
                         <label for="name">등록자</label>
-                        <input type="text" id="name" value="로그인한등록자" disabled>
-                    </div>
-                    <div class="input_box w200 fl_left MB40">
-                        <label for="date">작성일</label>
-                        <input type="text" id="date" value="2022/04/22" disabled>
+                        <input type="text" id="name" v-model="writter" disabled>
                     </div>
                     <div class="textarea clear MB40">
                         <label for="content">내용</label>
-                        <textarea name="" id="content" placeholder="내용 입력"></textarea>
+                        <textarea name="" id="content" v-model="contents" placeholder="내용 입력" v-on:keydown.enter.prevent="register_notice"></textarea>
                     </div>
                 </div>
                 <div class="btn_group2">
-                    <button type="button" class="btn_white" onclick="layerClose('.layer_notice_register')">취소</button>
-                    <button type="button" class="btn_blue">등록</button>
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_notice_register')" @click="reset_content">취소</button>
+                    <button type="button" class="btn_blue" @click="register_notice">등록</button>
                 </div>
-                <button type="button" class="btn_close" onclick="layerClose('.layer_notice_register')">닫기</button>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_notice_register')" @click="reset_content">닫기</button>
             </div>
         </form>
     </div>
@@ -255,15 +251,23 @@ export default{
             paginate_total: 0,
             current: 1,
             pageCount : 10,
-            paginate : 25
+            paginate : 25,
+            title : '',
+            writter : sessionStorage.getItem("admin_no") ||'',
+            contents : '',
+            mod_seq_no : '',
+            mod_title : '',
+            mod_admin_id : '',
+            mod_contents : '',
+            mod_write_date : '',
         }
     },
     mounted(){
-        search_notice();
+        this.search_notice();
     },
     methods: {
         search_notice : function(){
-            if(search_for == 2){
+            if(this.search_for == 2){
                 this.$http.post(this.$server+'/admin/getNoticeSum',
                 {
                     contents : this.search_info
@@ -277,6 +281,7 @@ export default{
                 })
                 this.$http.post(this.$server+'/admin/getNoticeList',
                 {
+                    title : '',
                     contents : this.search_info
                 }
                 ,{headers : {
@@ -288,10 +293,11 @@ export default{
                     this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
                     console.log(this.paginate_total)
                 })
-            }else if(search_for == 1){
+            }else if(this.search_for == 1){
                 this.$http.post(this.$server+'/admin/getNoticeSum',
                 {
-                    title : this.search_info
+                    title : this.search_info,
+                    contents : '',
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -335,6 +341,65 @@ export default{
                 return parts.join('.');
             }  
         },
+        reset_content(){
+            this.title = '';
+            this.contents = '';
+        },
+        set_noticeDetail(seq_no){
+            this.mod_seq_no = seq_no;
+            this.$http.post(this.$server+'/admin/getNoticeDetail',
+            {
+                seq_no : seq_no,
+            }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+            }
+            }).then((res) => {
+                console.log(res.data);
+                this.mod_admin_id = res.data.admin_id;
+                this.mod_title = res.data.title;
+                this.mod_cotents = res.data.contents;
+                this.mod_write_date = res.data.write_date;
+            });
+        },
+        register_notice(){
+            if(!this.title){
+                alert("제목을 입력하세요.");
+                return false;
+            }
+            if(!this.contents){
+                alert("내용을 입력하세요.");
+                return false;
+            }
+            var result = confirm("공지를 등록하시겠습니까?");
+            if(result){
+                this.$http.post(this.$server+'/admin/setNoticeInsert',
+                {
+                    admin_id : this.writter,
+                    title : this.title,
+                    contents : this.contents,
+
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data);
+                    if(res.data.result_code == "Y"){
+                        alert("공지가 등록되었습니다.");
+                        location.reload();
+                        $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
+                        $('body').removeClass('layer-opens');
+                        return false;
+                    }
+                });
+            }
+            
+        },
+        mod_notice(){
+
+        }
+
     }
 }
 </script>
