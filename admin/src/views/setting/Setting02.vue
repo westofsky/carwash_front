@@ -87,47 +87,29 @@
                             </div>
                         </form>
                         <div class="contents_area-table product_inquire">
-                            <p class="contents_area-title">근무자 목록 <font class="fs14"><span>(</span>99,999<span>명의 근무자가 등록되어 있습니다.)</span></font></p>
-                            <p class="fl_right"><button type="button" class="btn_add btn_red"  onclick="layerOpen('.layer_worker');">근무자 등록</button></p>
+                            <p class="contents_area-title">근무자 목록 <font class="fs14"><span>(</span>{{return_one(return_sum.account_fee)}}<span>명의 근무자가 등록되어 있습니다.)</span></font></p>
+                            <p class="fl_right"><button type="button" class="btn_add btn_red"  onclick="layerOpen('.layer_worker_res');" @click="get_mem_now">근무자 등록</button></p>
                             <table>
                                 <colgroup>
                                     <col width="4%"/>
                                     <col width=""/>
                                     <col width=""/>
                                     <col width=""/>
-                                    <col width="20%"/>
                                 </colgroup>
                                 <thead>
                                     <tr>
                                         <th class="thht">No</th>
-                                        <th>분류</th>
+                                        <th>아이디</th>
                                         <th>이름</th>
                                         <th>전화번호</th>
-                                        <th>수정/비활성화</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                      <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
-                                        <td>{{result_for.length - index}}</td>
-                                        <td>{{info.admin_id}}</td>
+                                        <td>{{return_result.length - index}}</td>
+                                        <td onclick="layerOpen('.layer_worker_edit');" @click="get_adminde(info.seq_no)"><a href="javascript:void(0)">{{info.admin_id}}</a></td>
                                         <td>{{info.admin_name}}</td>
                                         <td>{{info.admin_tel}}</td>
-                                        <td>
-                                            <button class="btn-small btn_blue" href="javascript:void(0)" onclick="layerOpen('.layer_worker');">수정</button>
-                                            &nbsp;
-                                            <button class="btn-small btn_white" href="javascript:void(0)" onclick="layerOpen('.layer_retire');">퇴직</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>999</td>
-                                        <td>슈퍼바이저</td>
-                                        <td>홍길동</td>
-                                        <td>010-1234-5678</td>
-                                        <td>
-                                            <button class="btn-small btn_blue" href="javascript:void(0)" onclick="layerOpen('.layer_worker');">수정</button>
-                                            &nbsp;
-                                            <button class="btn-small btn_white" href="javascript:void(0)" onclick="layerOpen('.layer_retire');">퇴직</button>
-                                        </td>
                                     </tr>
                                 
                                 </tbody>
@@ -173,48 +155,93 @@
         </div>
     </div>
     <!-- 근무자 수정 또는 등록 -->
-    <div class="layer layer_worker is-hidden" id="layer">
+    <div class="layer layer_worker_res is-hidden" id="layer">
         <form autocomplete="off">
             <div class="inner">
                 <div class="top">
-                    <p class="popup_title">근무자 수정 ( or 등록)</p>
+                    <p class="popup_title">근무자 등록</p>
                 </div>
                 <div class="contents input">
-                    <div class="select_box MT20">
-                        <label for="worker">근무자분류</label>
-                        <select name="worker" id="worker">
-                            <option value="관리자">관리자</option>
-                            <option value="관리자2">관리자2</option>
-                            <option value="관리자3">관리자3</option>
+                    <div class="input_box MT40">
+                        <label for="name">근무자 아이디</label>
+                        <input type="text" id="name" v-model="res_id" placeholder="근무자 아이디 입력">
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="phone">비밀번호</label>
+                        <input type="password" id="phone" v-model="res_pas" placeholder="비밀번호 입력">
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="pin">근무자명</label>
+                        <input type="text" id="pin" v-model="res_name" placeholder="근무자명 입혁">
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="pin_confirm">근무자 상태</label>
+                        <select name="" id="approve" v-model="reg_sel">
+                            <option disabled value="">근무자상태 선택</option>
+                            <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
+                                {{info.code_name}}
+                            </option>
                         </select>
-                        <span class="MT40">*에러메시지</span>
                     </div>
                     <div class="input_box MT40">
-                        <label for="name">이름</label>
-                        <input type="text" id="name" placeholder="이름 입력">
-                        <span class="MT40">*에러메시지</span>
-                    </div>
-                    <div class="input_box MT40">
-                        <label for="phone">연락처</label>
-                        <input type="text" id="phone" placeholder="010-0000-0000">
-                        <span class="MT40">*에러메시지</span>
-                    </div>
-                    <div class="input_box MT40">
-                        <label for="pin">핀번호</label>
-                        <input type="text" id="pin" placeholder="핀번호 4자리입력">
-                        <span class="MT40">*에러메시지</span>
-                    </div>
-                    <div class="input_box MT40">
-                        <label for="pin_confirm">핀번호 확인</label>
-                        <input type="text" id="pin_confirm" placeholder="핀번호 4자리 확인 입력">
-                        <span class="MT40">*에러메시지</span>
+                        <label for="pin">전화번호</label>
+                        <input type="text" id="pin" v-model="res_phone" placeholder="010-0000-0000">
+                        <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                 </div>
                 <div class="btn_group2">
-                    <button type="button" class="btn_white" onclick="layerClose('.layer_worker')">취소</button>
-                    <button type="button" class="btn_blue" onclick="layerClose('.layer_worker')">확인</button>
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_worker_res')">취소</button>
+                    <button type="button" class="btn_blue" @click="reg_admin">확인</button>
                 </div>
-                <button type="button" class="btn_close" onclick="layerClose('.layer_worker')">닫기</button>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_worker_res')">닫기</button>
+            </div>
+        </form>
+    </div>
+    <div class="layer layer_worker_edit is-hidden" id="layer">
+        <form autocomplete="off">
+            <div class="inner">
+                <div class="top">
+                    <p class="popup_title">근무자 수정</p>
+                </div>
+                <div class="contents input">
+                    <div class="input_box MT40">
+                        <label for="name">근무자 아이디</label>
+                        <input type="text" id="name" v-model="res_id" placeholder="근무자 아이디 입력" readonly>
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="phone">비밀번호</label>
+                        <input type="password" id="phone" v-model="res_pas" placeholder="비밀번호 입력">
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="pin">근무자명</label>
+                        <input type="text" id="pin" v-model="res_name" placeholder="근무자명 입혁">
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="pin_confirm">근무자 상태</label>
+                        <select name="" id="approve" v-model="reg_sel">
+                            <option disabled value="">근무자상태 선택</option>
+                            <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
+                                {{info.code_name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="input_box MT40">
+                        <label for="pin">전화번호</label>
+                        <input type="text" id="pin" v-model="res_phone" placeholder="010-0000-0000">
+                        <!-- <span class="MT40">*에러메시지</span> -->
+                    </div>
+                </div>
+                <div class="btn_group2">
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_worker_edit')">취소</button>
+                    <button type="button" class="btn_blue" @click="set_adminadd">확인</button>
+                </div>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_worker_edit')">닫기</button>
             </div>
         </form>
     </div>
@@ -268,7 +295,15 @@ export default{
             paginate_total: 0,
             current: 1,
             pageCount : 10,
-            paginate : 25
+            paginate : 25,
+            get_memnow : '',
+            reg_sel : '',
+            res_phone: '',
+            res_name: '',
+            res_pas: '',
+            res_id: '',
+            result_code : '',
+            admin_detail : ''
         }
     },
     mounted(){
@@ -276,31 +311,30 @@ export default{
     },
     methods: {
         search_notice : function(){
-                this.$http.post(this.$server+'/admin/getAdminSum',
-                {
-                    admin_name : this.search_info
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                    }
-                }).then((res) => {
-                    this.return_sum = res.data
-                    console.log(this.return_sum)
-                })
-                this.$http.post(this.$server+'/admin/getAdminList',
-                {
-                    admin_name : this.search_info
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                    }
-                }).then((res) => {
-                    this.return_result = res.data
-                    console.log(this.return_result)
-                    this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
-                    console.log(this.paginate_total)
-                })
+            this.$http.post(this.$server+'/admin/getAdminSum',
+            {
+                admin_name : this.search_info
             }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+            }).then((res) => {
+                this.return_sum = res.data
+                console.log(this.return_sum)
+            })
+            this.$http.post(this.$server+'/admin/getAdminList',
+            {
+                admin_name : this.search_info
+            }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+            }).then((res) => {
+                this.return_result = res.data
+                console.log(this.return_result)
+                this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
+                console.log(this.paginate_total)
+            })
 
         },
         setPaginate: function (i) {
@@ -322,5 +356,79 @@ export default{
                 return parts.join('.');
             }  
         },
+        get_mem_now : function(){
+            this.$http.post(this.$server+'/admin/getCodeList',
+            {
+                code_type : 'AAS'
+            }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+            }).then((res) => {
+                
+                this.get_memnow = res.data
+
+            })
+        },
+        reg_admin : function(){
+            this.$http.post(this.$server+'/admin/getAdminInsert',
+            {
+                admin_id : this.reg_id,
+                admin_pwd : this.reg_pas,
+                admin_name : this.reg_name, 
+                admin_status : this.reg_sel,
+                admin_tel : this.res_phone,
+            }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+            }).then((res) => {
+                this.result_code = res.data
+                if(this.result_code == 'Y'){
+                    this.$router.push('Setting02')
+                }else if(this.result_code == 'N'){
+                    alert('오류가 발생하였습니다.')
+                }
+            })
+        },
+        get_adminde: function(i){
+            this.get_mem_now()
+            this.$http.post(this.$server+'/admin/getAdminDetail',
+            {
+                seq_no : i
+            }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+            }).then((res) => {
+                this.admin_detail = res.data
+                this.res_id = this.admin_detail.admin_id
+                this.res_pas = ''
+                this.res_name = this.admin_detail.admin_name
+                this.res_select = this.admin_detail.admin_status
+                this.res_phone = this.admin_detail.admin_tel
+            })
+        },
+        set_adminadd: function(i){
+            this.$http.post(this.$server+'/admin/getAdminUpdate',
+            {
+                admin_pwd : this.reg_pas,
+                admin_name : this.reg_name, 
+                admin_status : this.reg_sel,
+                admin_tel : this.res_phone,
+            }
+            ,{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+            }).then((res) => {
+                this.result_code = res.data
+                if(this.result_code == 'Y'){
+                    this.$router.push('Setting02')
+                }else if(this.result_code == 'N'){
+                    alert('오류가 발생하였습니다.')
+                }
+            })
+        }
     }
+}
 </script>

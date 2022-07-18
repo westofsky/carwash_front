@@ -589,31 +589,36 @@
                     alert("이용상태를 선택해주세요.");
                     return false;
                 }
-                this.$http.post(this.$server+'/admin/setMembershipUpdate',
-                {
-                    use_status : this.revise.use_status,
-                    is_brush : this.revise.is_brush,
-                    seq_no : this.revise.seq_no
+                var result = confirm("수정하시겠습니까?");
+                if(result){
 
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                }
-                }).then((res) => {
-                    console.log(res.data);
-                    if(res.data.result_code == "Y"){
-                        alert("멤버쉽정보 수정이 완료되었습니다.");
-                        for(var i =0;i<this.get_wtt.length;i++){
-                            if(this.get_wtt[i].code == this.revise.use_status)
-                                this.revise.s_name = this.get_wtt[i].code_name;
-                        }
-                        this.get_payresult[this.revise.index].use_status = this.revise.s_name;
-                        this.get_payresult[this.revise.index].is_brush = this.revise.is_brush;
-                        $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
-                        $('body').removeClass('layer-opens');
-                        return false;
+            
+                    this.$http.post(this.$server+'/admin/setMembershipUpdate',
+                    {
+                        use_status : this.revise.use_status,
+                        is_brush : this.revise.is_brush,
+                        seq_no : this.revise.seq_no
+
                     }
-                });
+                    ,{headers : {
+                        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                    }).then((res) => {
+                        console.log(res.data);
+                        if(res.data.result_code == "Y"){
+                            alert("멤버쉽정보 수정이 완료되었습니다.");
+                            for(var i =0;i<this.get_wtt.length;i++){
+                                if(this.get_wtt[i].code == this.revise.use_status)
+                                    this.revise.s_name = this.get_wtt[i].code_name;
+                            }
+                            this.get_payresult[this.revise.index].use_status = this.revise.s_name;
+                            this.get_payresult[this.revise.index].is_brush = this.revise.is_brush;
+                            $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
+                            $('body').removeClass('layer-opens');
+                            return false;
+                        }
+                    });
+                }
             }
         }
     }
