@@ -443,8 +443,9 @@
                 console.log(this.sea_date_end);
                 console.log(this.sea_wtt)
                 console.log(this.sea_pat)
-                console.log(this.sea_wut)
+                console.log(this.sea_id)
                 console.log(this.sea_carnum)
+                console.log(this.sea_phonenum)
                 this.$http.post(this.$server+'/admin/getMemSum',
                 {
                     start_date : this.sea_date_start,
