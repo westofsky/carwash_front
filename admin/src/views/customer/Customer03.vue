@@ -109,7 +109,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(info,index) in result_for" v-show="setPaginate(index)" :key="index">
+                                    <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
                                         <td>{{result_for.length - index}}</td>
                                         <td>{{info.notice_title}}</td>
                                         <td>{{info.write_admin}}</td>
@@ -259,11 +259,11 @@ export default{
         }
     },
     mounted(){
-        search_notice();
+        this.search_notice();
     },
     methods: {
         search_notice : function(){
-            if(search_for == 2){
+            if(this.search_for == 2){
                 this.$http.post(this.$server+'/admin/getNoticeSum',
                 {
                     contents : this.search_info
@@ -288,7 +288,7 @@ export default{
                     this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
                     console.log(this.paginate_total)
                 })
-            }else if(search_for == 1){
+            }else if(this.search_for == 1){
                 this.$http.post(this.$server+'/admin/getNoticeSum',
                 {
                     title : this.search_info

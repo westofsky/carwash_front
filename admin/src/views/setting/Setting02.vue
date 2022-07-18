@@ -107,6 +107,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                     <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
+                                        <td>{{result_for.length - index}}</td>
+                                        <td>{{info.admin_id}}</td>
+                                        <td>{{info.admin_name}}</td>
+                                        <td>{{info.admin_tel}}</td>
+                                        <td>
+                                            <button class="btn-small btn_blue" href="javascript:void(0)" onclick="layerOpen('.layer_worker');">수정</button>
+                                            &nbsp;
+                                            <button class="btn-small btn_white" href="javascript:void(0)" onclick="layerOpen('.layer_retire');">퇴직</button>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>999</td>
                                         <td>슈퍼바이저</td>
@@ -127,20 +138,34 @@
                         <!-- seleted : li.is-current -->
                         <!-- disable : li.disable -->
                         <ul>
-                            <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
-                            <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
-                            <li class="num is-current"><a href="javascript:void(0)">1</a></li>
-                            <li class="num"><a href="javascript:void(0)">2</a></li>
-                            <li class="num"><a href="javascript:void(0)">3</a></li>
-                            <li class="num"><a href="javascript:void(0)">4</a></li>
-                            <li class="num"><a href="javascript:void(0)">5</a></li>
-                            <li class="num"><a href="javascript:void(0)">6</a></li>
-                            <li class="num"><a href="javascript:void(0)">7</a></li>
-                            <li class="num"><a href="javascript:void(0)">8</a></li>
-                            <li class="num"><a href="javascript:void(0)">9</a></li>
-                            <li class="num"><a href="javascript:void(0)">10</a></li>
-                            <li class="page next"><a href="javascript:void(0)">next page</a></li>
-                            <li class="page last"><a href="javascript:void(0)">last page</a></li>
+                            <li class="page first" :class="{'disable' : current == 1}">
+                                <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(1)">first page</a>
+                                <a v-else>first page</a>
+                            </li>
+                            <li class="page prev" :class="{'disable' : current == 1}">
+                                <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(current-1)">prev page</a>
+                                <a v-else>prev page</a>
+                            </li>
+
+
+                            <div v-for="page_index in paginate_total_unit" :key="page_index">
+                                <li class="num" @click.prevent="updateCurrent(page_index)" 
+                                :class="{'num is-current': page_index == current}" :key="page_index"> 
+                                    <a href="">{{ page_index }}</a> 
+                                </li>
+                            </div>
+                            
+
+
+
+                            <li class="page next" :class="{'disable' : current == paginate_total}">
+                                <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(current+1)">next page</a>
+                                <a v-else>next page</a>
+                            </li>
+                            <li class="page last" :class="{'disable' : current == paginate_total}">
+                                <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(paginate_total)">last page</a>
+                                <a v-else>last page</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -214,3 +239,88 @@
     </div>
 </div>
 </template>
+<script>
+export default{
+    computed:{
+        maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
+            return this.paginate_total
+        },
+        startPage() { // 페이지 시작 번호
+            return (Math.trunc((this.current - 1) / this.pageCount) * this.pageCount) + 1
+        },
+        endPage() { // 페이지 끝 번호
+            let end = this.startPage + this.pageCount - 1
+            return end < this.maxPage ? end : this.maxPage
+        },
+        paginate_total_unit(){
+            let units = [];
+            for(let num = this.startPage;num <=this.endPage;num++){
+                units.push(num);
+            }
+            return units;
+        }
+    },
+    data(){
+        return{
+            search_info: '',
+            return_sum : '',
+            return_result: '',
+            paginate_total: 0,
+            current: 1,
+            pageCount : 10,
+            paginate : 25
+        }
+    },
+    mounted(){
+        this.search_notice();
+    },
+    methods: {
+        search_notice : function(){
+                this.$http.post(this.$server+'/admin/getAdminSum',
+                {
+                    admin_name : this.search_info
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    this.return_sum = res.data
+                    console.log(this.return_sum)
+                })
+                this.$http.post(this.$server+'/admin/getAdminList',
+                {
+                    admin_name : this.search_info
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    this.return_result = res.data
+                    console.log(this.return_result)
+                    this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
+                    console.log(this.paginate_total)
+                })
+            }
+
+        },
+        setPaginate: function (i) {
+            if (this.current == 1) {
+                return i < this.paginate;
+            }
+            else {
+                return (i >= (this.paginate * (this.current - 1)) && i < (this.current * this.paginate));
+            }
+        },
+        updateCurrent: function (i) {
+            this.current = i;
+
+        },
+        return_one: function(on_num){
+            if(on_num != undefined){
+                const parts = on_num.toString().split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                return parts.join('.');
+            }  
+        },
+    }
+</script>
