@@ -17,7 +17,7 @@
                     </ul>
                 </li>
                 <li class="customer is-sub">
-                    <a href="#">고객관리</a>
+                    <a href="javascript:void(0);">고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
                         <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
@@ -25,14 +25,14 @@
                     </ul>
                 </li>
                 <li class="promotion is-sub">
-                    <a href="#">프로모션</a>
+                    <a href="javascript:void(0);">프로모션</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
                         <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
                     </ul>
                 </li>
                 <li class="product is-sub">
-                    <a href="#">상품관리</a>
+                    <a href="javascript:void(0);">상품관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Product01">상품조회</router-link></li>
                         <!-- <li><router-link to = "/Product02">진열관리(상품)</router-link></li>
@@ -40,7 +40,7 @@
                     </ul>
                 </li>
                 <li class="equipment is-sub">
-                    <a href="#">장비제어</a>
+                    <a href="javascript:void(0);">장비제어</a>
                     <ul class="sub_menu">
                         <!-- <li><router-link to = "/Equ01">장비제어</router-link></li> -->
                         <li><router-link to = "/Equ02">세차순서</router-link></li>
@@ -48,7 +48,7 @@
                     </ul>
                 </li>
                 <li class="basics is-sub is-current">
-                    <a href="#">기초관리</a>
+                    <a href="javascript:void(0);">기초관리</a>
                     <ul class="sub_menu">
                         <!-- <li><router-link to = "/Setting01">계정생성</router-link></li> -->
                         <li class="is-current"><router-link to = "/Setting02">근무자관리</router-link></li>
@@ -74,15 +74,15 @@
                 <div class="contents">
                     <h2 class="title title_setting">근무자관리</h2>
                     <div class="contents_area">
-                        <form autocomplete="off">
+                        <form autocomplete="off" onSubmit="return false;">
                             <div class="contents_area-search">
                             
                                 <div class="search MT20">
                                     <div class="input_box">
                                         <label for="number">근무자명</label>
-                                        <input type="text" id="number" placeholder="근무자명 입력">
+                                        <input type="text" id="number" placeholder="근무자명 입력" v-model="search_info" v-on:keydown.enter.prevent="search_notice" >
                                     </div>
-                                    <button type="button" class="btn_blue btn_search ML10 MR20">조회</button>
+                                    <button type="button" class="btn_blue btn_search ML10 MR20" @click="search_notice">조회</button>
                                 </div>
                             </div>
                         </form>
@@ -164,23 +164,22 @@
                 <div class="contents input">
                     <div class="input_box MT40">
                         <label for="name">근무자 아이디</label>
-                        <input type="text" id="name" v-model="res_id" placeholder="근무자 아이디 입력">
+                        <input type="text" id="name1" v-model="res_id" placeholder="근무자 아이디 입력">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                     <div class="input_box MT40">
                         <label for="phone">비밀번호</label>
-                        <input type="password" id="phone" v-model="res_pas" placeholder="비밀번호 입력">
+                        <input type="password" id="phone1" v-model="res_pas" placeholder="비밀번호 입력">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                     <div class="input_box MT40">
                         <label for="pin">근무자명</label>
-                        <input type="text" id="pin" v-model="res_name" placeholder="근무자명 입혁">
+                        <input type="text" id="pin1" v-model="res_name" placeholder="근무자명 입력">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                     <div class="input_box MT40">
                         <label for="pin_confirm">근무자 상태</label>
-                        <select name="" id="approve" v-model="res_sel">
-                            <option disabled value="">근무자상태 선택</option>
+                        <select name="" id="approve1" v-model="res_sel">
                             <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
                                 {{info.code_name}}
                             </option>
@@ -188,7 +187,7 @@
                     </div>
                     <div class="input_box MT40">
                         <label for="pin">전화번호</label>
-                        <input type="text" id="pin" v-model="res_phone" placeholder="010-0000-0000">
+                        <input type="text" id="pin3" v-model="res_phone" placeholder="010-0000-0000">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                 </div>
@@ -209,23 +208,22 @@
                 <div class="contents input">
                     <div class="input_box MT40">
                         <label for="name">근무자 아이디</label>
-                        <input type="text" id="name" v-model="res_id" placeholder="근무자 아이디 입력" readonly>
+                        <input type="text" id="name2" v-model="res_id" placeholder="근무자 아이디 입력" readonly>
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                     <div class="input_box MT40">
                         <label for="phone">비밀번호</label>
-                        <input type="password" id="phone" v-model="res_pas" placeholder="비밀번호 입력">
+                        <input type="password" id="phone2" v-model="res_pas" placeholder="비밀번호 입력">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                     <div class="input_box MT40">
                         <label for="pin">근무자명</label>
-                        <input type="text" id="pin" v-model="res_name" placeholder="근무자명 입혁">
+                        <input type="text" id="pin2" v-model="res_name" placeholder="근무자명 입력">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                     <div class="input_box MT40">
                         <label for="pin_confirm">근무자 상태</label>
-                        <select name="" id="approve" v-model="res_sel">
-                            <option disabled value="">근무자상태 선택</option>
+                        <select name="" id="approve2" v-model="res_sel">
                             <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
                                 {{info.code_name}}
                             </option>
@@ -233,13 +231,13 @@
                     </div>
                     <div class="input_box MT40">
                         <label for="pin">전화번호</label>
-                        <input type="text" id="pin" v-model="res_phone" placeholder="010-0000-0000">
+                        <input type="text" id="pin4" v-model="res_phone" placeholder="010-0000-0000">
                         <!-- <span class="MT40">*에러메시지</span> -->
                     </div>
                 </div>
                 <div class="btn_group2">
                     <button type="button" class="btn_white" onclick="layerClose('.layer_worker_edit')">취소</button>
-                    <button type="button" class="btn_blue" @click="set_adminadd">확인</button>
+                    <button type="button" class="btn_blue" @click="set_adminadd">저장</button>
                 </div>
                 <button type="button" class="btn_close" onclick="layerClose('.layer_worker_edit')">닫기</button>
             </div>
@@ -267,6 +265,8 @@
 </div>
 </template>
 <script>
+import { TypedChainedSet } from 'webpack-chain'
+
 export default{
     computed:{
         maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
@@ -303,7 +303,8 @@ export default{
             res_pas: '',
             res_id: '',
             result_code : '',
-            admin_detail : ''
+            admin_detail : '',
+            res_seq_no: '',
         }
     },
     mounted(){
@@ -393,7 +394,8 @@ export default{
         },
         get_adminde: function(i){
             this.get_mem_now()
-            this.$http.post(this.$server+'/admin/setAdminDetail',
+            this.res_seq_no = i;
+            this.$http.post(this.$server+'/admin/getAdminDetail',
             {
                 seq_no : i
             }
@@ -403,27 +405,41 @@ export default{
             }).then((res) => {
                 this.admin_detail = res.data
                 this.res_id = this.admin_detail.admin_id
-                this.res_pas = ''
+                this.res_pas = this.admin_detail.admin_pwd
                 this.res_name = this.admin_detail.admin_name
-                this.res_select = this.admin_detail.admin_status
+                this.res_sel = this.admin_detail.admin_status
                 this.res_phone = this.admin_detail.admin_tel
             })
         },
         set_adminadd: function(i){
+            if(this.res_sel == "AAS"){
+                alert("근무자 상태를 선택해주세요.");
+                return false;
+            }
+            if(!this.res_pas){
+                alert("비밀번호를 입력해주세요.");
+                return false;
+            }
+            if(!this.res_phone){
+                alert("전화번호를 입력해주세요");
+                return false;
+            }
             this.$http.post(this.$server+'/admin/setAdminUpdate',
             {
                 admin_pwd : this.res_pas,
                 admin_name : this.res_name, 
                 admin_status : this.res_sel,
                 admin_tel : this.res_phone,
+                seq_no : this.res_seq_no,
             }
             ,{headers : {
                 auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                 }
             }).then((res) => {
-                this.result_code = res.data
-                if(this.result_code == 'Y'){
-                    this.$router.push('Setting02')
+                if(res.data.result_code == 'Y'){{
+                    alert("수정되었습니다.");
+                    location.reload();
+                }
                 }else if(this.result_code == 'N'){
                     alert('오류가 발생하였습니다.')
                 }

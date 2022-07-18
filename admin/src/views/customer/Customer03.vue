@@ -25,14 +25,14 @@
                     </ul>
                 </li>
                 <li class="promotion is-sub">
-                    <a href="#">프로모션</a>
+                    <a href="javascript:void(0);">프로모션</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
                         <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
                     </ul>
                 </li>
                 <li class="product is-sub">
-                    <a href="#">상품관리</a>
+                    <a href="javascript:void(0);">상품관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Product01">상품조회</router-link></li>
                         <!-- <li><router-link to = "/Product02">진열관리(상품)</router-link></li>
@@ -40,7 +40,7 @@
                     </ul>
                 </li>
                 <li class="equipment is-sub">
-                    <a href="#">장비제어</a>
+                    <a href="javascript:void(0);">장비제어</a>
                     <ul class="sub_menu">
                         <!-- <li><router-link to = "/Equ01">장비제어</router-link></li> -->
                         <li><router-link to = "/Equ02">세차순서</router-link></li>
@@ -48,7 +48,7 @@
                     </ul>
                 </li>
                 <li class="basics is-sub">
-                    <a href="#">기초관리</a>
+                    <a href="javascript:void(0);">기초관리</a>
                     <ul class="sub_menu">
                         <!-- <li><router-link to = "/Setting01">계정생성</router-link></li> -->
                         <li><router-link to = "/Setting02">근무자관리</router-link></li>
@@ -111,7 +111,7 @@
                                 <tbody>
                                     <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
                                         <td>{{return_result.length - index}}</td>
-                                        <td onclick="layerOpen('.layer_notice_modify')" @click="set_noticeDetail(info.seq_no)">{{info.notice_title}}</td>
+                                        <td><a style="color:inherit;" onclick="layerOpen('.layer_notice_modify')" @click="set_noticeDetail(info.seq_no)">{{info.notice_title}}</a></td>
                                         <td>{{info.write_admin}}</td>
                                         <td>{{info.write_date}}</td>
                                     </tr>
