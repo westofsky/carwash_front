@@ -181,7 +181,7 @@
                                         <td class="right">{{ return_one(info.dc_fee)}}</td>
                                         <td class="right">{{ return_one(info.pay_fee)}}</td>
                                         <td>{{ info.pay_name}}</td>
-                                        <td><a v-if="info.auth_name == '승인'" @click="cancel(info.seq_no,info.auth_no,info.pay_fee, info.trno)">[승인취소]</a></td>
+                                        <td><a v-if="info.auth_name == '승인'" @click="cancel(index,info.seq_no,info.auth_no,info.pay_fee, info.trno)">[승인취소]</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -228,7 +228,6 @@
 </div>
 </template>
 <script>
-    import * as Xlsx from 'xlsx'
     export default{
         computed:{
             maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
@@ -423,9 +422,8 @@
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
-            cancel(no, auth_no, pay_fee, tr_no){
+            cancel(index,no, auth_no, pay_fee, tr_no){
                 var result = confirm("해당 건을 취소하시겠습니까?");
-                if(result){
                 var key =  'easypay!O0OWO2Bb';
                 var today = new Date();
                 var year = today.getFullYear();
@@ -438,6 +436,7 @@
                 }while(trans_id.length!=6);
                 trans_id = year+month+day+trans_id;
                 const msg = this.$CryptoJS.HmacSHA256(auth_no+"|"+trans_id, key).toString(this.$CryptoJS.enc.Hex);
+
                 if(result){
                     var req_data = {
                         "mallId":"05562973", //KICC에서 발급한 상점ID
@@ -469,7 +468,9 @@
                                 }).then((res) => {
                                     var flags_suc = res.data.result_code;
                                     if(flags_suc == 'Y'){
-                                        alert('정상적으로 취소되었습니다.')
+                                        alert('정상적으로 취소되었습니다.');
+                                        this.get_payresult[index].auth_name ="취소";
+                                        
                                     }
                                     else if(flags_suc == 'N'){
                                         alert('취소 실패하였습니다.')
@@ -478,12 +479,10 @@
                             })
                         }
                         else{
-                            console.log("취소 오류.");
+                            alert("취소 오류.");
 
                         }
-                        })
-                    }
-
+                    })
                 }
             },
             return_date(date){
