@@ -35,25 +35,25 @@
                     <a href="#">상품관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Product01">상품조회</router-link></li>
-                        <li><router-link to = "/Product02">진열관리(상품)</router-link></li>
-                        <li><router-link to = "/Product03">진열관리(옵션)</router-link></li>
+                        <!-- <li><router-link to = "/Product02">진열관리(상품)</router-link></li>
+                        <li><router-link to = "/Product03">진열관리(옵션)</router-link></li> -->
                     </ul>
                 </li>
                 <li class="equipment is-sub">
                     <a href="#">장비제어</a>
                     <ul class="sub_menu">
-                        <li><router-link to = "/Equ01">장비제어</router-link></li>
+                        <!-- <li><router-link to = "/Equ01">장비제어</router-link></li> -->
                         <li><router-link to = "/Equ02">세차순서</router-link></li>
-                        <li><router-link to = "/Equ03">이용현황</router-link></li>
+                        <!-- <li><router-link to = "/Equ03">이용현황</router-link></li> -->
                     </ul>
                 </li>
                 <li class="basics is-sub">
                     <a href="#">기초관리</a>
                     <ul class="sub_menu">
-                        <li><router-link to = "/Setting01">계정생성</router-link></li>
+                        <!-- <li><router-link to = "/Setting01">계정생성</router-link></li> -->
                         <li><router-link to = "/Setting02">근무자관리</router-link></li>
-                        <li><router-link to = "/Setting03">장비/단말기 관리</router-link></li>
-                        <li><router-link to = "/Setting04">기초코드관리</router-link></li>
+                        <!-- <li><router-link to = "/Setting03">장비/단말기 관리</router-link></li>
+                        <li><router-link to = "/Setting04">기초코드관리</router-link></li> -->
                     </ul>
                 </li>
             </ul>
@@ -275,6 +275,10 @@
         },
         methods : {
             async get_search(){
+                if(this.sea_date_start > this.sea_date_end){
+                    alert("날짜 선택이 잘못되었습니다.");
+                    return false;
+                }
                 this.current = 1
                 this.get_payresult = '';
                 console.log(this.sea_date_start);
