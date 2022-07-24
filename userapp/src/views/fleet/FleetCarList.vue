@@ -147,10 +147,10 @@ export default {
       }).then((res) => {
         console.log(res.data)
         if(res.data.result_code == 'Y'){
-          alert("성공");
+          alert("삭제 되었습니다");
           this.$router.go();
         }else if (res.data.result_code == 'N'){
-          alert("실패");
+          alert("삭제 실패 하였습니다");
           this.$router.go();
         }
       })
@@ -168,12 +168,12 @@ export default {
         }).then((res) => {
           console.log(res.data)
           if(res.data.result_code == 'Y'){
-            alert('성공입니다');
+            alert('등록 되었습니다');
             this.$router.go();
           }else if(res.data.result_code == 'N'){
-            alert('실패입니다');
+            alert('등록 실패 하였습니다');
             this.$router.go();
-          }else if (res.data.result_code == 'Duple'){
+          }else if (res.data.result_code == 'duple'){
             alert('중복 차량이 있습니다.');
             this.$router.go();
           }
