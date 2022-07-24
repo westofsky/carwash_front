@@ -176,6 +176,7 @@
                       }
                       }).then(
                       (res) => {  //FLEET 회원 정보
+                        console.log(res.data);
                         if(this.auto_login){
                           localStorage.setItem("auto_mem_no",res.data.mem_no);
                           localStorage.setItem("auto_mem_type",res.data.mem_type);
@@ -187,7 +188,7 @@
                         sessionStorage.setItem("mem_type",res.data.mem_type);
                         sessionStorage.setItem("mem_name",res.data.mem_name);
                         sessionStorage.setItem("mem_id",res.data.mem_id);
-                        // this.$router.push({name : 'HomeBasic'});
+                        this.$router.push({name : 'HomeBasic'});
                       })
                 }
                 else{

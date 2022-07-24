@@ -23,7 +23,7 @@
             <!-- <a href="login_find_pw.html">비밀번호 재설정</a> -->
             <router-link to="/loginFindPw">비밀번호 재설정</router-link>
           </div>
-          SPARKPLUS 고객센터로 문의하시기 바랍니다.
+          <!-- SPARKPLUS 고객센터로 문의하시기 바랍니다.
           <div class="PdT30">
               <ul style="list-style-type: circle;">
                 <li>영업시간 : AM 06:00~PM 10:00 까지</li>
@@ -31,8 +31,8 @@
                 <li>소재지 : 대구광역시 서구 와룡로 335 스파크플러스</li>
                 <li>전화번호 : <a href="tel:053-573-8008">053)573-8008</a></li>
               </ul>
-          </div>
-          <!-- <div class="coupon_list_wrap">
+          </div> -->
+          <div class="coupon_list_wrap">
             <p class="title">가입 시 등록한 휴대폰번호를 입력하세요.</p>
             <p class="PdT30">
               <input type="radio" id="01" value="01" name="memtype" v-model="id_type" checked><label for="01">개인회원</label>
@@ -43,7 +43,7 @@
                   id="fleetPW" placeholder="예) 01012345678" class="TxtaR"></div>
               <input type="submit" @click="send_form" value="아이디 찾기">
             </div>
-          </div> -->
+          </div>
         </section>
       </article>
     </div>
@@ -64,12 +64,12 @@ export default {
     }
   },
   mounted(){
+      console.log(this.mobile_num)
+      console.log(this.id_type)
 
   },
   methods :{
     async send_form(){
-      console.log(this.mobile_num)
-      console.log(this.id_type)
       if(this.mobile_num != '' && this.id_type != ''){
         console.log('ok')
         this.$http.post(this.$server+'/userapp/chkLostId', {
@@ -79,8 +79,25 @@ export default {
             auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
           }
         }).then((res) => {
-          console.log('ok2')
-          console.log(res)
+          console.log(res.data);
+          if(res.data.result_code == "Y"){
+            this.$http.post('https://app.sparkpluswash.com:9000/biztalk/sendID', {
+              mem_id : res.data.mem_id,
+              phone_no : this.mobile_num,
+            },{headers : {
+                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+              }
+            }).then((res) => {
+              console.log(res.data);
+              if(res.data.result_code =="Y"){
+                alert("알림톡이 전송되었습니다.");
+              }
+            })
+          }
+          else{
+            alert("입력한 번호로 가입된 아이디가 없습니다.");
+          }
+          
         })
       }
       else{

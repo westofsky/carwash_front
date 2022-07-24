@@ -63,6 +63,12 @@ export default {
         waiting : false,
     }
   },
+  beforeCreate(){
+    if(!JSON.parse(localStorage.getItem("first_menu"))){
+      alert("잘못된 접근입니다.");
+        this.$router.push({name : 'PayVue'});
+    }
+  },
   mounted () {
     if(this.$route.query.type == "naver"){
         this.naver_approve();

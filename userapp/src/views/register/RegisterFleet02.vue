@@ -375,7 +375,22 @@ export default {
 				}).then(
 				(res) => {  //fleet회원가입
 					if (res.data.result_code == "Y"){
-						alert("회원가입 성공");
+						var today = new Date();
+						var year = today.getFullYear();
+						var month = ('0' + (today.getMonth() + 1)).slice(-2);
+						var day = ('0' + today.getDate()).slice(-2);
+						this.$http.post('https://app.sparkpluswash.com:9000/biztalk/joinFMember', {
+							fleet_id : this.fleet_id,
+							phone_no : this.fleet_phone,
+							apply_date : yaer+'-'+month+'-'+day,
+						},{
+						headers : {
+							auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+						}
+						}).then(
+						(res) => { 
+						}
+						);
 						this.$router.push({name : 'RegisterFleet03',params : {
 							fleet_id : this.fleet_id,
 							fleet_usage : this.fleet_usage,

@@ -103,6 +103,21 @@ export default {
                 }).then(
                 (res) => {
                   if(res.data.result_code == "Y"){
+                    var today = new Date();
+                    var year = today.getFullYear();
+                    var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                    var day = ('0' + today.getDate()).slice(-2);
+                    this.$http.post('https://app.sparkpluswash.com:9000/biztalk/joinPMember', {
+                      car_no : this.$route.query.car_no,
+                      phone_no : this.phone_no,
+                      reg_date : year+'-'+month+'-'+day
+                    },{headers : {
+                      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                      }
+                      }).then(
+                      (res) => {
+                        console.log(res);
+                      });
                     this.$router.push({name : 'RegisterBasic04',params : {
                       car_no : this.$route.query.car_no,
                       mem_no : res.data.mem_no,

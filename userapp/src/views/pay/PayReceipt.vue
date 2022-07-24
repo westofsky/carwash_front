@@ -60,6 +60,7 @@
 </template>s
 
 <script>
+import router from "@/router";
 import FooterVue from "../footer/FooterVue.vue";
 
 export default {
@@ -93,6 +94,10 @@ export default {
     }
   },
   beforeCreate(){
+    if(!JSON.parse(localStorage.getItem("first_menu"))){
+      alert("잘못된 접근입니다.");
+        this.$router.push({name : 'HomeBasic'});
+    }
   },
   mounted (){
     
@@ -197,6 +202,25 @@ export default {
                             this.get_coupon(type,plc); //사은품
                             console.log("멤버쉽 가입시 plc    --->" + plc);
                         }
+                        // this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getMembershipWash', {
+                        //   car_no : sessionStorage.getItem("mem_id"),
+                        //   get_date : year+'-'+month+'-'+day,
+                        //   pay_product : this.first_menu,
+                        //   option_product : '',
+                        //   start_date : year+'-'+month+'-'+day,
+                        //   end_date : year+'-'+(month+1)+'-'+day,
+                        //   total_pay : this.tot_fee,
+                        //   approval_no : localStorage.getItem("auth_no"),
+                        //   // phone_no : '',
+                        // },{headers : {
+                        //     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        //   }
+                        // }).then((res) => {
+                        //   console.log(res.data);
+                        //   if(res.data.result_code =="Y"){
+                        //     alert("알림톡이 전송되었습니다.");
+                        //   }
+                        // })
                       }
                       else{ //일반구매       
                         if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
@@ -283,7 +307,7 @@ export default {
         localStorage.removeItem("use_coupon");
         localStorage.removeItem("tot_fee");
         localStorage.removeItem("what_pay");
-        this.$router.push({name : 'PayVue'});
+        this.$router.push({name : 'HomeBasic'});
     },
     return_one(on_num){
         if(on_num != undefined){

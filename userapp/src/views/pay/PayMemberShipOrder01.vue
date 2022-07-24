@@ -69,6 +69,12 @@ export default {
       waiting : false,
     }
   },
+  beforeCreate(){
+    if(!JSON.parse(localStorage.getItem("first_menu"))){
+      alert("잘못된 접근입니다.");
+        this.$router.push({name : 'PayVue'});
+    }
+  },
   mounted(){
     if(!JSON.parse(localStorage.getItem("third_menu")))
       this.third_menu = "Y"

@@ -52,9 +52,9 @@
         <!-- <a href="#">확 인</a> -->
         <router-link to="/orderList02">확 인</router-link>
       </div>
-      <div class="btn_next" style="bottom: 102px;">
+      <!-- <div class="btn_next" style="bottom: 102px;">
         <a @click="cancel">취 소</a>
-      </div>
+      </div> -->
     </aside>
     <FooterVue></FooterVue>
   </div>
