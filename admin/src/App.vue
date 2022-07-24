@@ -13,7 +13,6 @@ export default {
         },
         script: [
 			{ type:'text/javascript', src:'/js/common.js', async : true, body:true},
-
         ]
     },
 };

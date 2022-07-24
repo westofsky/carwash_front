@@ -76,10 +76,11 @@
                     <div class="contents_area MT40">
                         <div class="contents_area-table product_inquire">
                             <p class="contents_area-title">세차 진입 차량 순서 제어</p>
-                            <div class="carwash_equ">세차기</div>
+                            <div class="carwash_equ">세차기
+                                
+                            </div>
                             <div class="contents_area-queue">
                                 <div v-for="(info,index) in get_washCar" :key="index">
-                                    <!-- <div><img src="../../assets/images/carcam.png"  class="carcam" alt="carcam"></div> -->
                                     <div>
                                         <p>{{info.car_no}}</p>
                                         <ul class="process">
@@ -87,9 +88,12 @@
                                             <li>옵션 : {{info.option_name}}</li>
                                             <li>건조브러쉬 : {{info.is_brush}}</li>
                                         </ul>
-                                        <button class="btn_red" @click="set_washCtrl(info.use_seq,info.wash_seq)">회차처리</button>
+                                        <button class="btn_red" @click="set_washCtrl(info.use_seq,info.wash_seq,info.car_no)">회차처리</button>
                                     </div>
                                 </div>
+                                <button class="btn_up btn_up1" @click="ctl_gate('01')">1호차단기 UP</button>
+                                <button class="btn_up btn_up2" @click="ctl_gate('02')">2호차단기 UP</button>
+                                
                             </div>
                         </div>
                     </div>
@@ -108,11 +112,20 @@
             }
         },
         mounted(){
-
+            clearInterval(this.loading);
+            this.loading = setInterval(this.get_washCtrl,1000);
         },
+        beforeRouteLeave(to,from,next){
+            var result = confirm('이 사이트에서 나가시겠습니까?');
+            if(result){
+                clearInterval(this.loading);
+                next();
+            }
+        }, 
         methods :{
             get_washCtrl(){
-                this.$http.post(this.$server+'/admin/getWashCtrl',
+                console.log("보냄");
+                this.$http.post(this.$server+'/admin/getWashCtl',
                 {
                     
                 }
@@ -121,13 +134,15 @@
                 }
                 }).then((res) => {
                     this.get_washCar = res.data;
+                    console.log(res.data);
                 });
             },
-            set_washCtrl(use_seq,wash_seq){
-                this.$http.post(this.$server+'/admin/setWashCtrl',
+            set_washCtrl(use_seq,wash_seq,car_no){
+                this.$http.post(this.$server+'/admin/setWashCtl',
                 {
                     use_seq : use_seq,
                     wash_seq : wash_seq,
+                    car_no : car_no,
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -135,9 +150,30 @@
                 }).then((res) => {
                     if(res.data.result_code == "Y"){
                         alert("회차처리 성공");
+                        clearInterval(this.loading);
+                        this.$router.go();
+
+                    }
+                    else{
+                        alert("회차처리 실패");
                     }
                 });
-            }
+            },
+            ctl_gate(gate_no){
+                this.$http.post(this.$server+'/admin/ctlGate',
+                {
+                    gate_no : gate_no
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    if(res.data.result_code == "Y"){
+                        alert(gate_no+"호차단기UP 성공");
+                    }
+                });
+            },
+            
         }
     }
 </script>
