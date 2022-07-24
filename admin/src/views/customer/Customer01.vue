@@ -25,14 +25,14 @@
                     </ul>
                 </li>
                 <li class="promotion is-sub">
-                    <a href="#">프로모션</a>
+                    <a href="javascript:void(0);">프로모션</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
                         <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
                     </ul>
                 </li>
                 <li class="product is-sub">
-                    <a href="#">상품관리</a>
+                    <a href="javascript:void(0);">상품관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Product01">상품조회</router-link></li>
                         <!-- <li><router-link to = "/Product02">진열관리(상품)</router-link></li>
@@ -40,7 +40,7 @@
                     </ul>
                 </li>
                 <li class="equipment is-sub">
-                    <a href="#">장비제어</a>
+                    <a href="javascript:void(0);">장비제어</a>
                     <ul class="sub_menu">
                         <!-- <li><router-link to = "/Equ01">장비제어</router-link></li> -->
                         <li><router-link to = "/Equ02">세차순서</router-link></li>
@@ -48,7 +48,7 @@
                     </ul>
                 </li>
                 <li class="basics is-sub">
-                    <a href="#">기초관리</a>
+                    <a href="javascript:void(0);">기초관리</a>
                     <ul class="sub_menu">
                         <!-- <li><router-link to = "/Setting01">계정생성</router-link></li> -->
                         <li><router-link to = "/Setting02">근무자관리</router-link></li>
@@ -168,7 +168,7 @@
                                 <tbody>
                                     <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
                                         <td class="right">{{ get_payresult.length - index }}</td>
-                                        <td class="left"><a onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.mem_no }}</a></td>
+                                        <td class="left"><a href="javascript:void(0);" onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.mem_no }}</a></td>
                                         <td class="left">{{ info.mem_id }}</td>
                                         <td class="left">{{ info.mem_name }}</td>
                                         <td>{{ info.mem_status }}</td>
