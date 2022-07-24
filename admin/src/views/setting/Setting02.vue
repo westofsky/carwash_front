@@ -393,7 +393,7 @@ export default{
         },
         get_adminde: function(i){
             this.get_mem_now()
-            this.$http.post(this.$server+'/admin/setAdminDetail',
+            this.$http.post(this.$server+'/admin/getAdminDetail',
             {
                 seq_no : i
             }
