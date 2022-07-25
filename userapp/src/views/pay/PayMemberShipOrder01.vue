@@ -144,7 +144,8 @@ export default {
                   }
                 },
                 "orderInfo":{
-                  "goodsName" : this.first_menu // 상품명
+                  "goodsName" : this.first_menu, // 상품명
+                  "customerName" : sessionStorage.getItem("mem_id"),
                 }
               };
               this.$http.post('https://pgapi.easypay.co.kr/api/trades/approval/batch', req_data,

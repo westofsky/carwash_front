@@ -24,16 +24,16 @@
             </li>
             <li>
               <label for="fleetID" class="title">아이디<span class="required">*</span></label>
-              <span class="guide">영문, 숫자, 특수문자 혼용하여 10~12자리 이내</span>
+              <span class="guide">영문, 숫자, 특수문자 혼용하여 6~12자리 이내</span>
               <div>
-                <input type="text" id="fleetID" class="fleet_ID" placeholder="abcd1234@" v-model = "fleet_id" @input="warn_check_id" :disabled = "check.id">
+                <input type="text"  id="fleetID" class="fleet_ID" placeholder="abcd1234@" v-model = "fleet_id" @input="warn_check_id" :disabled = "check.id">
                 <button class="check" @click = "chk_id_duplicate">중복등록 확인</button>
               </div>
 						  <p class="warn">{{warning.id}}</p>
             </li>
             <li>
               <label for="fleetPW" class="title">비밀번호<span class="required">*</span></label>
-              <span class="guide">영문, 숫자, 특수문자 혼용하여 10~12자리 이내</span>
+              <span class="guide">영문, 숫자, 특수문자 혼용하여 8~12자리 이내</span>
               <input type="password" class="fleet_PW" id="fleetPW" placeholder="********" v-model = "fleet_pw" @input="warn_check_pw">
 					    <p class="warn">{{warning.pw}}</p>
             </li>
@@ -42,12 +42,19 @@
               <input type="password" class="fleet_PW" id="fleetPW2" placeholder="********" v-model = "fleet_pw_chk" @input="warn_check_pw_chk">
   						<p class="warn">{{warning.pw_chk}}</p>
             </li>
-            <li>
+            <!-- <li>
+				<p class="title">이용구분<span class="required">*</span></p>
+				<div v-for="(usage,index) in get_usage" :key="index">
+					<input type="radio" name="fleet_types" class="fleet_usage" :value="usage.fleet_type " v-model="fleet_usage">
+			  		<label for="fleetUsagePrepay">{{usage.fleet_type_name}}</label>
+				</div>
+			</li> -->
+			<li>
               <p class="title">이용구분<span class="required">*</span></p>
               <input type="radio" name="fleetUsage" id="fleetUsagePrepay" class="fleet_usage" value="MMT002" v-model="fleet_usage"><label for="fleetUsagePrepay">선불 전용</label>
               <input type="radio" name="fleetUsage" id="fleetUsageDiscount" class="fleet_usage" value="MMT003" v-model="fleet_usage"><label for="fleetUsageDiscount">할인 전용</label>
-					  </li>
-            <li>
+			</li>
+			<li>
               <label for="fleetPhone" class="title">담당자 연락처<span class="required">*</span></label>
               <div>
                 <input type="number" class="fleet_phone inputA" id="fleetPhone" placeholder="01012345678" v-model = "fleet_phone">
@@ -69,7 +76,7 @@
               <label for="fleetEmail" class="title">담당자 이메일</label>
               <div class="email_wrap">
                 <input type="text" class="fleet_email" id="fleetEmail" placeholder="abcd1234" v-model = "fleet_email" @input="warn_check_email">
-                <p>@</p>
+                <p style="color:black;">@</p>
                 <select name="" id="" v-model = "fleet_email_domain">
                   <option value="naver.com">naver.com</option>
                   <option value="gmail.com">gmail.com</option>
@@ -111,10 +118,6 @@
 </template>
 
 <script>
-import { TypedChainedSet } from 'webpack-chain';
-
-
-
 export default {
 		data (){
 			return {
@@ -123,6 +126,7 @@ export default {
 				fleet_pw : '',
 				fleet_pw_chk : '',
 				fleet_usage : '',
+				get_usage : '',
 				fleet_phone : '',
 				fleet_phone_chk : '',
 				fleet_email : '',
@@ -151,14 +155,16 @@ export default {
 
 			}
 		},
-		created(){
+		beforeCreate(){
 			this.$http.post(this.$server+'/userapp/getfleettype', {
 			},{headers : {
 			auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
 			}
 			}).then(
 			(res) => { 
-				// console.log(res.data);
+				console.log(res.data);
+				this.get_usage = res.data;
+				// console.log(this.get_usage[0].fleet_type_name);
 			},
 			(err) => { // error 를 보여줌
 				console.log(err);
@@ -190,7 +196,7 @@ export default {
 		methods:{
 			chk_id_duplicate(){
 				if(this.warning.id == "" && this.fleet_id != ''){
-					this.$http.post(this.$server+'/upserapp/chkfleetid', {
+					this.$http.post(this.$server+'/userapp/chkfleetid', {
 						fleet_id : this.fleet_id
 					},{headers : {
 					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -219,23 +225,33 @@ export default {
 			},
 			warn_check_id(){
 				if(!this.fleet_id){
-					this.warning.id = "이름을 입력해주세요.";
+					this.warning.id = "아이디를 입력해주세요.";
 				}
 				else{
-					if(!(this.fleet_id.length>=10 && this.fleet_id.length<=12)){
-						this.warning.id = "10~12자리 이내로 작성해주세요.";
+					if(!(this.fleet_id.length>=6 && this.fleet_id.length<=12)){
+						this.warning.id = "6~12자리 이내로 작성해주세요.";
 					}
 					else{
 						this.warning.id = "";
 					}
 				}
+				const notPhoneticSymbolExp = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+				if(notPhoneticSymbolExp.test(this.fleet_id)){
+					this.fleet_id= this.fleet_id.slice(0,-1);
+					let condition = notPhoneticSymbolExp.test(this.fleet_id);
+					while ( condition){
+						this.fleet_id = this.fleet_id.slice(0,-1);
+						condition = notPhoneticSymbolExp.test(this.fleet_id);
+					}
+				}
+				
 			},
 			warn_check_pw(){
 				if(!this.fleet_pw)
 					this.warning.pw = "비밀번호를 입력해주세요.";
 				else{
-					if(!(this.fleet_pw.length>=10 && this.fleet_pw.length<=12)){
-						this.warning.pw = "10~12자리 이내로 작성해주세요.";
+					if(!(this.fleet_pw.length>=8 && this.fleet_pw.length<=12)){
+						this.warning.pw = "8~12자리 이내로 작성해주세요.";
 					}
 					else{
 						this.warning.pw = "";
@@ -382,7 +398,7 @@ export default {
 						this.$http.post('https://app.sparkpluswash.com:9000/biztalk/joinFMember', {
 							fleet_id : this.fleet_id,
 							phone_no : this.fleet_phone,
-							apply_date : yaer+'-'+month+'-'+day,
+							apply_date : year +'-'+month+'-'+day,
 						},{
 						headers : {
 							auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
