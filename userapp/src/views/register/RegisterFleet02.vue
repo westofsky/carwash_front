@@ -57,15 +57,15 @@
 			<li>
               <label for="fleetPhone" class="title">담당자 연락처<span class="required">*</span></label>
               <div>
-                <input type="number" class="fleet_phone inputA" id="fleetPhone" placeholder="01012345678" v-model = "fleet_phone">
+                <input type="number" class="fleet_phone inputA" id="fleetPhone" placeholder="01012345678" v-model = "fleet_phone" @input="change_phone">
                 <button class="check2" @click = "certification_phone">인증번호 요청</button>
               </div>
-              <p class="warn">인증번호 요청을 눌러, 인증을 완료해주세요.</p>
+              <p class="warn">{{warning.phone_chk}}</p>
             </li>
             <li>
               <div>
                 <input type="number" class="fleet_phone_check" placeholder="01012345678" v-model = "fleet_phone_chk">
-                <button class="check">인증번호 확인</button>
+                <button class="check" @click="certification_phone_chk">인증번호 확인</button>
               </div>
               <div class="time">
                 <p class="check_time">36:20:01</p>
@@ -434,6 +434,15 @@ export default {
 					console.log(err);
 				})
 			},
+			change_phone(){
+				var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+				if (regPhone.test(this.phone_no) === true) {
+					this.warn_phone = '';
+					this.phone_no_chk = true;
+				}
+				else
+					this.warn_phone = "핸드폰 형식이 올바르지 않습니다.";
+			}
 		}
 	}
 </script>
