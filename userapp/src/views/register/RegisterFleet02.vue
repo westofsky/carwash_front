@@ -287,6 +287,18 @@ export default {
 				}
 			},
 			certification_phone(){
+				this.$http.post('https://app.sparkpluswash.com:9000/biztalk/joinFMember', {
+							phone_no : this.fleet_phone,
+							certification_no : ,
+						},{
+						headers : {
+							auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+						}
+						}).then(
+						(res) => { 
+						}
+						);
+
 			},
 			certification_phone_chk(){
 				
