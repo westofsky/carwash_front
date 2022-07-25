@@ -88,7 +88,7 @@
                         </form>
                         <div class="contents_area-table product_inquire">
                             <p class="contents_area-title">근무자 목록 <font class="fs14"><span>(</span>{{return_one(return_sum.account_fee)}}<span>명의 근무자가 등록되어 있습니다.)</span></font></p>
-                            <p class="fl_right"><button type="button" class="btn_add btn_red"  onclick="layerOpen('.layer_worker_res');" @click="get_mem_now">근무자 등록</button></p>
+                            <p class="fl_right"><button type="button" class="btn_add btn_red"  onclick="layerOpen('.layer_worker_res');" @click="get_adminreg">근무자 등록</button></p>
                             <table>
                                 <colgroup>
                                     <col width="4%"/>
@@ -180,6 +180,7 @@
                     <div class="input_box MT40">
                         <label for="pin_confirm">근무자 상태</label>
                         <select name="" id="approve1" v-model="res_sel">
+                            <option disabled value="">근무자 상태 선택</option>
                             <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
                                 {{info.code_name}}
                             </option>
@@ -224,6 +225,7 @@
                     <div class="input_box MT40">
                         <label for="pin_confirm">근무자 상태</label>
                         <select name="" id="approve2" v-model="res_sel">
+                            <option disabled value="">근무자 상태 선택</option>
                             <option v-for="(info, index) in get_memnow" :key="`o-${index}`" :value="info.code">
                                 {{info.code_name}}
                             </option>
@@ -358,7 +360,7 @@ export default{
             }  
         },
         get_mem_now : function(){
-            this.$http.post(this.$server+'/admin/getCodeList',
+            this.$http.post(this.$server+'/admin/getCodeSubList',
             {
                 code_type : 'AAS'
             }
@@ -392,6 +394,17 @@ export default{
                 }
             })
         },
+        get_adminreg: function(){
+            this.get_mem_now()
+            this.admin_detail = ''
+            this.res_id = ''
+            this.res_pas = ''
+            this.res_name = ''
+            this.res_sel = ''
+            this.res_phone = ''
+
+        }
+        ,
         get_adminde: function(i){
             this.get_mem_now()
             this.res_seq_no = i;

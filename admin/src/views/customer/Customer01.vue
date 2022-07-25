@@ -93,6 +93,7 @@
                                         <label for="">회원구분</label>
                                         <select v-model="sea_wtt">
                                             <option disabled value="">회원구분 선택</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
                                             </option>
@@ -102,6 +103,7 @@
                                         <label for="approve">회원상태</label>
                                         <select name="" id="approve" v-model="sea_pat">
                                             <option disabled value="">회원상태 선택</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
                                                 {{info.code_name}}
                                             </option>
@@ -267,6 +269,7 @@
                     <div class="select_box fl_left w200 MR10">
                         <label for="">회원구분</label>
                         <select v-model="revise.mem_type">
+                            <option value="">전체</option>
                             <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
                                 {{info.code_name}}
                             </option>
@@ -275,6 +278,7 @@
                     <div class="select_box fl_left w200 MB40">
                         <label for="">회원상태</label>
                         <select v-model="revise.mem_status">
+                            <option value="">전체</option>
                             <option v-for="(info, index) in get_pat" :value="info.code" :selected="index == 1" :key="index">
                                 {{info.code_name}}
                             </option>
@@ -509,7 +513,7 @@ import * as Xlsx from 'xlsx'
                 }  
             },
             get_select(){
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'MMT'
                 }
@@ -523,7 +527,7 @@ import * as Xlsx from 'xlsx'
 
 
                 })
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'MMS'
                 }

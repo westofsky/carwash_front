@@ -93,6 +93,7 @@
                                         <label for="">이용상태</label>
                                         <select v-model="sea_wtt">
                                             <option disabled value="">이용상태 선택</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
                                             </option>
@@ -102,6 +103,7 @@
                                         <label for="approve">결제등록구분</label>
                                         <select name="" id="approve" v-model="sea_pat">
                                             <option disabled value="">결제등록구분</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
                                                 {{info.code_name}}
                                             </option>
@@ -264,6 +266,7 @@
                     <div class="select_box fl_left w200 MB40">
                         <label for="">이용상태</label>
                         <select v-model="revise.use_status">
+                            <option value="">전체</option>
                             <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
                                 {{info.code_name}}
                             </option>
@@ -470,7 +473,7 @@
                 }  
             },
             get_select(){
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'MUS'
                 }
@@ -484,7 +487,7 @@
 
 
                 })
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'MRT'
                 }

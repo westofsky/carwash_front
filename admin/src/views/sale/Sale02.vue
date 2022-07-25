@@ -93,6 +93,7 @@
                                                 <label for="purchase">구매 구분</label>
                                                 <select name="" id="purchase" v-model="sea_wut">
                                                     <option disabled value="">구매구분 선택</option>
+                                                    <option value="">전체</option>
                                                     <option v-for="(info, index) in get_wut" :key="`o-${index}`" :value="info.code">
                                                         {{info.code_name}}
                                                     </option>
@@ -293,7 +294,7 @@
                 }  
             },
             get_select(){
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'WUT'
                 }

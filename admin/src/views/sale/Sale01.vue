@@ -93,6 +93,7 @@
                                         <label for="">단말기</label>
                                         <select v-model="sea_wtt">
                                             <option disabled value="">단말기 선택</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
                                             </option>
@@ -102,6 +103,7 @@
                                         <label for="approve">승인구분</label>
                                         <select name="" id="approve" v-model="sea_pat">
                                             <option disabled value="">승인구분 선택</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
                                                 {{info.code_name}}
                                             </option>
@@ -111,6 +113,7 @@
                                         <label for="purchase">구매구분</label>
                                         <select name="" id="purchase" v-model="sea_wut">
                                             <option disabled value="">구매구분 선택</option>
+                                            <option value="">전체</option>
                                             <option v-for="(info, index) in get_wut" :key="`o-${index}`" :value="info.code">
                                                 {{info.code_name}}
                                             </option>
@@ -331,7 +334,7 @@
                 }  
             },
             get_select(){
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'WTT'
                 }
@@ -345,7 +348,7 @@
 
 
                 })
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'PAT'
                 }
@@ -356,7 +359,7 @@
                     
                     this.get_pat = res.data
                 })
-                this.$http.post(this.$server+'/admin/getCodeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
                     code_type : 'WUT'
                 }
