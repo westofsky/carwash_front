@@ -173,7 +173,7 @@ export default {
           }else if(res.data.result_code == 'N'){
             alert('등록 실패 하였습니다');
             this.$router.go();
-          }else if (res.data.result_code == 'duple'){
+          }else if (res.data.result_code == 'Duple'){
             alert('중복 차량이 있습니다.');
             this.$router.go();
           }

@@ -190,7 +190,7 @@ export default {
 		methods:{
 			chk_id_duplicate(){
 				if(this.warning.id == "" && this.fleet_id != ''){
-					this.$http.post(this.$server+'/upserapp/chkfleetid', {
+					this.$http.post(this.$server+'/userapp/chkfleetid', {
 						fleet_id : this.fleet_id
 					},{headers : {
 					auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
