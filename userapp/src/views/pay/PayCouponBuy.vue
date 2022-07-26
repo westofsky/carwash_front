@@ -24,7 +24,7 @@
             <a href="#">쿠폰추가</a> -->
             <router-link to="/payCoupon01">미사용 목록</router-link>
             <router-link to="/payCoupon05">사용 목록</router-link>
-            <router-link to="/payCouponBuy" class="active" style="font-size: 0.93rem;">GiftCard구매</router-link>
+            <router-link to="/payCouponBuy" class="active" >기프트카드</router-link>
             <router-link to="/payCouponAdd">쿠폰추가</router-link>
           </div>
           <div class="coupon_list_wrap">
