@@ -60,18 +60,22 @@
                 <input type="number" class="fleet_phone inputA" id="fleetPhone" placeholder="01012345678" v-model = "fleet_phone" @input="change_phone">
                 <button class="check2" @click = "certification_phone">인증번호 요청</button>
               </div>
-              <p class="warn">{{warning.phone_chk}}</p>
             </li>
             <li>
               <div>
                 <input type="number" class="fleet_phone_check" placeholder="01012345678" v-model = "fleet_phone_chk">
-                <button class="check" @click="certification_phone_chk">인증번호 확인</button>
+                <button class="check" @click="certification_phone_chk" :disabled="TimeCounter == 0 || check_phone == true">인증번호 확인</button>
               </div>
               <div class="time">
-                <p class="check_time">36:20:01</p>
-                <a href="#n" class="check_timemore">시간연장하기&gt;</a>
+                <p class="check_time">{{TimerStr}}</p>
+                <a href="#n" v-if ="more_check == 1" class="check_timemore" @click="moreTime">시간연장하기&gt;</a>
               </div>
             </li>
+			<li>
+				<div>
+				<p class="warn">{{warning.phone_chk}}</p>
+			  </div>
+			</li>
             <li>
               <label for="fleetEmail" class="title">담당자 이메일</label>
               <div class="email_wrap">
@@ -152,6 +156,12 @@ export default {
 				agree_privacy : "N",
 				agree_sms : "N",
 				agree_location : "N",
+				Timer: null,
+				TimeCounter: 180,
+				TimerStr: "03:00",
+				certification: '',
+				check_phone : false,
+				more_check : 0
 
 			}
 		},
@@ -173,6 +183,10 @@ export default {
 			})
 		},
 		mounted(){
+			if(this.Timer != null){
+				this.timerStop(this.Timer);
+				this.Timer = null;
+			}
 			let fleetInput = document.querySelectorAll('input');
 				for(let i =0; i<fleetInput.length; i++){
 				fleetInput[i].onfocus = function(){
@@ -287,12 +301,44 @@ export default {
 				}
 			},
 			certification_phone(){
+				this.certification = ''
+				console.log(this.fleet_phone)
+				for (let i = 0; i < 6; i++) {
+					this.certification += Math.floor(Math.random() * 10)
+				}
+				console.log(this.certification)
+				this.$http.post('https://app.sparkpluswash.com:9000/biztalk/send_Certification', {
+						phone_no : this.fleet_phone,
+						certification_no : this.certification
+					},{
+					headers : {
+						auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+					}
+					}).then(
+					(res) => { 
+						console.log(res)
+						this.check_phone = false;
+						this.timerStop(this.Timer);
+						this.Timer = this.timerStart();
+						this.more_check = 1;
+					}
+				);
+
+
 			},
-			certification_phone_chk(){
-				
+			certification_phone_chk(){	
+				if(this.fleet_phone_chk == this.certification){
+					this.check_phone = true;
+					this.timerStop(this.Timer);
+					this.warning.phone_chk = '인증 완료되었습니다'
+				}
+				else{
+					this.warning.phone_chk = '인증번호가 같지 않습니다'
+				}
 			},
 			
 			fleet_register(){
+				
 				if(!this.fleet_name){
 					alert("FLEET 이름을 입력해주세요");
 					return false;
@@ -324,6 +370,10 @@ export default {
 				if(!this.fleet_phone){
 					alert("핸드폰을 입력해주세요");
 					return false;
+				}
+				if(!this.check_phone){
+					alert("핸드폰번호 인증을 해주세요");
+					return false
 				}
 				if(!this.fleet_email){
 					alert("이메일을 입력해주세요");
@@ -430,6 +480,39 @@ export default {
 				}
 				else
 					this.warn_phone = "핸드폰 형식이 올바르지 않습니다.";
+			},
+			timerStart: function() {
+				// 1초에 한번씩 start 호출
+				this.TimeCounter = 180;
+				var interval = setInterval(() => {
+					this.TimeCounter--; //1초씩 감소
+					this.TimerStr = this.prettyTime();
+					if (this.TimeCounter <= 0) this.timerStop(interval);
+				}, 1000);
+				return interval;
+			},
+			timerStop: function(Timer) {
+				clearInterval(Timer);
+				this.TimeCounter = 0;
+			},
+			prettyTime: function() {
+			// 시간 형식으로 변환 리턴
+				let time = this.TimeCounter / 60;
+				let minutes = parseInt(time);
+				let secondes = Math.round((time - minutes) * 60);
+				return (
+					minutes.toString().padStart(2, "0") +
+					":" +
+					secondes.toString().padStart(2, "0")
+				);
+			},
+			moreTime: function(){
+				if(!this.check_phone){
+					console.log('ok')
+					this.timerStop(this.Timer);
+					this.Timer = this.timerStart();
+					this.more_check = 2;
+				}
 			}
 		}
 	}
