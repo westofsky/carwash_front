@@ -44,7 +44,7 @@
             </ul>
           </div>
         </section>
-        <p style="border-top: 10mm;">* 결제 후 세차장 관리 사무실에서 Gift Card로 교환하시기 바랍니다</p>
+        <p style="padding: 1em;color: blue;">* 결제 후 세차장 관리 사무실에서 Gift Card로 교환하시기 바랍니다</p>
       </article>
     </div>
 
