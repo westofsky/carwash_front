@@ -16,18 +16,9 @@
       </div>
       <article class="scontainer">
         <section class="con1">
-          <p class="title">{{coupon_in.coupon_name}}<a v-if="coupon_in.coupon_name == 'CCT004'">{{coupon_in.rest_cout}}</a></p>
+          <p class="title">{{coupon_in.coupon_name}}</p>
           <div class="info_table onetime_pay_table">
-            <table>
-              <tr>
-                <td class="table_name" v-if="coupon_in.coupon_type=='CCT004'">남은 횟수 : {{coupon_in.rest_count}}</td>
-              </tr>
-            </table>
           </div>
-
-
-
-
           <div class="onetime_pay_info BRT_none">
             <ul>
               <li>쿠폰번호 : {{coupon_in.coupon_code}}</li>
