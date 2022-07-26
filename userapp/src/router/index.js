@@ -30,6 +30,7 @@ import PayCoupon04 from '../views/pay/PayCoupon04';
 import PayCoupon05 from '../views/pay/PayCoupon05';
 import PayCouponAdd from '../views/pay/PayCouponAdd';
 import PayCouponBuy from '../views/pay/PayCouponBuy';
+import PayCouponBuy01 from '../views/pay/PayCouponBuy01';
 import PayMembership from '../views/pay/PayMembership';
 import PayMemberShipOrder01 from '../views/pay/PayMemberShipOrder01';
 import PayMembershipBk from '../views/pay/PayMembershipBk';
@@ -219,8 +220,16 @@ const routes = [
   {
     path: '/PayCouponBuy',
     component: PayCouponBuy,
+    name: 'PayCouponBuy',
     beforeEnter : requireAuth()
   },
+  {
+    path: '/PayCouponBuy01',
+    component: PayCouponBuy01,
+    name : 'PayCouponBuy01',
+    beforeEnter : requireAuth()
+  },
+
   {
     path: '/PayMembership',
     component: PayMembership,
