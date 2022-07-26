@@ -17,7 +17,7 @@
         <div id="top_info">
           <div class="profile_img"><img src="../../assets/img/profile.jpg" alt="프로필 사진"></div>
           <p class="user_welcome">
-            <span class="user_name">{{mem_name}}</span>님,
+            <span class="user_name">{{mem_name}}</span>님<a v-if="is_membership"><a>[</a><a style="color:yellow">멤버쉽이용중</a><a>]</a></a>
             <br>스파크플러스와 함께 스마트 세차 하세요!
           </p>
           <div class="top_btns">
@@ -164,7 +164,8 @@ export default {
       mem_chk : sessionStorage.getItem('mem_type'),
       mem_name : sessionStorage.getItem('mem_name'),
       info_list : [],
-      visible : true
+      visible : true,
+      is_membership : false,
     }
   },
   created() {
@@ -173,6 +174,10 @@ export default {
     // }else   this.isShow = true;
   },
   mounted(){
+    console.log(sessionStorage.getItem("is_membership"))
+    if(sessionStorage.getItem("is_membership") == "Y"){
+      this.is_membership = true;
+    }
     if(this.mem_chk == "MMT001"){
       this.visible = true;
     }else if(this.mem_chk == "MMT002" || this.mem_chk == "MMT003"){

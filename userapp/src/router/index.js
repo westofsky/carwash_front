@@ -30,6 +30,8 @@ import PayCoupon04 from '../views/pay/PayCoupon04';
 import PayCoupon05 from '../views/pay/PayCoupon05';
 import PayCouponAdd from '../views/pay/PayCouponAdd';
 import PayCouponBuy from '../views/pay/PayCouponBuy';
+import PayFleetPrepay from '../views/pay/PayFleetPrepay';
+import PayFleetPrepayOrder from '../views/pay/PayFleetPrepayOrder';
 import PayMembership from '../views/pay/PayMembership';
 import PayMemberShipOrder01 from '../views/pay/PayMemberShipOrder01';
 import PayMembershipBk from '../views/pay/PayMembershipBk';
@@ -220,6 +222,18 @@ const routes = [
   {
     path: '/PayCouponBuy',
     component: PayCouponBuy,
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/PayFleetPrepay',
+    component: PayFleetPrepay,
+    name : 'PayFleetPrepay',
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/PayFleetPrepayOrder',
+    component: PayFleetPrepayOrder,
+    name : 'PayFleetPrepayOrder',
     beforeEnter : requireAuth()
   },
   {
