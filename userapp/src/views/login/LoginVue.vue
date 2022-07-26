@@ -84,6 +84,7 @@
           sessionStorage.setItem("is_membership",localStorage.getItem("is_membership"));
           sessionStorage.setItem("is_taxi",localStorage.getItem("is_taxi"));
           sessionStorage.setItem("is_oneplus",localStorage.getItem("is_oneplus"));
+          sessionStorage.setItem("phone_no",localStorage.getItem("phone_no"));
           this.$router.push({name : 'HomeBasic'});
         }
 
@@ -127,6 +128,7 @@
                       }
                       }).then(
                       (res) => {  //개인 회원 정보
+                          console.log(res.data);
                         if(this.auto_login){
                           localStorage.setItem("auto_mem_no",res.data.mem_no);
                           localStorage.setItem("auto_mem_type",res.data.mem_type);
@@ -135,6 +137,7 @@
                           localStorage.setItem("is_membership",res.data.is_membership);
                           localStorage.setItem("is_taxi",res.data.is_taxi);
                           localStorage.setItem("is_oneplus",res.data.is_oneplus);
+                          localStorage.setItem("phone_no",res.data.phone_no);
                         }
                         sessionStorage.setItem("mem_no",res.data.mem_no);
                         sessionStorage.setItem("mem_type",res.data.mem_type);
@@ -143,6 +146,7 @@
                         sessionStorage.setItem("is_membership",res.data.is_membership);
                         sessionStorage.setItem("is_taxi",res.data.is_taxi);
                         sessionStorage.setItem("is_oneplus",res.data.is_oneplus);
+                        sessionStorage.setItem("phone_no",res.data.phone_no);
                         this.$router.push({name : 'HomeBasic'});
                       })
                 }

@@ -160,6 +160,10 @@ export default {
               }).then(
               (res) => {  
                   if(res.data.result_code=="Y"){
+                      var today = new Date();
+                      var year = today.getFullYear();
+                      var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                      var day = ('0' + today.getDate()).slice(-2);
                       if(localStorage.getItem("is_type") == "membership"){ //멤버쉽구매
                         var today = new Date();
                         var year = today.getFullYear();
@@ -202,27 +206,39 @@ export default {
                             this.get_coupon(type,plc); //사은품
                             console.log("멤버쉽 가입시 plc    --->" + plc);
                         }
-                        // this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getMembershipWash', {
-                        //   car_no : sessionStorage.getItem("mem_id"),
-                        //   get_date : year+'-'+month+'-'+day,
-                        //   pay_product : this.first_menu,
-                        //   option_product : '',
-                        //   start_date : year+'-'+month+'-'+day,
-                        //   end_date : year+'-'+(month+1)+'-'+day,
-                        //   total_pay : this.tot_fee,
-                        //   approval_no : localStorage.getItem("auth_no"),
-                        //   // phone_no : '',
-                        // },{headers : {
-                        //     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                        //   }
-                        // }).then((res) => {
-                        //   console.log(res.data);
-                        //   if(res.data.result_code =="Y"){
-                        //     alert("알림톡이 전송되었습니다.");
-                        //   }
-                        // })
+                        this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getMembershipWash', {
+                          car_no : sessionStorage.getItem("mem_id"),
+                          get_date : year+'-'+month+'-'+day,
+                          pay_product : this.first_menu,
+                          option_product : '',
+                          start_date : year+'-'+month+'-'+day,
+                          end_date : year+'-'+(month+1)+'-'+day,
+                          total_pay : this.tot_fee,
+                          approval_no : localStorage.getItem("auth_no"),
+                          phone_no : sessionStorage.getItem("phone_no"),
+                        },{headers : {
+                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                          }
+                        }).then((res) => {
+                        })
                       }
-                      else{ //일반구매       
+                      else{ //일반구매    
+                        
+                        this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getOnetimeWash', {
+                          car_no : sessionStorage.getItem("mem_id"),
+                          get_date : year+'-'+month+'-'+day,
+                          pay_product : this.first_menu,
+                          option_product : this.second_menu,
+                          pay_fee : this.tot_fee,
+                          approval_no : localStorage.getItem("auth_no"),
+                          phone_no : sessionStorage.getItem("phone_no"),
+                        },{headers : {
+                          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                          }
+                        }).then(
+                        (res) => {
+                          console.log(res.data);
+                        });   
                         if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
                             let plc = this.main_plc;
                             if(this.third_menu =="Y"){
@@ -231,8 +247,6 @@ export default {
                             this.get_coupon("CCT003",plc); //사은품
                             console.log("1+1에 들어가는 plc ---->" + plc);
                         }
-
-
                         let mainplc = this.main_plc;
                         if(this.second_menu){
                           mainplc = mainplc + "::" + this.option_plc;

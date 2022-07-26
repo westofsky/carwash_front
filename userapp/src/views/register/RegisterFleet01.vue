@@ -39,7 +39,7 @@
                 <!-- <a href="./register_terms.html" target="_blank">
                   <p>서비스 이용약관</p>
                 </a> -->
-                <router-link to="/registerTerms">
+                <router-link to="/registerTerms2">
                   <p>서비스 이용약관</p>
                 </router-link>
                 <span class="warn">(필수)</span><label for="agree02_fleet" class="agree"><input type="checkbox"
@@ -51,8 +51,8 @@
                 <!-- <a href="./register_terms.html" target="_blank">
                   <p>개인정보 수집 및 이용 동의</p>
                 </a> -->
-                <router-link to="/registerTerms">
-                  <p>개인정보 수집 및 이용 동의</p>
+                <router-link to="/registerTerms3">
+                  <p>개인정보 취급방침 이용악관</p>
                 </router-link>
                 <span class="warn">(필수)</span><label for="agree03_fleet" class="agree"><input type="checkbox"
                     name="agree" id="agree03_fleet" value = "3" v-model = "selectList" @change = "detect_change">
