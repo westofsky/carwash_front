@@ -36,7 +36,6 @@ import PayMemberShipOrder01 from '../views/pay/PayMemberShipOrder01';
 import PayMembershipBk from '../views/pay/PayMembershipBk';
 import PayReceipt from '../views/pay/PayReceipt';
 import PayOnetime from '../views/pay/PayOnetime';
-import PayOnetimeCoupon01 from '../views/pay/PayOnetimeCoupon01';
 import PayOnetimeCoupon02 from '../views/pay/PayOnetimeCoupon02';
 import PayOnetimeOrder01 from '../views/pay/PayOnetimeOrder01';
 import PayOnetimeSelectMethod from '../views/pay/PayOnetimeSelectMethod';
@@ -54,6 +53,8 @@ import RegisterFleet01 from '../views/register/RegisterFleet01';
 import RegisterFleet02 from '../views/register/RegisterFleet02';
 import RegisterFleet03 from '../views/register/RegisterFleet03';
 import RegisterTerms from '../views/register/RegisterTerms';
+import RegisterTerms2 from '../views/register/RegisterTerms2';
+import RegisterTerms3 from '../views/register/RegisterTerms3';
 import ShopList from '../views/shop/ShopList';
 import ShopMap from '../views/shop/ShopMap';
 import MyInfoInfoContentPop from '../views/myInfo/MyInfoInfoContentPop';
@@ -260,11 +261,6 @@ const routes = [
     beforeEnter : requireAuth()
   },
   {
-    path: '/PayOnetimeCoupon01',
-    component: PayOnetimeCoupon01,
-    beforeEnter : requireAuth()
-  },
-  {
     path: '/PayOnetimeCoupon02',
     component: PayOnetimeCoupon02,
     name: 'PayOnetimeCoupon02',
@@ -363,6 +359,14 @@ const routes = [
   {
     path: '/RegisterTerms',
     component: RegisterTerms
+  },
+  {
+    path: '/RegisterTerms2',
+    component: RegisterTerms2
+  },
+  {
+    path: '/RegisterTerms3',
+    component: RegisterTerms3
   },
   {
     path: '/ShopList',
