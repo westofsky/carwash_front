@@ -161,7 +161,7 @@ export default {
       localStorage.removeItem("first_menu");
       localStorage.removeItem("menu_fee");
       localStorage.removeItem("main_plc");
-      this.$router.push({name : 'homeBasic'});
+      this.$router.push({name : 'HomeBasic'});
     }
   },
   computed : {

@@ -20,7 +20,7 @@
           <div class="info_table onetime_pay_table">
             <table>
               <tr>
-                <td class="table_name" v-if="coupon_in.coupon_type=='CCT004'">{{coupon_in.rest_cout}}</td>
+                <td class="table_name" v-if="coupon_in.coupon_type=='CCT004'">남은 횟수 : {{coupon_in.rest_count}}</td>
               </tr>
             </table>
           </div>
@@ -88,6 +88,7 @@ export default {
         }
       }).then((res) => {
         this.coupon_in = res.data;
+        console.log(this.coupon_in)
       })
     },
     async get_qrimg(){
