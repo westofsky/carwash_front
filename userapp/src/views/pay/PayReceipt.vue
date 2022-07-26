@@ -24,7 +24,15 @@
                 <td class="table_name">옵션추가 / {{option.option_name}}</td>
                 <td class="table_price">{{return_one(option.option_fee)}}원</td>
               </tr>
-              <tr class="total_price">
+              <tr v-if="is_count != 0">
+                <td class="table_name">구매횟수</td>
+                <td class="table_price">{{is_count}}매</td>
+              </tr>
+              <tr class="total_price" v-if="is_count !=0">
+                <td>합계</td>
+                <td class="fontBold fRed">{{return_one(menu_fee*parseInt(is_count))}}원</td>
+              </tr>
+              <tr class="total_price" v-else>
                 <td>합계</td>
                 <td class="fontBold fRed">{{return_one(menu_fee+option_fee)}}원</td>
               </tr>
@@ -60,7 +68,6 @@
 </template>s
 
 <script>
-import router from "@/router";
 import FooterVue from "../footer/FooterVue.vue";
 
 export default {
@@ -92,6 +99,7 @@ export default {
       },
       time : (localStorage.getItem("tr_date") !=null) ? localStorage.getItem("tr_date").replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6') : "",
       is_taxi : (sessionStorage.getItem("is_taxi") == "Y") ? true: false,
+      is_count : (localStorage.getItem("count") != null) ? localStorage.getItem("count") : 0,
     }
   },
   beforeCreate(){
@@ -115,11 +123,12 @@ export default {
       this.is_discount = (this.menu_fee+this.option_fee) * 0.5;
     }
     // 승인 후 사용 결제 세차 정보 저장 처리
+    
     this.$http.post(this.$server+'/userapp/setWashpay', {
         mem_id : sessionStorage.getItem("mem_id"),
         mem_no : sessionStorage.getItem("mem_no"),
         is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
-        use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : 'WUT002',
+        use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : (localStorage.getItem("is_type") == "membership") ? 'WUT002' : (localStorage.getItem("is_type") == "giftcard") ? 'WUT003' : 'WUT004',
         prod_name : this.first_menu,
         prod_code : this.pin_seq_no || '',
         option_code : this.pin2_seq_no || '',
@@ -214,7 +223,7 @@ export default {
                           pay_product : this.first_menu,
                           option_product : '',
                           start_date : year+'-'+month+'-'+day,
-                          end_date : year+'-'+(month+1)+'-'+day,
+                          end_date : year+'-'+('0' + (today.getMonth() + 2)).slice(-2)+'-'+day,
                           total_pay : this.tot_fee,
                           approval_no : localStorage.getItem("auth_no"),
                           phone_no : sessionStorage.getItem("phone_no"),
@@ -228,7 +237,7 @@ export default {
                               for(let i =0; i< this.prod_remarks;i++){
                                 console.log(i);
                                 console.log('ok');
-                                this.$http.post(this.$server+'/userapp/get_couponReg', {
+                                this.$http.post(this.$server+'/userapp/getCouponReg', {
                                   coupon_type : 'CCT004',
                                   rest_count : 1,
                                   is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
@@ -246,7 +255,37 @@ export default {
                                 });
                               }                    
                         }
-                      else{ //일반구매       
+                      else if(localStorage.getItem("is_type") == "fleetPrepay"){
+                        this.$http.post(this.$server+'/userapp/setFleetPay', {
+                          mem_no : sessionStorage.getItem("mem_no"),
+                          prod_code : this.pin_seq_no,
+                          is_brush : "N",
+                          get_count : this.is_count,
+                          pay_seq_no : pay_seq_no,
+                        },{
+                        headers : {
+                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        }
+                        }).then(
+                        (res) => {  // 
+                          console.log(res.data);
+                          console.log("fleet선불결제");
+                        });
+                      }
+                      else{ //일반구매    
+                        this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getOnetimeWash', {
+                          car_no : sessionStorage.getItem("mem_id"),
+                          get_date : year+'-'+month+'-'+day,
+                          pay_product : this.first_menu,
+                          option_product : '',
+                          pay_fee : this.tot_fee,
+                          approval_no : localStorage.getItem("auth_no"),
+                          phone_no : sessionStorage.getItem("phone_no"),
+                        },{headers : {
+                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                          }
+                        }).then((res) => {
+                        })   
                         if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
                             let plc = this.main_plc;
                             if(this.third_menu =="Y"){
@@ -329,6 +368,7 @@ export default {
         localStorage.removeItem("use_coupon");
         localStorage.removeItem("tot_fee");
         localStorage.removeItem("what_pay");
+        localStorage.removeItem("count");
         this.$router.push({name : 'HomeBasic'});
     },
     return_one(on_num){
