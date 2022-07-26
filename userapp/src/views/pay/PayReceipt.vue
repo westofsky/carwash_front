@@ -80,6 +80,7 @@ export default {
       option_plc : JSON.parse(localStorage.getItem("option_plc")) || '',
       third_menu : '',
       brush_plc : JSON.parse(localStorage.getItem("brush_plc")) || '',
+      prod_remarks : localStorage.getItem("prod_remarks") || 0,
       is_coupon : [],
       is_discount : 0,
       tot_fee : JSON.parse(localStorage.getItem("tot_fee")) || 0,
@@ -194,6 +195,7 @@ export default {
                             else{
                             }
                         });
+                        
                         if(this.first_menu == "PREMIUM spa 무제한"){
                             let type = "CCT002";
                             let plc = this.main_plc;
@@ -222,23 +224,29 @@ export default {
                         }).then((res) => {
                         })
                       }
-                      else{ //일반구매    
-                        
-                        this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getOnetimeWash', {
-                          car_no : sessionStorage.getItem("mem_id"),
-                          get_date : year+'-'+month+'-'+day,
-                          pay_product : this.first_menu,
-                          option_product : this.second_menu,
-                          pay_fee : this.tot_fee,
-                          approval_no : localStorage.getItem("auth_no"),
-                          phone_no : sessionStorage.getItem("phone_no"),
-                        },{headers : {
-                          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                          }
-                        }).then(
-                        (res) => {
-                          console.log(res.data);
-                        });   
+                      else if(localStorage.getItem("is_type") == "giftcard"){
+                              for(let i =0; i< this.prod_remarks;i++){
+                                console.log(i);
+                                console.log('ok');
+                                this.$http.post(this.$server+'/userapp/get_couponReg', {
+                                  coupon_type : 'CCT004',
+                                  rest_count : 1,
+                                  is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+                                  plc_code : this.main_plc,
+                                  dc_fee : 0,
+                                  dc_persent : 0,
+                                  prod_name : this.first_menu
+                                },{
+                                headers : {
+                                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                                }
+                                }).then(
+                                (res) => {  // 
+                                  console.log(res)
+                                });
+                              }                    
+                        }
+                      else{ //일반구매       
                         if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
                             let plc = this.main_plc;
                             if(this.third_menu =="Y"){

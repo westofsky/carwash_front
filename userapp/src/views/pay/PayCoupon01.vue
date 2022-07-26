@@ -20,7 +20,7 @@
           <div class="section_tab">
             <router-link to="/payCoupon01" class="active">미사용 목록</router-link>
             <router-link to="/payCoupon05">사용 목록</router-link>
-            <router-link to="/payCouponBuy">쿠폰구매</router-link>
+            <router-link to="/payCouponBuy">기프트카드</router-link>
             <router-link to="/payCouponAdd">쿠폰추가</router-link>
           </div>
           <div class="coupon_list_wrap">
