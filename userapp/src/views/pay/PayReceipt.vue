@@ -244,7 +244,8 @@ export default {
                                   plc_code : this.main_plc,
                                   dc_fee : 0,
                                   dc_persent : 0,
-                                  prod_name : this.first_menu
+                                  prod_name : this.first_menu,
+                                  car_no : sessionStorage.getItem("mem_id"),
                                 },{
                                 headers : {
                                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
@@ -260,7 +261,7 @@ export default {
                           mem_no : sessionStorage.getItem("mem_no"),
                           prod_code : this.pin_seq_no,
                           is_brush : "N",
-                          get_count : this.is_count,
+                          get_count : String(this.is_count),
                           pay_seq_no : pay_seq_no,
                         },{
                         headers : {
@@ -269,6 +270,7 @@ export default {
                         }).then(
                         (res) => {  // 
                           console.log(res.data);
+                          console.log(this.is_count);
                           console.log("fleet선불결제");
                         });
                       }
