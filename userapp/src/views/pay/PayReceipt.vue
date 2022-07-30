@@ -123,212 +123,215 @@ export default {
       this.is_discount = (this.menu_fee+this.option_fee) * 0.5;
     }
     // 승인 후 사용 결제 세차 정보 저장 처리
+    if(JSON.parse(localStorage.getItem("first_menu"))){
+
     
-    this.$http.post(this.$server+'/userapp/setWashpay', {
-        mem_id : sessionStorage.getItem("mem_id"),
-        mem_no : sessionStorage.getItem("mem_no"),
-        is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
-        use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : (localStorage.getItem("is_type") == "membership") ? 'WUT002' : (localStorage.getItem("is_type") == "giftcard") ? 'WUT003' : 'WUT004',
-        prod_name : this.first_menu,
-        prod_code : this.pin_seq_no || '',
-        option_code : this.pin2_seq_no || '',
-        option_name : this.second_menu || '',
-        is_brush : this.third_menu,
-        wash_fee : this.menu_fee,
-        dc_fee : this.is_discount,
-        option_fee : this.option_fee || 0,
-        pay_fee : this.tot_fee,
-        plc_code : this.main_plc,
-        pay_type : (this.menu_fee==0) ? 'WPT002' : 'WPT001',
-        terminal_type : 'WTT002',
-    },{
-    headers : {
-        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-    }
-    }).then(
-    (res) => {  // 
-        if(res.data.result_code=="Y"){
-            var pay_seq_no = res.data.pay_seq_no;
-            //승인 후 사용 결제 승인 저장 처리
-            if(this.menu_fee==0){ // 끝 
-              // this.confirm();
-            }
-            else{
-              this.$http.post(this.$server+'/userapp/setApprovalPay', {
-                  mem_no : sessionStorage.getItem("mem_no"),
-                  pay_fee : this.tot_fee,
-                  trd_date : this.approve.time.substring(0,8),
-                  trd_time : this.approve.time.substring(8,this.approve.time.length),
-                  auth_no : localStorage.getItem("auth_no"),
-                  tr_no : localStorage.getItem("tr_no"),
-                  token : localStorage.getItem("token"),
-                  pay_seq_no : pay_seq_no,
-              },{
-              headers : {
-                  auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      this.$http.post(this.$server+'/userapp/setWashpay', {
+          mem_id : sessionStorage.getItem("mem_id"),
+          mem_no : sessionStorage.getItem("mem_no"), 
+          is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+          use_type : (localStorage.getItem("is_type") == "onetime") ? 'WUT001' : (localStorage.getItem("is_type") == "membership") ? 'WUT002' : (localStorage.getItem("is_type") == "giftcard") ? 'WUT003' : 'WUT004',
+          prod_name : this.first_menu,
+          prod_code : this.pin_seq_no || '',
+          option_code : this.pin2_seq_no || '',
+          option_name : this.second_menu || '',
+          is_brush : this.third_menu,
+          wash_fee : this.menu_fee,
+          dc_fee : this.is_discount,
+          option_fee : this.option_fee || 0,
+          pay_fee : this.tot_fee,
+          plc_code : this.main_plc,
+          pay_type : (this.menu_fee==0) ? 'WPT002' : 'WPT001',
+          terminal_type : 'WTT002',
+      },{
+      headers : {
+          auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+      }
+      }).then(
+      (res) => {  // 
+          if(res.data.result_code=="Y"){
+              var pay_seq_no = res.data.pay_seq_no;
+              //승인 후 사용 결제 승인 저장 처리
+              if(this.menu_fee==0){ // 끝 
+                // this.confirm();
               }
-              }).then(
-              (res) => {  
-                  if(res.data.result_code=="Y"){
-                      var today = new Date();
-                      var year = today.getFullYear();
-                      var month = ('0' + (today.getMonth() + 1)).slice(-2);
-                      var day = ('0' + today.getDate()).slice(-2);
-                      if(localStorage.getItem("is_type") == "membership"){ //멤버쉽구매
+              else{
+                this.$http.post(this.$server+'/userapp/setApprovalPay', {
+                    mem_no : sessionStorage.getItem("mem_no"),
+                    pay_fee : this.tot_fee,
+                    trd_date : this.approve.time.substring(0,8),
+                    trd_time : this.approve.time.substring(8,this.approve.time.length),
+                    auth_no : localStorage.getItem("auth_no"),
+                    tr_no : localStorage.getItem("tr_no"),
+                    token : localStorage.getItem("token"),
+                    pay_seq_no : pay_seq_no,
+                },{
+                headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then(
+                (res) => {  
+                    if(res.data.result_code=="Y"){
                         var today = new Date();
                         var year = today.getFullYear();
                         var month = ('0' + (today.getMonth() + 1)).slice(-2);
                         var day = ('0' + today.getDate()).slice(-2);
-                        this.$http.post(this.$server+'/userapp/setMemberPay', {
-                          mem_no : sessionStorage.getItem("mem_no"),
-                          prod_name : this.first_menu,
-                          is_brush : this.third_menu,
-                          pay_day : day,
-                          reg_type : "MRT001",
-                          prod_code : this.pin_seq_no,
-                          pay_fee : this.tot_fee,
-                          start_date : year+'-'+month+'-'+day,
-                          end_date : (year+2)+'-'+month+'-'+day,
-                          mem_id : sessionStorage.getItem("mem_id"),
-                          token : localStorage.getItem("token"),
-                        },{
-                        headers : {
-                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                        }
-                        }).then(
-                        (res) => {  // 
-                            if(res.data.result_code=="Y"){
-                                sessionStorage.setItem("is_membership","Y");
-                                // this.confirm();
-                            }
-                            else{
-                            }
-                        });
-                        
-                        if(this.first_menu == "PREMIUM spa 무제한"){
-                            let type = "CCT002";
-                            let plc = this.main_plc;
-                            if(this.third_menu =="Y"){
-                              plc = plc+"::"+this.brush_plc;
-                            }
-                            this.get_coupon(type,plc); //사은품
-                            this.get_coupon(type,plc); //사은품
-                            this.get_coupon(type,plc); //사은품
-                            this.get_coupon(type,plc); //사은품
-                            console.log("멤버쉽 가입시 plc    --->" + plc);
-                        }
-                        this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getMembershipWash', {
-                          car_no : sessionStorage.getItem("mem_id"),
-                          get_date : year+'-'+month+'-'+day,
-                          pay_product : this.first_menu,
-                          option_product : '',
-                          start_date : year+'-'+month+'-'+day,
-                          end_date : year+'-'+('0' + (today.getMonth() + 2)).slice(-2)+'-'+day,
-                          total_pay : this.tot_fee,
-                          approval_no : localStorage.getItem("auth_no"),
-                          phone_no : sessionStorage.getItem("phone_no"),
-                        },{headers : {
-                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                        if(localStorage.getItem("is_type") == "membership"){ //멤버쉽구매
+                          var today = new Date();
+                          var year = today.getFullYear();
+                          var month = ('0' + (today.getMonth() + 1)).slice(-2);
+                          var day = ('0' + today.getDate()).slice(-2);
+                          this.$http.post(this.$server+'/userapp/setMemberPay', {
+                            mem_no : sessionStorage.getItem("mem_no"),
+                            prod_name : this.first_menu,
+                            is_brush : this.third_menu,
+                            pay_day : day,
+                            reg_type : "MRT001",
+                            prod_code : this.pin_seq_no,
+                            pay_fee : this.tot_fee,
+                            start_date : year+'-'+month+'-'+day,
+                            end_date : (year+2)+'-'+month+'-'+day,
+                            mem_id : sessionStorage.getItem("mem_id"),
+                            token : localStorage.getItem("token"),
+                          },{
+                          headers : {
+                              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                           }
-                        }).then((res) => {
-                        })
-                      }
-                      else if(localStorage.getItem("is_type") == "giftcard"){
-                              for(let i =0; i< this.prod_remarks;i++){
-                                console.log(i);
-                                console.log('ok');
-                                this.$http.post(this.$server+'/userapp/getCouponReg', {
-                                  coupon_type : 'CCT004',
-                                  rest_count : 1,
-                                  is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
-                                  plc_code : this.main_plc,
-                                  dc_fee : 0,
-                                  dc_percent : 0,
-                                  prod_name : this.first_menu,
-                                  mem_no : sessionStorage.getItem("mem_no")
-                                },{
-                                headers : {
-                                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                                }
-                                }).then(
-                                (res) => {  // 
-                                  console.log(res)
-                                });
-                              }                    
-                        }
-                      else if(localStorage.getItem("is_type") == "fleetPrepay"){
-                        this.$http.post(this.$server+'/userapp/setFleetPay', {
-                          mem_no : sessionStorage.getItem("mem_no"),
-                          prod_code : this.pin_seq_no,
-                          is_brush : "N",
-                          get_count : String(this.is_count),
-                          pay_seq_no : pay_seq_no,
-                        },{
-                        headers : {
-                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                        }
-                        }).then(
-                        (res) => {  // 
-                          console.log(res.data);
-                          console.log(this.is_count);
-                          console.log("fleet선불결제");
-                        });
-                      }
-                      else{ //일반구매    
-                        this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getOnetimeWash', {
-                          car_no : sessionStorage.getItem("mem_id"),
-                          get_date : year+'-'+month+'-'+day,
-                          pay_product : this.first_menu,
-                          option_product : '',
-                          pay_fee : this.tot_fee,
-                          approval_no : localStorage.getItem("auth_no"),
-                          phone_no : sessionStorage.getItem("phone_no"),
-                        },{headers : {
-                            auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                          }).then(
+                          (res) => {  // 
+                              if(res.data.result_code=="Y"){
+                                  sessionStorage.setItem("is_membership","Y");
+                                  // this.confirm();
+                              }
+                              else{
+                              }
+                          });
+                          
+                          if(this.first_menu == "PREMIUM spa 무제한"){
+                              let type = "CCT002";
+                              let plc = this.main_plc;
+                              if(this.third_menu =="Y"){
+                                plc = plc+"::"+this.brush_plc;
+                              }
+                              this.get_coupon(type,plc); //사은품
+                              this.get_coupon(type,plc); //사은품
+                              this.get_coupon(type,plc); //사은품
+                              this.get_coupon(type,plc); //사은품
+                              console.log("멤버쉽 가입시 plc    --->" + plc);
                           }
-                        }).then((res) => {
-                        })   
-                        if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
-                            let plc = this.main_plc;
-                            if(this.third_menu =="Y"){
-                              plc = plc+"::"+this.brush_plc;
+                          this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getMembershipWash', {
+                            car_no : sessionStorage.getItem("mem_id"),
+                            get_date : year+'-'+month+'-'+day,
+                            pay_product : this.first_menu,
+                            option_product : '',
+                            start_date : year+'-'+month+'-'+day,
+                            end_date : year+'-'+('0' + (today.getMonth() + 2)).slice(-2)+'-'+day,
+                            total_pay : this.tot_fee,
+                            approval_no : localStorage.getItem("auth_no"),
+                            phone_no : sessionStorage.getItem("phone_no"),
+                          },{headers : {
+                              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                             }
-                            this.get_coupon("CCT003",plc); //사은품
-                            console.log("1+1에 들어가는 plc ---->" + plc);
+                          }).then((res) => {
+                          })
                         }
-                        let mainplc = this.main_plc;
-                        if(this.second_menu){
-                          mainplc = mainplc + "::" + this.option_plc;
-                          if(this.third_menu == "Y"){
-                            mainplc = mainplc + "::" + this.brush_plc;
+                        else if(localStorage.getItem("is_type") == "giftcard"){
+                                for(let i =0; i< this.prod_remarks;i++){
+                                  console.log(i);
+                                  console.log('ok');
+                                  this.$http.post(this.$server+'/userapp/getCouponReg', {
+                                    coupon_type : 'CCT004',
+                                    rest_count : 1,
+                                    is_member : (sessionStorage.getItem("mem_type")=="MMT001") ? "Y" : "N",
+                                    plc_code : this.main_plc,
+                                    dc_fee : 0,
+                                    dc_percent : 0,
+                                    prod_name : this.first_menu,
+                                    mem_no : sessionStorage.getItem("mem_no")
+                                  },{
+                                  headers : {
+                                      auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                                  }
+                                  }).then(
+                                  (res) => {  // 
+                                    console.log(res)
+                                  });
+                                }                    
                           }
-                            console.log("옵션이 있으면 들어가는 plc---->" + mainplc);
-                        }
-                        else{
-                          if(this.third_menu == "Y"){
-                            mainplc = mainplc + "::" + this.brush_plc;
+                        else if(localStorage.getItem("is_type") == "fleetPrepay"){
+                          this.$http.post(this.$server+'/userapp/setFleetPay', {
+                            mem_no : sessionStorage.getItem("mem_no"),
+                            prod_code : this.pin_seq_no,
+                            is_brush : "N",
+                            get_count : String(this.is_count),
+                            pay_seq_no : pay_seq_no,
+                          },{
+                          headers : {
+                              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                           }
-                          console.log("옵션 없을 때 coupon 발행 plc ----->" +mainplc);
+                          }).then(
+                          (res) => {  // 
+                            console.log(res.data);
+                            console.log(this.is_count);
+                            console.log("fleet선불결제");
+                          });
                         }
-                        this.get_coupon("CCT003",mainplc);
+                        else{ //일반구매    
+                          this.$http.post('https://app.sparkpluswash.com:9000/biztalk/getOnetimeWash', {
+                            car_no : sessionStorage.getItem("mem_id"),
+                            get_date : year+'-'+month+'-'+day,
+                            pay_product : this.first_menu,
+                            option_product : '',
+                            pay_fee : this.tot_fee,
+                            approval_no : localStorage.getItem("auth_no"),
+                            phone_no : sessionStorage.getItem("phone_no"),
+                          },{headers : {
+                              auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                            }
+                          }).then((res) => {
+                          })   
+                          if(sessionStorage.getItem("is_oneplus")){ //1+1프로모션
+                              let plc = this.main_plc;
+                              if(this.third_menu =="Y"){
+                                plc = plc+"::"+this.brush_plc;
+                              }
+                              this.get_coupon("CCT003",plc); //사은품
+                              console.log("1+1에 들어가는 plc ---->" + plc);
+                          }
+                          let mainplc = this.main_plc;
+                          if(this.second_menu){
+                            mainplc = mainplc + "::" + this.option_plc;
+                            if(this.third_menu == "Y"){
+                              mainplc = mainplc + "::" + this.brush_plc;
+                            }
+                              console.log("옵션이 있으면 들어가는 plc---->" + mainplc);
+                          }
+                          else{
+                            if(this.third_menu == "Y"){
+                              mainplc = mainplc + "::" + this.brush_plc;
+                            }
+                            console.log("옵션 없을 때 coupon 발행 plc ----->" +mainplc);
+                          }
+                          this.get_coupon("CCT003",mainplc);
 
-                        if(this.first_menu == "PREMIUM spa"){
-                            let type = "CCT002";
-                            let plc = this.main_plc;
-                            if(this.third_menu =="Y"){
-                              plc = plc+"::"+this.brush_plc;
-                            }
-                            this.get_coupon(type,plc); //사은품
-                            console.log("사은품 plc------>" + plc);
+                          if(this.first_menu == "PREMIUM spa"){
+                              let type = "CCT002";
+                              let plc = this.main_plc;
+                              if(this.third_menu =="Y"){
+                                plc = plc+"::"+this.brush_plc;
+                              }
+                              this.get_coupon(type,plc); //사은품
+                              console.log("사은품 plc------>" + plc);
+                          }
                         }
-                      }
-                  }
+                    }
+                }
+                );
               }
-              );
-            }
-        }
-    }
+          }
+      }
     );
+    }
 
     //승인 후 사용 coupon 처리
     if(JSON.parse(localStorage.getItem("use_coupon"))){

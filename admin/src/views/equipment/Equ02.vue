@@ -91,8 +91,10 @@
                                         <button class="btn_red" @click="set_washCtrl(info.use_seq,info.wash_seq,info.car_no)">회차처리</button>
                                     </div>
                                 </div>
-                                <button class="btn_up btn_up1" @click="ctl_gate('01')">1호차단기 UP</button>
-                                <button class="btn_up btn_up2" @click="ctl_gate('02')">2호차단기 UP</button>
+                                <button class="btn_up btn_up1" @click="gate_up('01')">1호차단기 UP</button>
+                                <button class="btn_up btn_down1" @click="gate_down('01')">1호차단기 DOWN</button>
+                                <button class="btn_up btn_up2" @click="gate_up('02')">2호차단기 UP</button>
+                                <button class="btn_up btn_down2" @click="gate_down('02')">2호차단기 DOWN</button>
                                 
                             </div>
                         </div>
@@ -159,8 +161,8 @@
                     }
                 });
             },
-            ctl_gate(gate_no){
-                this.$http.post(this.$server+'/admin/ctlGate',
+            gate_up(gate_no){
+                this.$http.post(this.$server+'/admin/openGate',
                 {
                     gate_no : gate_no
                 }
@@ -170,6 +172,20 @@
                 }).then((res) => {
                     if(res.data.result_code == "Y"){
                         alert(gate_no+"호차단기UP 성공");
+                    }
+                });
+            },
+            gate_down(gate_no){
+                this.$http.post(this.$server+'/admin/closeGate',
+                {
+                    gate_no : gate_no
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    if(res.data.result_code == "Y"){
+                        alert(gate_no+"호차단기DOWN 성공");
                     }
                 });
             },
