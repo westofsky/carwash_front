@@ -127,7 +127,7 @@
                 <img src="../../assets/img/event01.jpg" alt="마이워시 오픈기념, 첫 구매시 5000원 쿠폰 증정!">
               </a> -->
               <router-link to="/noticeDetail">
-                <img src="../../assets/img/event01.jpg" alt="마이워시 오픈기념, 첫 구매시 5000원 쿠폰 증정!">
+                <img src="../../assets/img/event01.png" alt="마이워시 오픈기념, 첫 구매시 5000원 쿠폰 증정!">
               </router-link>
               <img class="balloon" src="../../assets/img/event_balloon.png" alt="">
             </div>
