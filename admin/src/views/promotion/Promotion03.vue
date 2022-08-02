@@ -30,6 +30,7 @@
                         <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
                         <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
                         <li class="is-current"><router-link to = "/Promotion03">쿠폰발행</router-link></li>
+                        <li><router-link to = "/Promotion04">Gift Card 교환</router-link></li>
                     </ul>
                 </li>
                 <li class="product is-sub">
@@ -70,7 +71,7 @@
                 <div class="breadcrumb">
                     <router-link to = "/Home">HOME</router-link>
                     <p>프로모션</p>
-                    <p>쿠폰 관리</p>
+                    <p>쿠폰 발행</p>
                 </div>
                 <div class="contents">
                     <h2 class="title title_prom">쿠폰 발행</h2>

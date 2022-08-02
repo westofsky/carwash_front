@@ -28,7 +28,9 @@
                         <a href="javascript:void(0);">프로모션</a>
                         <ul class="sub_menu">
                             <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
-                            <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
+                        <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
+                        <li><router-link to = "/Promotion03">쿠폰발행</router-link></li>
+                        <li class="is-current"><router-link to = "/Promotion04">Gift Card 교환</router-link></li>
                         </ul>
                     </li>
                     <li class="product is-sub">
@@ -68,8 +70,8 @@
                 <section class="sales">
                     <div class="breadcrumb">
                         <router-link to = "/Home">HOME</router-link>
-                        <p>매출관리</p>
-                        <p>이용현황</p>
+                        <p>프로모션</p>
+                        <p>Gift Card 교환</p>
                     </div>
                     <div class="contents">
                         <h2 class="title title_sale">Gift Card 교환</h2>
