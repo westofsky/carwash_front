@@ -75,7 +75,17 @@
                     <h2 class="title title_prom">쿠폰 관리</h2>
                     <div class="contents_area">
                         <form autocomplete="off">
-                            <div class="contents_area-search">
+                            <div class="contents_area-search" style="margin : -20px 0 30px;">
+                                <div class="select MT20">
+                                    <div>
+                                        <div class="checksRadio MT08" style="margin-bottom : 20px; display : flex;">
+                                            <input type="radio" id="ex_rd3" value = "reg" name="radiobtn" v-model="date_type">
+                                            <label for="ex_rd3" style="width:100px">발행일자</label>
+                                            <input type="radio" id="ex_rd4" value="use" name="radiobtn" v-model="date_type">
+                                            <label for="ex_rd4" style="width:100px">사용일자</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="select MT20">
                                     <div class="input_box date">
                                         <label for="start">조회일자</label>
@@ -90,21 +100,27 @@
                                         </div>
                                     </div>
                                     <div class="select_box MR30">
-                                        <label for="">회원구분</label>
-                                        <select v-model="sea_wtt">
-                                            <option disabled value="">회원구분 선택</option>
+                                        <label for="">쿠폰종류</label>
+                                        <select v-model="sea_cct">
                                             <option value="">전체</option>
-                                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
+                                            <option v-for="(info, index) in get_cct" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
                                             </option>
                                         </select>
                                     </div>
                                     <div class="select_box MR30">
-                                        <label for="approve">회원상태</label>
-                                        <select name="" id="approve" v-model="sea_pat">
-                                            <option disabled value="">회원상태 선택</option>
+                                        <label for="approve">사용가능여부</label>
+                                        <select name="" id="approve" v-model="sea_use">
                                             <option value="">전체</option>
-                                            <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
+                                            <option value="Y">사용가능</option>
+                                            <option value="N">사용불가</option>
+                                        </select>
+                                    </div>
+                                    <div class="select_box MR30">
+                                        <label for="approve">발행구분</label>
+                                        <select name="" id="approve" v-model="sea_cpt">
+                                            <option value="">전체</option>
+                                            <option v-for="(info, index) in get_cpt" :key="`o-${index}`" :value="info.code">
                                                 {{info.code_name}}
                                             </option>
                                         </select>
@@ -116,16 +132,13 @@
                                             <label for="number">차량번호</label>
                                             <input type="text" id="" placeholder="차량번호 입력"  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                     </div>
-                                    
-                                    
-                                <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
-                                <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
-                                
+                                    <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
+                                    <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
                                 </div>
                             </div>
                         </form>
                         <div class="contents_area-table">
-                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.account_fee)}} 건)</font></p>
+                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_couponsum.account_coupon)}}건)</font></p>
                             <!-- <p class="fl_right">
                                 <button type="button" class="btn_add btn_red">쿠폰 등록</button>
                                 <button type="button" class="btn_add btn_blue">엑셀 업로드</button>
@@ -152,44 +165,44 @@
                                 <thead>
                                     <tr>
                                         <th rowspan="2">NO</th>
-                                        <th rowspan="2">단말기 번호</th>
-                                        <th rowspan="2">영수번호</th>
-                                        <th rowspan="2">결제번호</th>
-                                        <th rowspan="2">결제일자</th>
-                                        <th rowspan="2">결제시간</th>
-                                        <th rowspan="2">매출구분</th>
-                                        <th rowspan="2">총매출</th>
-                                        <th rowspan="2">순매출</th>
-                                        <th rowspan="2">NET매출</th>
-                                        <th rowspan="2">부가세</th>
-                                        <th colspan="5">결제수단</th>
-                                    </tr>
-                                    <tr>
-                                        <th>현금매출</th>
-                                        <th>카드매출</th>
-                                        <th>간편결제</th>
-                                        <th>Gift쿠폰</th>
-                                        <th>선불권</th>
+                                        <th rowspan="2">쿠폰번호</th>
+                                        <th rowspan="2">구매상품</th>
+                                        <th rowspan="2">쿠폰종류</th>
+                                        <th rowspan="2">사용가능</th>
+                                        <th rowspan="2">차량번호</th>
+                                        <th rowspan="2">할인율(%)</th>
+                                        <th rowspan="2">할인금액</th>
+                                        <th rowspan="2">발행일자</th>
+                                        <th rowspan="2">사용일시</th>
+                                        <th rowspan="2">발행구분</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr v-for="(info, index) in get_couponresult" v-show="setPaginate(index)" :key="index">
+                                        <td class="right">{{ get_couponresult.length - index }}</td>
+                                        <td>{{ info.coupon_no }}</td>
+                                        <td>{{ info.coupon_name }}</td>
+                                        <td>{{ info.coupon_type }}</td>
+                                        <td>{{ info.is_use }}</td>
+                                        <td>{{ info.car_no }}</td>
+                                        <td class="right">{{ info.dc_percent }}</td>
+                                        <td class="right">{{ return_one(info.dc_fee)}}</td>
+                                        <td>{{ return_date(info.reg_date)}}</td>
+                                        <td>{{ return_date(info.use_date)}}</td>
+                                        <td>{{ info.publish_type}}</td>
+                                    </tr>
                                     <tr>
-                                        <td class="grey">999</td>
-                                        <td class="grey">99</td>
-                                        <td class="grey"><a href="javascript:void(0)">123456</a></td>
-                                        <td class="grey">12345678</td>
-                                        <td class="grey">2022/04/28</td>
-                                        <td class="grey">09:40</td>
-                                        <td class="grey">정상</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
-                                        <td class="right">99,999,999</td>
+                                        <td>999</td>
+                                        <td>20202020202202020</td>
+                                        <td>PREMIUM spa 무제한</td>
+                                        <td>사은품교환폰</td>
+                                        <td>Y</td>
+                                        <td>11가1111</td>
+                                        <td class="right">0</td>
+                                        <td class="right">1,000</td>
+                                        <td>2022-07-03</td>
+                                        <td>2022-07-27 01:05:35</td>
+                                        <td>일반발행</td>
                                     </tr>
                                 </tbody>
                                 
@@ -200,20 +213,31 @@
                         <!-- seleted : li.is-current -->
                         <!-- disable : li.disable -->
                         <ul>
-                            <li class="page first disable"><a href="javascript:void(0)">first page</a></li>
-                            <li class="page prev disable"><a href="javascript:void(0)">prev page</a></li>
-                            <li class="num is-current"><a href="javascript:void(0)">1</a></li>
-                            <li class="num"><a href="javascript:void(0)">2</a></li>
-                            <li class="num"><a href="javascript:void(0)">3</a></li>
-                            <li class="num"><a href="javascript:void(0)">4</a></li>
-                            <li class="num"><a href="javascript:void(0)">5</a></li>
-                            <li class="num"><a href="javascript:void(0)">6</a></li>
-                            <li class="num"><a href="javascript:void(0)">7</a></li>
-                            <li class="num"><a href="javascript:void(0)">8</a></li>
-                            <li class="num"><a href="javascript:void(0)">9</a></li>
-                            <li class="num"><a href="javascript:void(0)">10</a></li>
-                            <li class="page next"><a href="javascript:void(0)">next page</a></li>
-                            <li class="page last"><a href="javascript:void(0)">last page</a></li>
+                            <li class="page first" :class="{'disable' : current == 1}">
+                                <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(1)">first page</a>
+                                <a v-else>first page</a>
+                            </li>
+                            <li class="page prev" :class="{'disable' : current == 1}">
+                                <a v-if="!(current==1)" href="javascript:void(0)" @click="updateCurrent(current-1)">prev page</a>
+                                <a v-else>prev page</a>
+                            </li>
+
+
+                            <div v-for="page_index in paginate_total_unit" :key="page_index">
+                                <li class="num" @click.prevent="updateCurrent(page_index)" 
+                                :class="{'num is-current': page_index == current}" :key="page_index"> 
+                                    <a href="">{{ page_index }}</a> 
+                                </li>
+                            </div>
+                            
+                            <li class="page next" :class="{'disable' : current == paginate_total}">
+                                <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(current+1)">next page</a>
+                                <a v-else>next page</a>
+                            </li>
+                            <li class="page last" :class="{'disable' : current == paginate_total}">
+                                <a v-if="!(current==paginate_total)" href="javascript:void(0)" @click="updateCurrent(paginate_total)">last page</a>
+                                <a v-else>last page</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -246,41 +270,24 @@ import * as Xlsx from 'xlsx'
         },
         data(){
             return{
-                get_wtt : '',
-                get_pat : '',
-                get_wut : '',
+                get_cct : '',
+                get_cpt : '',
                 sea_date_start: '',
                 sea_date_end: '',
-                sea_wtt: '',
-                sea_pat: '',
+                sea_use: '',
+                sea_cct: '',
+                sea_cpt: '',
                 sea_phonenum: '',
                 sea_carnum: '',
-                get_paysum: '',
-                get_payresult: '',
+                get_couponsum: '',
+                get_couponresult: '',
                 paginate : 25,
                 sea_id : '',
                 paginate_total: 0,
                 current: 1,
                 pageCount : 10, // 페이지 버튼 최대 개수
                 get_memdetail : '',
-                revise : {
-                    mem_no : '',
-                    mem_id : '',
-                    mem_type : '',
-                    mem_status : '',
-                    mem_name : '',
-                    mem_tel : '',
-                    mem_email : '',
-                    com_no : '',
-                    fleet_dc : '',
-                    fleet_prepay : '',
-                    fleet_prepay_use : '',
-                    reg_date : '',
-                    seq_no : '',
-                    index : '',
-                    t_name : '',
-                    s_name : '',
-                }
+                date_type : "reg",
             }
         },
         created(){
@@ -295,43 +302,47 @@ import * as Xlsx from 'xlsx'
                     return false;
                 }
                 this.current = 1
-                this.get_payresult = '';
-                this.$http.post(this.$server+'/admin/getMemSum',
+                this.get_couponresult = '';
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+                console.log(this.date_type);
+                console.log(this.sea_cct);
+                console.log(this.sea_use);
+                console.log(this.sea_cpt);
+                console.log(this.sea_carnum);
+                this.$http.post(this.$server+'/admin/getCouponSum',
                 {
                     start_date : this.sea_date_start,
                     end_date : this.sea_date_end,
-                    mem_type : this.sea_wtt,
-                    mem_status : this.sea_pat,
-                    mem_id : this.sea_id,
+                    date_type : this.date_type,
+                    coupon_type : this.sea_cct,
+                    is_use : this.sea_use,
+                    publish_type : this.sea_cpt,
                     car_no : this.sea_carnum,
-                    mem_tel : this.sea_phonenum
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                 }
                 }).then((res) => {
-                    console.log(res.data)
-                    this.get_paysum = res.data
+                    this.get_couponsum = res.data
                 });
-                this.$http.post(this.$server+'/admin/getMemList',
+                this.$http.post(this.$server+'/admin/getCouponList',
                 {
                     start_date : this.sea_date_start,
                     end_date : this.sea_date_end,
-                    mem_type : this.sea_wtt,
-                    mem_status : this.sea_pat,
-                    mem_id : this.sea_id,
+                    date_type : this.date_type,
+                    coupon_type : this.sea_cct,
+                    is_use : this.sea_use,
+                    publish_type : this.sea_cpt,
                     car_no : this.sea_carnum,
-                    mem_tel : this.sea_phonenum
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
-                    this.get_payresult = res.data
-                    console.log(this.get_payresult)
-                    console.log(this.get_payresult.length)
-                    this.paginate_total = Math.ceil(this.get_payresult.length/this.paginate)
-                    console.log(this.paginate_total)
+                    console.log(res.data);
+                    this.get_couponresult = res.data
+                    this.paginate_total = Math.ceil(this.get_couponresult.length/this.paginate)
                 })
 
             },
@@ -343,30 +354,29 @@ import * as Xlsx from 'xlsx'
                 }  
             },
             get_select(){
-                this.$http.post(this.$server+'/admin/getCodeSubList',
+                this.$http.post(this.$server+'/admin/getCodeList',
                 {
-                    code_type : 'MMT'
+                    code_type : 'CCT'
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
                     
-                    this.get_wtt = res.data
-                    console.log(typeof this.get_wtt)
+                    this.get_cct = res.data
 
 
                 })
-                this.$http.post(this.$server+'/admin/getCodeSubList',
+                this.$http.post(this.$server+'/admin/getCodeList',
                 {
-                    code_type : 'MMS'
+                    code_type : 'CPT'
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
                     
-                    this.get_pat = res.data
+                    this.get_cpt = res.data
                 })
             },
             setPaginate: function (i) {
@@ -388,8 +398,6 @@ import * as Xlsx from 'xlsx'
                 const day = d.getDate();
                 this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
-                console.log(this.sea_date_start);
-                console.log(this.sea_date_end);
             },
             set_today: function(){
                 const d = new Date();
@@ -430,124 +438,10 @@ import * as Xlsx from 'xlsx'
             },
             makeExcelFile5 () {
                 const workBook = Xlsx.utils.book_new()
-                const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
+                const workSheet = Xlsx.utils.json_to_sheet(this.get_couponresult)
                 Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
                 Xlsx.writeFile(workBook, 'output.xlsx')
             },
-            setReviseInfo(seq_no,index){
-                this.revise.index = index;
-                this.$http.post(this.$server+'/admin/getMemDetail',
-                {
-                    seq_no : seq_no,
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                }
-                }).then((res) => {
-                    console.log(res.data)
-                    this.get_memdetail = res.data;
-                    this.revise.mem_no = this.get_memdetail.mem_no;
-                    this.revise.mem_id = this.get_memdetail.mem_id;
-                    this.revise.mem_type = this.get_memdetail.mem_type;
-                    this.revise.mem_status = this.get_memdetail.mem_status;
-                    this.revise.mem_name = this.get_memdetail.mem_name;
-                    this.revise.mem_tel = this.get_memdetail.mem_tel;
-                    this.revise.mem_email = this.get_memdetail.mem_email;
-                    this.revise.com_no = this.get_memdetail.com_no;
-                    this.revise.fleet_dc = this.get_memdetail.fleet_dc;
-                    this.revise.fleet_prepay = this.get_memdetail.fleet_prepay;
-                    this.revise.fleet_prepay_use = this.get_memdetail.fleet_prepay_use;
-                    this.revise.reg_date = this.get_memdetail.reg_date;
-                    this.revise.seq_no = seq_no;
-                });
-                
-            },
-            mem_Update(){
-                console.log(this.revise.mem_type);
-                console.log(this.revise.mem_status);
-                if(this.revise.mem_type == "MMT"){
-                    alert("회원구분을 선택해주세요.");
-                    return false;
-                }
-                if(this.revise.mem_status == "MMS"){
-                    alert("회원상태를 선택해주세요.");
-                    return false;
-                }
-                if(!this.revise.mem_name){
-                    alert("회원명을 입력해주세요.");
-                    return false;
-                }
-                if(!this.revise.mem_tel){
-                    alert("연락처를 입력해주세요.");
-                    return false;
-                }
-                if(this.revise.mem_type != "MMT001"){
-                    if(!this.revise.mem_email){
-                        alert("이메일을 입력해주세요.");
-                        return false;
-                    }
-                    if(!this.revise.com_no){
-                        alert("사업자번호를 입력해주세요.");
-                        return false;
-                    }
-                    if(!this.revise.fleet_dc){
-                        alert("Fleet 할인율을 입력해주세요.");
-                        return false;
-                    }
-                    if(!this.revise.fleet_prepay){
-                        alert("Fleet 선불 세차 잔여수를 입력해주세요.");
-                        return false;
-                    }
-                    if(!this.revise.fleet_prepay_use){
-                        alert("Fleet선불 이용건수를 입력해주세요.");
-                        return false;
-                    }
-                }
-                var result = confirm("수정하시겠습니까?");
-                if(result){
-    
-                    this.$http.post(this.$server+'/admin/setUpdateMem',
-                    {
-                        mem_type : this.revise.mem_type,
-                        mem_status : this.revise.mem_status,
-                        mem_name : this.revise.mem_name,
-                        mem_tel : this.revise.mem_tel,
-                        mem_email : this.revise.mem_email,
-                        com_no : this.revise.com_no,
-                        fleet_dc : this.revise.fleet_dc,
-                        fleet_prepay : this.revise.fleet_prepay,
-                        fleet_prepay_use : this.revise.fleet_prepay_use,
-                        seq_no : this.revise.seq_no,
-
-                    }
-                    ,{headers : {
-                        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                    }
-                    }).then((res) => {
-                        console.log(res.data);
-                        if(res.data.result_code == "Y"){
-                            alert("회원정보 수정이 완료되었습니다.");
-                            for(var i =0;i<this.get_wtt.length;i++){
-                                if(this.get_wtt[i].code == this.revise.mem_type)
-                                    this.revise.t_name = this.get_wtt[i].code_name;
-                            }
-                            for(var i =0;i<this.get_pat.length;i++){
-                                if(this.get_pat[i].code == this.revise.mem_status)
-                                    this.revise.s_name = this.get_pat[i].code_name;
-                            }
-                            this.get_payresult[this.revise.index].mem_name = this.revise.mem_name;
-                            this.get_payresult[this.revise.index].mem_status = this.revise.s_name;
-                            this.get_payresult[this.revise.index].mem_type = this.revise.t_name;
-                            this.get_payresult[this.revise.index].mem_tel = this.revise.mem_tel;
-                            this.get_payresult[this.revise.index].fleet_dc = this.revise.fleet_dc;
-                            this.get_payresult[this.revise.index].fleet_prepay = this.revise.fleet_prepay;
-                            $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
-                            $('body').removeClass('layer-opens');
-                            return false;
-                        }
-                    });
-                }
-            }
         }
     }
 

@@ -118,7 +118,7 @@
                                 <tbody>
                                     <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
                                         <td>{{return_result.length - index}}</td>
-                                        <td><a style="color:inherit;" href="javascript:void(0)" onclick="layerOpen('.layer_notice_modify')" @click="get_promotionDetail(info.seq_no)">{{info.prom_title}}</a></td>
+                                        <td><a style="color:inherit;" href="javascript:void(0)" onclick="layerOpen('.layer_member_modify')" @click="get_promotionDetail(info.seq_no)">{{info.prom_title}}</a></td>
                                         <td>{{info.start_date}}</td>
                                         <td>{{info.end_date}}</td>
                                         <td>{{info.is_use}}</td>
@@ -245,13 +245,16 @@
                     <div class="input_box fl_left w200 MB40">
                         <label for="service">서비스상태</label>
                         <select name="" id="service" v-model="mod_prom_is_use">
-                            <option value="">제외없음</option>
+                            <option value="Y">사용</option>
+                            <option value="M">미사용</option>
                         </select>
                     </div>
                     <div class="input_box fl_left w200 MB40">
                         <label for="id">프로모션구분</label>
                         <select name="" id="select1" v-model="mod_prom_type">
-                            <option value="">사용</option>
+                             <option v-for="(info, index) in get_type" :value="info.code" :key="index">
+                                {{info.code_name}}
+                            </option>
                         </select>
                     </div>
                     <div class="textarea clear MB40">
@@ -261,7 +264,7 @@
                 </div>
                 <div class="btn_group2" style="clear:both;">
                     <button type="button" class="btn_white" onclick="layerClose('.layer_member_modify')">취소</button>
-                    <button type="button" class="btn_blue">등록</button>
+                    <button type="button" class="btn_blue" @click="set_promotionUpdate">등록</button>
                 </div>
                 <button type="button" class="btn_close" onclick="layerClose('.layer_member_modify')">닫기</button>
             </div>
@@ -307,12 +310,28 @@
                 mod_prom_type : '',
                 mod_prom_content : '',
                 mod_seq_no : '',
+                get_isuse : '',
+                get_type : '',
             }
         },
         mounted(){
             this.search_notice();
+            this.get_select();
         },
         methods:{
+            get_select(){
+                this.$http.post(this.$server+'/admin/getCodeSubList',
+                {
+                    code_type : 'PMT'
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                    }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_type = res.data;
+                })
+            },
             search_notice : function(){
                 if(this.search_for == 1){
                     this.$http.post(this.$server+'/admin/getPromotionSum',
@@ -329,17 +348,15 @@
 
                     this.$http.post(this.$server+'/admin/getPromotionList',
                     {
-                        title : '',
-                        contents : this.search_info
+                        title : this.search_info,
                     }
                     ,{headers : {
                         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                         }
                     }).then((res) => {
+                        console.log(res.data);
                         this.return_result = res.data
-                        console.log(this.return_result)
                         this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
-                        console.log(this.paginate_total)
                     })
                 }
             },
@@ -378,7 +395,7 @@
                     this.mod_prom_endDate = res.data.end_date;
                     this.mod_prom_is_use = res.data.is_use;
                     this.mod_prom_type = res.data.prom_type;
-                    this.mod_prom_content = String(res.data.contents).replace(/,+/g,'\n');
+                    this.mod_prom_content = String(res.data.prom_contents).replace(/,+/g,'\n');
                 });
             },
             set_promotionUpdate(){
@@ -390,6 +407,13 @@
                     alert("내용을 입력하세요.");
                     return false;
                 }
+                console.log(this.mod_prom_name);
+                console.log(this.mod_prom_startDate);
+                console.log(this.mod_prom_endDate);
+                console.log(this.mod_prom_is_use);
+                console.log(this.mod_prom_type);
+                console.log(this.mod_prom_content);
+                console.log(this.mod_seq_no);
                 var result = confirm("프로모션을 수정하시겠습니까?");
                 if(result){
                     this.$http.post(this.$server+'/admin/setPromotionUpdate',

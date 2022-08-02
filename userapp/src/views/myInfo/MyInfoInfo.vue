@@ -108,7 +108,7 @@ export default {
     }
   },
 
-  beforeCreate() {
+  mounted() {
     this.$http.post(this.$server+'/userapp/getMemDetail', {
         mem_no : sessionStorage.getItem("mem_no"),
     },{headers : {
