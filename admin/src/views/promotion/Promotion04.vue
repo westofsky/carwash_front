@@ -72,7 +72,7 @@
                         <p>이용현황</p>
                     </div>
                     <div class="contents">
-                        <h2 class="title title_sale">이용현황</h2>
+                        <h2 class="title title_sale">Gift Card 교환</h2>
                         <div class="contents_area">
                             <form autocomplete="off">
                                 <div class="contents_area-search">
@@ -89,16 +89,6 @@
                                                 <button type="button" @click="set_weak">일주일</button>
                                                 <button type="button" @click="set_month">한달</button>
                                             </div>
-                                            <div class="select_box MR30">
-                                                <label for="purchase">구매 구분</label>
-                                                <select name="" id="purchase" v-model="sea_wut">
-                                                    <option disabled value="">구매구분 선택</option>
-                                                    <option value="">전체</option>
-                                                    <option v-for="(info, index) in get_wut" :key="`o-${index}`" :value="info.code">
-                                                        {{info.code_name}}
-                                                    </option>
-                                                </select>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="search MT30">
@@ -107,12 +97,11 @@
                                         <input type="text" id="number" placeholder="차량번호 입력" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
                                     </div>
                                     <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
-                                    <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
                                 </div>
                                 </div>
                             </form>
                             <div class="contents_area-table">
-                                <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.amount_fee)}} 원 / {{get_paysum.account_fee}} 건)</font></p>
+                                <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> {{get_paysum.length}} 건)</font></p>
                                 <table>
                                     <!-- <colgroup>
                                         <col width=""/>
@@ -128,27 +117,25 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="2">NO</th>
-                                            <th rowspan="2">차량번호</th>
-                                            <th rowspan="2">이용구분</th>
-                                            <th rowspan="2">이용일시</th>
-                                            <th rowspan="2">QR사용</th>
-                                            <th rowspan="2">세차메뉴</th>
-                                            <th rowspan="2">옵션명</th>
-                                            <th rowspan="2">건조브러쉬</th>
-                                            <th rowspan="2">결제금액</th>
+                                            <th rowspan="2">쿠폰번호</th>
+                                            <th rowspan="2">구매상품</th>
+                                            <th rowspan="2">쿠폰종류</th>
+                                            <th rowspan="2">발행일자</th>
+                                            <th rowspan="2">교환여부</th>
+                                            <th rowspan="2">GiftCard쿠폰번호</th>
+                                            <th rowspan="2">교환처리</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
-                                            <td class="right">{{ get_payresult.length - index }}</td>
-                                            <td>{{ info.car_no }}</td>
-                                            <td>{{ info.use_name }}</td>
-                                            <td>{{ return_date(info.use_date) }}</td>
-                                            <td>{{ info.qr_is }}</td>
-                                            <td>{{ info.prod_name }}</td>
-                                            <td>{{ info.option_name }}</td>
-                                            <td>{{ info.brush_is }}</td>
-                                            <td class="right">{{ return_one(info.pay_fee)}}</td>
+                                        <tr v-for="(info, index) in get_paysum" v-show="setPaginate(index)" :key="index">
+                                            <td class="right">{{ get_paysum.length - index }}</td>
+                                            <td>{{ info.coupon_no }}</td>
+                                            <td>{{ info.coupon_name }}</td>
+                                            <td>{{ info.coupon_type }}</td>
+                                            <td>{{ return_date(info.reg_date) }}</td>
+                                            <td>{{ info.is_publish }}</td>
+                                            <td><input type="text" name="text" size="20" placeholder="쿠폰번호 입력" v-model ="coupon_no01" style="width:100%;"></td>
+                                            <td><a v-if="info.is_publish == 'N'" @click="cop_replace(info.coupon_no)">[교환처리]</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -233,10 +220,10 @@
                 paginate_total: 0,
                 current: 1,
                 pageCount : 10, // 페이지 버튼 최대 개수
+                coupon_no01 : ''
             }
         },
         created(){
-            this.get_select();
             this.set_yes();
             this.get_search();
         },
@@ -249,15 +236,11 @@
                 }
                 console.log(this.sea_date_start);
                 console.log(this.sea_date_end);
-                console.log(this.sea_wtt)
-                console.log(this.sea_pat)
-                console.log(this.sea_wut)
                 console.log(this.sea_carnum)
-                this.$http.post(this.$server+'/admin/getUseSum',
+                this.$http.post(this.$server+'/admin/getGiftCouponList',
                 {
                     start_date : this.sea_date_start,
                     end_date : this.sea_date_end,
-                    use_type : this.sea_wut,
                     car_no : this.sea_carnum
                 }
                 ,{headers : {
@@ -267,24 +250,25 @@
                     console.log(res.data)
                     this.get_paysum = res.data
                 })
-                this.$http.post(this.$server+'/admin/getUseList',
+
+            },
+            cop_replace(coupon_no){
+                this.$http.post(this.$server+'/admin/setcouponex',
                 {
-                    start_date : this.sea_date_start,
-                    end_date : this.sea_date_end,
-                    use_type : this.sea_wut,
-                    car_no : this.sea_carnum
+                    coupon_no : coupon_no,
+                    coupon_no01 : this.coupon_no01,
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
-                    this.get_payresult = res.data
-                    console.log(this.get_payresult)
-                    console.log(this.get_payresult.length)
-                    this.paginate_total = Math.ceil(this.get_payresult.length/this.paginate)
-                    console.log(this.paginate_total)
+                    if (res.data.result_code === 'Y') {
+                        this.get_search();
+                    }
+                    else if(res.data.result_code === 'N'){
+                        alert('등록에 실패했습니다.')
+                    }
                 })
-
             },
             return_one(on_num){
                 if(on_num != undefined){
@@ -292,20 +276,6 @@
                     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                     return parts.join('.');
                 }  
-            },
-            get_select(){
-                this.$http.post(this.$server+'/admin/getCodeSubList',
-                {
-                    code_type : 'WUT'
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                    }
-                }).then((res) => {
-                    
-                    this.get_wut = res.data
-                    console.log(res.data);
-                })
             },
             setPaginate: function (i) {
                 if (this.current == 1) {

@@ -14,6 +14,8 @@ import Product02 from '../views/product/Product02';
 import Product03 from '../views/product/Product03';
 import Promotion01 from '../views/promotion/Promotion01';
 import Promotion02 from '../views/promotion/Promotion02';
+import Promotion03 from '../views/promotion/Promotion03';
+import Promotion04 from '../views/promotion/Promotion04';
 import Sale01 from '../views/sale/Sale01';
 import Sale02 from '../views/sale/Sale02';
 import Setting01 from '../views/setting/Setting01';
@@ -114,6 +116,16 @@ const routes = [
   {
     path: '/Promotion02',
     component: Promotion02,
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/Promotion03',
+    component: Promotion03,
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/Promotion04',
+    component: Promotion04,
     beforeEnter : requireAuth()
   },
   {

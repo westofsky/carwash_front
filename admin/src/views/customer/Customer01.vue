@@ -553,13 +553,17 @@ import * as Xlsx from 'xlsx'
             },
             set_yes: function(){
                 const d = new Date();
+                const b = new Date();
                 const year = d.getFullYear(); // 년
                 const month = (d.getMonth()+1);   // 월
                 const day = d.getDate();
-                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
-                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+(day-1).toString().padStart(2,'0')
-                console.log(this.sea_date_start);
-                console.log(this.sea_date_end);
+                var pastDate = b.getDate() - 1;
+                b.setDate(pastDate);
+                const b_year = b.getFullYear(); // 년
+                const b_month = (b.getMonth()+1);   // 월
+                const b_day = b.getDate();
+                this.sea_date_start = b_year+'-'+b_month.toString().padStart(2,'0')+'-'+b_day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
             set_today: function(){
                 const d = new Date();
@@ -571,18 +575,30 @@ import * as Xlsx from 'xlsx'
             },
             set_weak: function(){
                 const d = new Date();
+                const b = new Date();
                 const year = d.getFullYear(); // 년
                 const month = (d.getMonth()+1);   // 월
                 const day = d.getDate();
-                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+(day-7).toString().padStart(2,'0')
+                var pastDate = b.getDate() - 7;
+                b.setDate(pastDate);
+                const b_year = b.getFullYear(); // 년
+                const b_month = (b.getMonth()+1);   // 월
+                const b_day = b.getDate();
+                this.sea_date_start = b_year+'-'+b_month.toString().padStart(2,'0')+'-'+b_day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
             set_month: function(){
                 const d = new Date();
+                const b = new Date();
                 const year = d.getFullYear(); // 년
                 const month = (d.getMonth()+1);   // 월
                 const day = d.getDate();
-                this.sea_date_start = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                var pastDate = b.getMonth() - 1;
+                b.setDate(pastDate);
+                const b_year = b.getFullYear(); // 년
+                const b_month = (b.getMonth());   // 월
+                const b_day = b.getDate();
+                this.sea_date_start = b_year+'-'+b_month.toString().padStart(2,'0')+'-'+b_day.toString().padStart(2,'0')
                 this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
             },
             set_year: function(){
