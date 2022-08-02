@@ -111,7 +111,7 @@
                                 <tbody>
                                     <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
                                         <td>{{return_result.length - index}}</td>
-                                        <td><a style="color:inherit;" onclick="layerOpen('.layer_notice_modify')" @click="set_noticeDetail(info.seq_no)">{{info.notice_title}}</a></td>
+                                        <td><a href="javascript:void(0)" style="color:inherit;" onclick="layerOpen('.layer_notice_modify')" @click="set_noticeDetail(info.seq_no)">{{info.notice_title}}</a></td>
                                         <td>{{info.write_admin}}</td>
                                         <td>{{info.write_date}}</td>
                                     </tr>

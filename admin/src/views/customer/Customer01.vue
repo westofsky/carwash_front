@@ -112,24 +112,24 @@
                                 </div> 
                                 
                                 <div class="select MT40">
-                                <div class="input_box">
-                                        <label for="number">차량번호</label>
-                                        <input type="text" id="" placeholder="차량번호 입력"  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
-                                </div>
-                                <div class="input_box">
-                                        <label for="number">회원아이디(fleet 사용자)</label>
-                                        <input type="text" id="" placeholder="회원아이디 입력"  class="WD180 MR20" v-model="sea_id" v-on:keydown.enter.prevent="get_search">
-                                </div>
-                                <div class="input_box">
-                                        <label for="number">연락처</label>
-                                        <input type="text" id="" placeholder="010-1234-5678"  class="WD150 MR20" v-model="sea_phonenum" v-on:keydown.enter.prevent="get_search">
-                                </div>
+                                    <div class="input_box">
+                                            <label for="number">차량번호</label>
+                                            <input type="text" id="" placeholder="차량번호 입력"  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
+                                    </div>
+                                    <div class="input_box">
+                                            <label for="number">회원아이디(fleet 사용자)</label>
+                                            <input type="text" id="" placeholder="회원아이디 입력"  class="WD180 MR20" v-model="sea_id" v-on:keydown.enter.prevent="get_search">
+                                    </div>
+                                    <div class="input_box">
+                                            <label for="number">연락처</label>
+                                            <input type="text" id="" placeholder="010-1234-5678"  class="WD150 MR20" v-model="sea_phonenum" v-on:keydown.enter.prevent="get_search">
+                                    </div>
                                 
                                     
                                 <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
                                 <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
                                 
-                            </div>
+                                </div>
                                 
                             </div>
                             
