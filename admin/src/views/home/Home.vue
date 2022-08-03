@@ -29,6 +29,8 @@
                     <ul class="sub_menu">
                         <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
                         <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
+                        <li><router-link to = "/Promotion03">쿠폰발행</router-link></li>
+                        <li><router-link to = "/Promotion04">Gift Card 교환</router-link></li>
                     </ul>
                 </li>
                 <li class="product is-sub">

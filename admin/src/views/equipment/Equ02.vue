@@ -29,6 +29,8 @@
                     <ul class="sub_menu">
                         <li><router-link to = "/Promotion01">프로모션관리</router-link></li>
                         <li><router-link to = "/Promotion02">쿠폰관리</router-link></li>
+                        <li><router-link to = "/Promotion03">쿠폰발행</router-link></li>
+                        <li><router-link to = "/Promotion04">Gift Card 교환</router-link></li>
                     </ul>
                 </li>
                 <li class="product is-sub">
@@ -58,10 +60,8 @@
                 </li>
             </ul>
         <div class="info">
-                <p class="name">스파크플러스</p>
-                <p class="address">서울 금천구 범인로 1142 517</p>
-                <p class="tel">TEL 02-777-8888</p>
-                <p>© Spark Plus, Inc.</p>
+                <p>(주)엔티아이</p>
+                사업자등록번호 : 504-81-15358 ㅣ 대표이사 : 김도연<br>대구광역시 서구 와룡로 335 1층 스파크플러스
             </div>
         </nav>
         <div id="container">
