@@ -79,8 +79,8 @@
                                 <div class="select MT20">
                                     <div class="select_box MR30">
                                         <label for="">상품분류</label>
-                                        <select v-model="see_pgc">
-                                            <option disabled value="">상품분류 선택</option>
+                                        <select v-model="see_test">
+                            
                                             <option value="">전체</option>
                                             <option v-for="(info, index) in get_pgc" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
@@ -90,7 +90,7 @@
                                     <div class="select_box MR30">
                                         <label for="approve">1회권 메뉴</label>
                                         <select name="" id="approve" v-model="see_prod">
-                                            <option disabled value="">1회권 메뉴 선택</option>
+                                            
                                             <option value="0">전체</option>
                                             <option v-for="(info, index) in get_prod" :key="`o-${index}`" :value="info.prod_code">
                                                 {{info.prod_name}} 
@@ -100,7 +100,7 @@
                                     <div class="select_box MR30">
                                         <label for="approve">사용여부</label>
                                         <select name="" id="approve" v-model="see_yn">
-                                            <option disabled value="">여용여부 선택</option>
+                                            
                                             <option value="">전체</option>
                                             <option value="Y">사용가능</option>
                                             <option value="N">사용불가</option>
@@ -132,7 +132,6 @@
                                         <th class="thht">NO</th>
                                         <th>메뉴명</th>
                                         <th>상품구분</th>
-                                        <th>옵션여부</th>
                                         <th>상품요금</th>
                                         <th>사용여부</th>
                                         <th>Fleet선불할인</th>
@@ -145,7 +144,6 @@
                                         <td class="right">{{ get_payresult.length - index }}</td>
                                         <td><a href="javascript:void(0);" onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no)">{{ info.prod_name }}</a></td>
                                         <td>{{ info.prod_type }}</td>
-                                        <td>{{ info.is_option }}</td>
                                         <!-- <td v-if="info.is_brush=='Y'">사용</td>
                                         <td v-if="info.is_brush=='N'">미사용</td> -->
                                         <td class="right">{{ return_one(info.prod_fee) }}</td>
@@ -272,8 +270,8 @@
             return{
                 get_pgc : '',
                 get_prod : '',
-                see_pgc : '',
-                see_prod : '',
+                see_test : '',
+                see_prod : '0',
                 see_yn : '',
                 get_paysum: '',
                 get_payresult: '',
@@ -301,12 +299,12 @@
             get_search(){
                 this.current = 1
                 this.get_payresult = '';
-                console.log(this.see_pgc)
+                console.log(this.see_test)
                 console.log(this.see_prod)
                 console.log(this.see_yn)
                 this.$http.post(this.$server+'/admin/getProdSum',
                 {
-                    prod_type : this.see_pgc,
+                    prod_type : this.see_test,
                     menu_type : this.see_prod,
                     is_use : this.see_yn
                 }
@@ -319,7 +317,7 @@
                 });
                 this.$http.post(this.$server+'/admin/getProdList',
                 {
-                    prod_type : this.see_pgc,
+                    prod_type : this.see_test,
                     menu_type : this.see_prod,
                     is_use : this.see_yn
                 }

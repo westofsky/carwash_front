@@ -197,8 +197,8 @@ import * as Xlsx from 'xlsx'
                         coupon_type : 'CCT001',
                         rest_count : 1,
                         plc_code : '',
-                        dc_fee : this.dis_percent,
-                        dc_percent : this.dis_won,
+                        dc_fee : this.dis_won,
+                        dc_percent : this.dis_percent,
                         prod_name : ''
 
                     }
@@ -235,6 +235,7 @@ import * as Xlsx from 'xlsx'
                         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                     }).then((res) => {
+                        console.log(res.data)
                         dat_fin.push({'쿠폰종류':'사은품교환쿠폰','세차메뉴': '','할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code})
                     });
                 }
