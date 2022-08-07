@@ -184,6 +184,20 @@ import * as Xlsx from 'xlsx'
         },
         methods : {
             async car_search(){
+                var today = new Date();
+                var select_date = new Date(this.car_enddate);
+                if(!this.car_code){
+                    alert("세차메뉴를 선택해주세요.");
+                    return false;
+                }
+                if(this.car_count <= 0){
+                    alert("매수가 잘못되었습니다.");
+                    return false;
+                }
+                if(today > select_date){
+                    alert("유효기간이 잘못되었습니다.");
+                    return false;
+                }
                 const dat_fin = [];
                 console.log(this.car_code)
                 for (let index = 0; index < this.car_count; index++) {
@@ -202,7 +216,8 @@ import * as Xlsx from 'xlsx'
                         auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                     }).then((res) => {
-                        dat_fin.push({'쿠폰종류':'세차쿠폰','세차메뉴': this.car_code.prod_name,'할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code})
+                        console.log(res.data);
+                        dat_fin.push({'쿠폰종류':'세차쿠폰','세차메뉴': this.car_code.prod_name,'할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code,'유효기간': this.car_enddate})
                     });
                 }
                 const Book = Xlsx.utils.book_new()
@@ -211,6 +226,24 @@ import * as Xlsx from 'xlsx'
                 Xlsx.writeFile(Book, '쿠폰.xlsx');
             },
             async cop_search(){
+                var today = new Date();
+                var select_date = new Date(this.dis_enddate);
+                if(this.dis_percent <= 0){
+                    alert("할인율이 잘못되었습니다.");
+                    return false;
+                }
+                if(this.dis_won<= 0){
+                    alert("할인금액이 잘못되었습니다.");
+                    return false;
+                }
+                if(this.dis_count<= 0){
+                    alert("매수가 잘못되었습니다.");
+                    return false;
+                }
+                if(today > select_date){
+                    alert("유효기간이 잘못되었습니다.");
+                    return false;
+                }
                 const dat_fin = [];
                 for (let index = 0; index < this.dis_count; index++) {
                     await this.$http.post(this.$server+'/admin/setPublishCoupon',
@@ -229,7 +262,7 @@ import * as Xlsx from 'xlsx'
                     }
                     }).then((res) => {
                         console.log(res.data)
-                        dat_fin.push({'쿠폰종류':'할인쿠폰','세차메뉴': '','할인율': this.dis_percent,'할인금액': this.dis_won, '쿠폰번호' : res.data.coupon_code})
+                        dat_fin.push({'쿠폰종류':'할인쿠폰','세차메뉴': '','할인율': this.dis_percent,'할인금액': this.dis_won, '쿠폰번호' : res.data.coupon_code,'유효기간': this.dis_enddate})
                     });
                 }
                 console.log(dat_fin)
@@ -240,6 +273,16 @@ import * as Xlsx from 'xlsx'
                 Xlsx.writeFile(Book, '쿠폰.xlsx');
             },
             async serv_search(){
+                var today = new Date();
+                var select_date = new Date(this.serv_enddate);
+                if(this.serv_count<= 0){
+                    alert("매수가 잘못되었습니다.");
+                    return false;
+                }
+                if(today > select_date){
+                    alert("유효기간이 잘못되었습니다.");
+                    return false;
+                }
                 const dat_fin = [];
                 for (let index = 0; index < this.serv_count; index++) {
                     await this.$http.post(this.$server+'/admin/setPublishCoupon',
@@ -258,7 +301,7 @@ import * as Xlsx from 'xlsx'
                     }
                     }).then((res) => {
                         console.log(res.data)
-                        dat_fin.push({'쿠폰종류':'사은품교환쿠폰','세차메뉴': '','할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code})
+                        dat_fin.push({'쿠폰종류':'사은품교환쿠폰','세차메뉴': '','할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code,'유효기간': this.serv_enddate})
                     });
                 }
                 console.log(dat_fin)
@@ -269,6 +312,16 @@ import * as Xlsx from 'xlsx'
                 Xlsx.writeFile(Book, '쿠폰.xlsx');
             },
             async gift_search(){
+                var today = new Date();
+                var select_date = new Date(this.gift_enddate);
+                if(this.gift_count<= 0){
+                    alert("매수가 잘못되었습니다.");
+                    return false;
+                }
+                if(today > select_date){
+                    alert("유효기간이 잘못되었습니다.");
+                    return false;
+                }
                 const dat_fin = [];
                 for (let index = 0; index < this.gift_count; index++) {
                     await this.$http.post(this.$server+'/admin/setPublishCoupon',
@@ -287,7 +340,7 @@ import * as Xlsx from 'xlsx'
                     }
                     }).then((res) => {
                         console.log(res.data)
-                        dat_fin.push({'쿠폰종류':'Gift 쿠폰','세차메뉴': '','할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code})
+                        dat_fin.push({'쿠폰종류':'Gift 쿠폰','세차메뉴': '','할인율': 0,'할인금액': 0, '쿠폰번호' : res.data.coupon_code,'유효기간': this.gift_enddate})
                     });
                 }
                 console.log(dat_fin)
