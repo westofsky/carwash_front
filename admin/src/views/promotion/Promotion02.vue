@@ -102,6 +102,7 @@
                                     <div class="select_box MR30">
                                         <label for="">쿠폰종류</label>
                                         <select v-model="sea_cct">
+                                            <option disabled value="">쿠폰종류 선택</option>
                                             <option value="">전체</option>
                                             <option v-for="(info, index) in get_cct" :value="info.code" :selected="index == 1" :key="index">
                                                 {{info.code_name}}
@@ -111,6 +112,7 @@
                                     <div class="select_box MR30">
                                         <label for="approve">사용가능여부</label>
                                         <select name="" id="approve" v-model="sea_use">
+                                            <option disabled value="">사용가능여부 선택</option>
                                             <option value="">전체</option>
                                             <option value="Y">사용가능</option>
                                             <option value="N">사용불가</option>
@@ -119,6 +121,7 @@
                                     <div class="select_box MR30">
                                         <label for="approve">발행구분</label>
                                         <select name="" id="approve" v-model="sea_cpt">
+                                            <option disabled value="">발행구분 선택</option>
                                             <option value="">전체</option>
                                             <option v-for="(info, index) in get_cpt" :key="`o-${index}`" :value="info.code">
                                                 {{info.code_name}}
@@ -190,19 +193,6 @@
                                         <td>{{ return_date(info.reg_date)}}</td>
                                         <td>{{ return_date(info.use_date)}}</td>
                                         <td>{{ info.publish_type}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>999</td>
-                                        <td>20202020202202020</td>
-                                        <td>PREMIUM spa 무제한</td>
-                                        <td>사은품교환폰</td>
-                                        <td>Y</td>
-                                        <td>11가1111</td>
-                                        <td class="right">0</td>
-                                        <td class="right">1,000</td>
-                                        <td>2022-07-03</td>
-                                        <td>2022-07-27 01:05:35</td>
-                                        <td>일반발행</td>
                                     </tr>
                                 </tbody>
                                 

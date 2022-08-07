@@ -6,7 +6,7 @@ import './assets/css/style.css';
 import VueHead from 'vue-head';
 import HeaderVue from './views/header/Header';
 import axios from 'axios';
-import CryptoJS from 'vue-cryptojs'
+import CryptoJS from 'vue-cryptojs';
 
 
 Vue.prototype.$server = 'https://app.sparkpluswash.com:9000';

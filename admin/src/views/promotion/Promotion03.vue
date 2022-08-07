@@ -87,7 +87,11 @@
                                 </div>
                                 <div class="input_box">
                                         <label for="number">매수</label>
-                                        <input type="text" id=""   class="WD180 MR20" v-model="car_count" v-on:keydown.enter.prevent="car_search">
+                                        <input type="text" id=""   class="WD180 MR20" style="text-align : right" v-model="car_count" v-on:keydown.enter.prevent="car_search">
+                                </div>
+                                <div class="input_box date">
+                                        <label for="end_date">유효기간</label>
+                                        <input type="date" id="start" v-model="car_enddate">
                                 </div>
                                 <button type="button" class="btn_blue btn_excel ML10 MR20" @click="car_search">발행(엑셀)</button>
                             </div>
@@ -97,15 +101,19 @@
                             <div class="select MT40">
                                 <div class="input_box">
                                         <label for="number">할인율(%)</label>
-                                        <input type="text" id="" placeholder="할인율(%) 입력" class="WD180 MR20 right" v-model="dis_percent">
+                                        <input type="text" id="" placeholder="할인율(%) 입력" style="text-align : right" class="WD180 MR20 right" v-model="dis_percent">
                                 </div>
                                 <div class="input_box">
                                         <label for="number">할인금액(원)</label>
-                                        <input type="text" id=""  placeholder="할인금액(원) 입력" class="WD180 MR20 right" v-model="dis_won">
+                                        <input type="text" id=""  placeholder="할인금액(원) 입력" style="text-align : right" class="WD180 MR20 right" v-model="dis_won">
                                 </div>
                                  <div class="input_box">
                                         <label for="number">매수</label>
-                                        <input type="text" id=""  class="WD180 MR20" v-model="dis_count" v-on:keydown.enter.prevent="cop_search">
+                                        <input type="text" id=""  style="text-align : right" class="WD180 MR20" v-model="dis_count" v-on:keydown.enter.prevent="cop_search">
+                                </div>
+                                <div class="input_box date">
+                                        <label for="end_date">유효기간</label>
+                                        <input type="date" id="start" v-model="dis_enddate">
                                 </div>
                                 <button type="button" class="btn_blue btn_excel ML10 MR20" @click="cop_search">발행(엑셀)</button>
                             </div>
@@ -115,7 +123,11 @@
                             <div class="select MT40">
                                  <div class="input_box">
                                         <label for="number">매수</label>
-                                        <input type="text" id="" class="WD180 MR20" v-model="serv_count" v-on:keydown.enter.prevent="serv_search">
+                                        <input type="text" id="" style="text-align : right" class="WD180 MR20" v-model="serv_count" v-on:keydown.enter.prevent="serv_search">
+                                </div>
+                                <div class="input_box date">
+                                        <label for="end_date">유효기간</label>
+                                        <input type="date" id="start" v-model="serv_enddate">
                                 </div>
                                 <button type="button" class="btn_blue btn_excel ML10 MR20" @click="serv_search">발행(엑셀)</button>
                             </div>
@@ -125,7 +137,11 @@
                             <div class="select MT40">
                                  <div class="input_box">
                                         <label for="number">매수</label>
-                                        <input type="text" id="" class="WD180 MR20" v-model="gift_count" v-on:keydown.enter.prevent="gift_search">
+                                        <input type="text" id="" style="text-align : right" class="WD180 MR20" v-model="gift_count" v-on:keydown.enter.prevent="gift_search">
+                                </div>
+                                <div class="input_box date">
+                                        <label for="end_date">유효기간</label>
+                                        <input type="date" id="start" v-model="gift_enddate">
                                 </div>
                                 <button type="button" class="btn_blue btn_excel ML10 MR20" @click="gift_search">발행(엑셀)</button>
                             </div>
@@ -148,11 +164,15 @@ import * as Xlsx from 'xlsx'
                 car_count : 0,
                 car_select : [],
                 car_code : '',
+                car_enddate : '',
                 coupon_code : [],
                 dis_percent : 0,
                 dis_won : 0,
                 exl_result : [],
-                call_name : ''
+                call_name : '',
+                dis_enddate : '',
+                serv_enddate :'',
+                gift_enddate :'',
 
 
             }
@@ -174,7 +194,8 @@ import * as Xlsx from 'xlsx'
                         plc_code : this.car_code.plc_code,
                         dc_fee : 0,
                         dc_percent : 0,
-                        prod_name : this.car_code.prod_name
+                        prod_name : this.car_code.prod_name,
+                        end_date : this.car_enddate
 
                     }
                     ,{headers : {
@@ -199,7 +220,8 @@ import * as Xlsx from 'xlsx'
                         plc_code : '',
                         dc_fee : this.dis_won,
                         dc_percent : this.dis_percent,
-                        prod_name : ''
+                        prod_name : '',
+                        end_date : this.dis_enddate,
 
                     }
                     ,{headers : {
@@ -219,7 +241,6 @@ import * as Xlsx from 'xlsx'
             },
             async serv_search(){
                 const dat_fin = [];
-                console.log('Start')
                 for (let index = 0; index < this.serv_count; index++) {
                     await this.$http.post(this.$server+'/admin/setPublishCoupon',
                     {
@@ -228,7 +249,8 @@ import * as Xlsx from 'xlsx'
                         plc_code : '',
                         dc_fee : 0,
                         dc_percent : 0,
-                        prod_name : ''
+                        prod_name : '',
+                        end_date : this.serv_enddate
 
                     }
                     ,{headers : {
@@ -256,7 +278,8 @@ import * as Xlsx from 'xlsx'
                         plc_code : '',
                         dc_fee : 0,
                         dc_percent : 0,
-                        prod_name : ''
+                        prod_name : '',
+                        end_date : this.gift_enddate
 
                     }
                     ,{headers : {

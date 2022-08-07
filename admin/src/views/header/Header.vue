@@ -21,8 +21,8 @@
         methods:{
             logout(){
                 alert("로그아웃 되었습니다.");
-                localStorage.removeItem("admin_name");
-                localStorage.removeItem("admin_no");
+                localStorage.removeItem("auto_admin_no");
+                localStorage.removeItem("auto_admin_no");
                 sessionStorage.removeItem("admin_name");
                 sessionStorage.removeItem("admin_no");
                 this.$router.push({name : 'Login'});
