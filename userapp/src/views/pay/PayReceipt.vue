@@ -190,7 +190,7 @@ export default {
                             prod_code : this.pin_seq_no,
                             pay_fee : this.tot_fee,
                             start_date : year+'-'+month+'-'+day,
-                            end_date : (year+2)+'-'+month+'-'+day,
+                            end_date : (year)+'-'+('0' + (today.getMonth() + 2)).slice(-2)+'-'+day,
                             mem_id : sessionStorage.getItem("mem_id"),
                             token : localStorage.getItem("token"),
                           },{

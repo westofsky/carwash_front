@@ -16,12 +16,15 @@
                         <li><router-link to = "/Sale02">이용현황</router-link></li>
                     </ul>
                 </li>
-                <li class="customer is-sub is-current">
+                <li class="customer is-sub is-current" >
                     <a>고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
-                        <li class="is-current"><router-link to = "/Customer03">공지사항</router-link></li>
+                        <li><router-link to = "/Customer02">Fleet차량관리</router-link></li>
+                        <li class="is-current"><router-link to = "/Customer03">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer04">멤버쉽구독결제</router-link></li>
+                        <li><router-link to = "/Customer05">멤버쉽알림톡발송</router-link></li>
+                        <li><router-link to = "/Customer06">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
@@ -69,33 +72,78 @@
                 <div class="breadcrumb">
                     <router-link to = "/Home">HOME</router-link>
                     <p>고객관리</p>
-                    <p>공지사항</p>
+                    <p>멤버쉽조회</p>
                 </div>
                 <div class="contents">
-                    <h2 class="title title_user">공지사항</h2>
+                    <h2 class="title title_user">멤버쉽조회</h2>
                     <div class="contents_area">
-                        <form autocomplete="off" v-on:keydown.enter.prevent="search_notice" >
+                        <form autocomplete="off">
                             <div class="contents_area-search">
-                                    
-                                <select name="" id="" v-model="search_for">
-                                    <option value="1">제목</option>
-                                    <option value="2">내용</option>
-                                </select>
-                                <input type="text" id="" v-model="search_info" placeholder="검색어 입력" class="WD250 MR10">
+                                <div class="select MT20">
+                                    <div class="input_box date">
+                                        <label for="start">조회일자</label>
+                                        <input type="date" id="start" v-model="sea_date_start">
+                                        <div class="hyphen">-</div>
+                                        <input type="date" id="end" v-model="sea_date_end">
+                                        <div class="btn_group ML10 MR30">
+                                            <button type="button" @click="set_yes">전일</button>
+                                            <button type="button" @click="set_today">당일</button>
+                                            <button type="button" @click="set_weak">일주일</button>
+                                            <button type="button" @click="set_month">한달</button>
+                                        </div>
+                                    </div>
+                                    <div class="select_box MR30">
+                                        <label for="">이용상태</label>
+                                        <select v-model="sea_wtt">
+                                            <option disabled value="">이용상태 선택</option>
+                                            <option value="">전체</option>
+                                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
+                                                {{info.code_name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="select_box MR30">
+                                        <label for="approve">결제등록구분</label>
+                                        <select name="" id="approve" v-model="sea_pat">
+                                            <option disabled value="">결제등록구분</option>
+                                            <option value="">전체</option>
+                                            <option v-for="(info, index) in get_pat" :key="`o-${index}`" :value="info.code">
+                                                {{info.code_name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div> 
                                 
-                                <button type="button" @click="search_notice" class="btn_blue btn_search">조회</button>
+                                <div class="select MT40">
+                                <div class="input_box">
+                                        <label for="number">차량번호</label>
+                                        <input type="text" id="" placeholder="차량번호 입력"  class="WD180 MR20" v-model="sea_carnum" v-on:keydown.enter.prevent="get_search">
+                                </div>
+                                
+                                    
+                                <button type="button" class="btn_blue btn_search ML10 MR20" @click="get_search">조회</button>
+                                <button type="button" class="btn_yellow btn_excel" @click="makeExcelFile5">엑셀 다운로드</button>
                                 
                             </div>
+                                
+                            </div>
+                            
+                            
                         </form>
                         <div class="contents_area-table">
-                            <p class="contents_area-title">전체공지 <font class="fs14"><span>(</span>{{return_sum.account_seq}}<span>건)</span></font></p>
+                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.account_fee)}} 건)</font></p>
+                            <!-- <p class="fl_right"><button type="button" class="btn_add btn_red" onclick="layerOpen('.layer_member_signup')">회원등록</button></p> -->
                             
-                            <p class="btnRight">
-                            <button type="button" class="btn_add btn_red" onclick="layerOpen('.layer_notice_register')">공지등록</button>
-                            </p>
                             <table>
                                 <colgroup>
                                     <col width="4%"/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
+                                    <col width=""/>
                                     <col width=""/>
                                     <col width=""/>
                                     <col width=""/>
@@ -103,17 +151,30 @@
                                 <thead>
                                     <tr>
                                         <th class="thht">NO</th>
-                                        <th>제목</th>
-                                        <th>등록자</th>
-                                        <th>등록일</th>
+                                        <th>차량번호</th>
+                                        <th>회원번호</th>
+                                        <th>세차메뉴</th>
+                                        <th>건조브러쉬</th>
+                                        <th>이용상태</th>
+                                        <th>결제금액</th>
+                                        <th>결제일</th>
+                                        <th>등록단말기</th>
+                                        <th>결제일자</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(info,index) in return_result" v-show="setPaginate(index)" :key="index">
-                                        <td>{{return_result.length - index}}</td>
-                                        <td><a href="javascript:void(0)" style="color:inherit;" onclick="layerOpen('.layer_notice_modify')" @click="set_noticeDetail(info.seq_no)">{{info.notice_title}}</a></td>
-                                        <td>{{info.write_admin}}</td>
-                                        <td>{{info.write_date}}</td>
+                                    <tr v-for="(info, index) in get_payresult" v-show="setPaginate(index)" :key="index">
+                                        <td class="right">{{ get_payresult.length - index }}</td>
+                                        <td class="left"><a href="javascript:void(0);" onclick="layerOpen('.layer_member_modify')" @click="setReviseInfo(info.seq_no,index)">{{ info.car_no }}</a></td>
+                                        <td class="left">{{ info.mem_no }}</td>
+                                        <td class="left">{{ info.prod_name }}</td>
+                                        <td v-if="info.is_brush=='Y'">사용</td>
+                                        <td v-if="info.is_brush=='N'">미사용</td>
+                                        <td>{{ info.use_status }}</td>
+                                        <td class="right">{{ return_one(info.pay_fee) }}</td>
+                                        <td class="right">{{ info.pay_day }}일</td>
+                                        <td class="right">{{ info.terminal_name }}</td>
+                                        <td>{{ info.pay_date}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -157,303 +218,434 @@
             </section>
         </div>
     </div>
-    <!-- 공지사항 수정-->
-    <div class="layer layer_notice_modify is-hidden">
-        <form autocomplete="off" onSubmit="return false;">
+    <!-- 쿠폰 보유 내역 -->
+    <div class="layer layer_coupon is-hidden"> 
+        <div class="inner">
+            <div class="top">
+                <p class="popup_title">쿠폰 보유 내역</p>
+            </div>
+            <div class="contents">
+                <div class="coupon_area">
+                    <ul class="coupon">
+                        <li class="number">쿠폰번호 : WDC2022050401</li>
+                        <li class="name">쿠폰종류 : <span>Gift_BASIC 1장</span></li>
+                        <li class="date">유효기간 : 2022/06/03 24:00:00</li>
+                    </ul>
+                    <ul class="coupon">
+                        <li class="number">쿠폰번호 : WDC2022050401</li>
+                        <li class="name">쿠폰종류 : <span>Gift_BASIC 1장</span></li>
+                        <li class="date">유효기간 : 2022/06/03 24:00:00</li>
+                    </ul>
+                    <ul class="coupon">
+                        <li class="number">쿠폰번호 : WDC2022050401</li>
+                        <li class="name">쿠폰종류 : <span>Gift_BASIC 1장</span></li>
+                        <li class="date">유효기간 : 2022/06/03 24:00:00</li>
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="btn_close" onclick="layerClose('.layer_coupon')">닫기</button>
+        </div>
+    </div>
+    <!-- 회원정보 수정 -->
+    <div class="layer layer_member_modify is-hidden">
+        <form autocomplete="off">
             <div class="inner">
                 <div class="top">
-                    <p class="popup_title">공지사항</p>
+                    <p class="popup_title">회원정보 수정</p>
                 </div>
                 <div class="contents input MT20">
-                    <div class="input_box MB40">
-                        <label for="title">제목</label>
-                        <input type="text" id="title" placeholder="제목 입력" v-model = "mod_title">
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="number1">회원번호(수정불가)</label>
+                        <input type="text" id="number1" placeholder="회원번호 입력" v-model="revise.mem_no" disabled>
                     </div>
-                    <div class="input_box w200 MR10 fl_left">
-                        <label for="name">등록자</label>
-                        <input type="text" id="name" v-model = "mod_admin_id" disabled>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="number2">차량번호(수정불가)</label>
+                        <input type="text" id="number2" placeholder="차량번호 입력" v-model="revise.car_no" disabled>
                     </div>
-                    <div class="input_box w200 fl_left MB40">
-                        <label for="date">작성일</label>
-                        <input type="text" id="date" v-model = "mod_write_date" disabled>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="number3">세차메뉴(수정불가)</label>
+                        <input type="text" id="number3" placeholder="세차메뉴 입력" v-model="revise.prod_name" disabled>
                     </div>
-                    <div class="textarea clear MB40">
-                        <label for="content">내용</label>
-                        <textarea name="" id="content" v-model = "mod_contents"  placeholder="내용 입력"></textarea>
+                    <div class="select_box fl_left w200 MB40">
+                        <label for="">이용상태</label>
+                        <select v-model="revise.use_status">
+                            <option value="">전체</option>
+                            <option v-for="(info, index) in get_wtt" :value="info.code" :selected="index == 1" :key="index">
+                                {{info.code_name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="">건조브러쉬</label>
+                        <select v-model="revise.is_brush">
+                            <option value="Y">사용</option>
+                            <option value="N">미사용</option>
+                        </select>
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="pay_fee">결제금액(수정불가)</label>
+                        <input style="text-align:right;" type="text" id="pay_fee" v-model="revise_pay" disabled>
+                    </div>
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="pay_date1">결제일(수정불가)</label>
+                        <input type="text" id="pay_date1" v-model="revise.pay_date" disabled>
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="pay_date2">결제일자(수정불가)</label>
+                        <input type="text" id="pay_date2" v-model="revise.pay_date" disabled>
                     </div>
                 </div>
-                <div class="btn_group2" style="justify-content : space-around">
-                    <button type="button" class="btn_white" onclick="layerClose('.layer_notice_modify')">취소</button>
-                    <button type="button" class="btn_blue" @click="mod_notice">수정</button>
-                    <button type="button" class="btn_blue" style="background-color:red " @click="delete_notice">삭제</button>
+                <div class="btn_group2" style="clear:both;">
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_member_modify')">취소</button>
+                    <button type="button" class="btn_blue" @click="mem_Update">저장</button>
                 </div>
-                <button type="button" class="btn_close" onclick="layerClose('.layer_notice_modify')">닫기</button>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_member_modify')">닫기</button>
             </div>
         </form>
     </div>
-    <!-- 공지사항 등록-->
-    <div class="layer layer_notice_register is-hidden">
-        <form autocomplete="off" onSubmit="return false;">
+    <!-- 회원 등록 -->
+    <div class="layer layer_member_signup is-hidden">
+        <form autocomplete="off">
             <div class="inner">
                 <div class="top">
-                    <p class="popup_title">공지사항</p>
+                    <p class="popup_title">회원 등록</p>
                 </div>
                 <div class="contents input MT20">
-                    <div class="input_box MB40">
-                        <label for="title">제목</label>
-                        <input type="text" id="title" v-model ="title" placeholder="제목 입력">
+                    <div class="input_box fl_left w200 MR10">
+                        <label for="number1">회원번호</label>
+                        <input type="text" id="number1" placeholder="회원번호 입력">
                     </div>
-                    <div class="input_box w200 MB40 fl_left">
-                        <label for="name">등록자</label>
-                        <input type="text" id="name" v-model="writter" disabled>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="number2">차량번호</label>
+                        <input type="text" id="number2" placeholder="차량번호 입력">
                     </div>
-                    <div class="textarea clear MB40">
-                        <label for="content">내용</label>
-                        <textarea name="" id="content" v-model="contents" placeholder="내용 입력"></textarea>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="select1">회원유형</label>
+                        <select name="" id="select1">
+                            <option value="비회원">비회원</option>
+                            <option value="회원">회원</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MB40">
+                        <label for="select2">회원등급</label>
+                        <select name="" id="select2">
+                            <option value="일반">일반</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="select_box fl_left w200 MR10">
+                        <label for="select3">FLEET 승인</label>
+                        <select name="" id="select3">
+                            <option value="일반">승인대기</option>
+                            <option value="선택2">선택2</option>
+                        </select>
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="id">FLEET ID</label>
+                        <input type="text" id="id" placeholder="FLEET ID 입력">
+                    </div>
+                    <div class="input_box fl_left w200 MB40">
+                        <label for="phone">휴대폰 번호</label>
+                        <input type="text" id="phone" placeholder="휴대폰번호 입력">
                     </div>
                 </div>
-                <div class="btn_group2">
-                    <button type="button" class="btn_white" onclick="layerClose('.layer_notice_register')" @click="reset_content">취소</button>
-                    <button type="button" class="btn_blue" @click="register_notice">등록</button>
+                <div class="btn_group2" style="clear:both;">
+                    <button type="button" class="btn_white" onclick="layerClose('.layer_member_signup')">취소</button>
+                    <button type="button" class="btn_blue">등록</button>
                 </div>
-                <button type="button" class="btn_close" onclick="layerClose('.layer_notice_register')" @click="reset_content">닫기</button>
+                <button type="button" class="btn_close" onclick="layerClose('.layer_member_signup')">닫기</button>
             </div>
         </form>
     </div>
 </div>
 </template>
 <script>
-export default{
-    computed:{
-        maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
-            return this.paginate_total
-        },
-        startPage() { // 페이지 시작 번호
-            return (Math.trunc((this.current - 1) / this.pageCount) * this.pageCount) + 1
-        },
-        endPage() { // 페이지 끝 번호
-            let end = this.startPage + this.pageCount - 1
-            return end < this.maxPage ? end : this.maxPage
-        },
-        paginate_total_unit(){
-            let units = [];
-            for(let num = this.startPage;num <=this.endPage;num++){
-                units.push(num);
+    import * as Xlsx from 'xlsx'
+    export default{
+        computed:{
+            maxPage() {  // 총 페이지 수(and 최대 페이지 번호)
+                return this.paginate_total
+            },
+            startPage() { // 페이지 시작 번호
+                return (Math.trunc((this.current - 1) / this.pageCount) * this.pageCount) + 1
+            },
+            endPage() { // 페이지 끝 번호
+                let end = this.startPage + this.pageCount - 1
+                return end < this.maxPage ? end : this.maxPage
+            },
+            paginate_total_unit(){
+                let units = [];
+                for(let num = this.startPage;num <=this.endPage;num++){
+                    units.push(num);
+                }
+                return units;
+            },
+            revise_pay(){
+                return this.return_one(this.revise.pay_fee);
             }
-            return units;
-        }
-    },
-    data(){
-        return{
-            search_for: 1,
-            search_info: '',
-            return_sum : '',
-            return_result: '',
-            paginate_total: 0,
-            current: 1,
-            pageCount : 10,
-            paginate : 25,
-            title : '',
-            writter : sessionStorage.getItem("admin_no") ||'',
-            contents : '',
-            mod_seq_no : '',
-            mod_title : '',
-            mod_admin_id : '',
-            mod_contents : '',
-            mod_write_date : '',
-        }
-    },
-    mounted(){
-        this.search_notice();
-    },
-    methods: {
-        search_notice : function(){
-            if(this.search_for == 2){
-                this.$http.post(this.$server+'/admin/getNoticeSum',
+        },
+        data(){
+            return{
+                get_wtt : '',
+                get_pat : '',
+                get_wut : '',
+                sea_date_start: '',
+                sea_date_end: '',
+                sea_wtt: '',
+                sea_pat: '',
+                sea_phonenum: '',
+                sea_carnum: '',
+                get_paysum: '',
+                get_payresult: '',
+                paginate : 25,
+                sea_id : '',
+                paginate_total: 0,
+                current: 1,
+                pageCount : 10, // 페이지 버튼 최대 개수
+                get_memdetail : '',
+                revise : {
+                    mem_no : '',
+                    car_no : '',
+                    prod_name : '',
+                    use_status : '',
+                    is_brush:'',
+                    pay_fee : '',
+                    pay_date:'',
+                    seq_no : '',
+                    index : '',
+                    s_name : '',
+                }
+            }
+        },
+        created(){
+            this.get_select();
+            this.set_yes();
+            this.get_search();
+        },
+        methods : {
+            get_search(){
+                if(this.sea_date_start > this.sea_date_end){
+                    alert("날짜 선택이 잘못되었습니다.");
+                    return false;
+                }
+                this.current = 1
+                this.get_payresult = '';
+                console.log(this.sea_date_start);
+                console.log(this.sea_date_end);
+                console.log(this.sea_wtt)
+                console.log(this.sea_pat)
+                console.log(this.sea_id)
+                console.log(this.sea_carnum)
+                this.$http.post(this.$server+'/admin/getMembershipSum',
                 {
-                    contents : this.search_info
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    use_status : this.sea_wtt,
+                    reg_type : this.sea_pat,
+                    car_no : this.sea_carnum
+                }
+                ,{headers : {
+                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
+                }
+                }).then((res) => {
+                    console.log(res.data)
+                    this.get_paysum = res.data
+                });
+                this.$http.post(this.$server+'/admin/getMembershipList',
+                {
+                    start_date : this.sea_date_start,
+                    end_date : this.sea_date_end,
+                    use_status : this.sea_wtt,
+                    reg_type : this.sea_pat,
+                    car_no : this.sea_carnum
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
-                    this.return_sum = res.data
-                    console.log(this.return_sum)
-                })
-
-                this.$http.post(this.$server+'/admin/getNoticeList',
-                {
-                    title : '',
-                    contents : this.search_info
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                    }
-                }).then((res) => {
-                    this.return_result = res.data
-                    console.log(this.return_result)
-                    this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
+                    this.get_payresult = res.data
+                    console.log(this.get_payresult)
+                    console.log(this.get_payresult.length)
+                    this.paginate_total = Math.ceil(this.get_payresult.length/this.paginate)
                     console.log(this.paginate_total)
                 })
-            }else if(this.search_for == 1){
-                this.$http.post(this.$server+'/admin/getNoticeSum',
+
+            },
+            return_one(on_num){
+                if(on_num != undefined){
+                    const parts = on_num.toString().split('.');
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    return parts.join('.');
+                }  
+            },
+            get_select(){
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
-                    title : this.search_info,
-                    contents : '',
+                    code_type : 'MUS'
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
-                    this.return_sum = res.data
-                    console.log(this.return_sum)
+                    
+                    this.get_wtt = res.data
+                    console.log(this.get_wtt);
+
+
                 })
-                this.$http.post(this.$server+'/admin/getNoticeList',
+                this.$http.post(this.$server+'/admin/getCodeSubList',
                 {
-                    title : this.search_info,
-                    contents : '',
+                    code_type : 'MRT'
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
-                    this.return_result = res.data
-                    console.log(this.return_result);
-                    console.log(this.return_result.length);
-                    this.paginate_total = Math.ceil(this.return_result.length/this.paginate)
+                    
+                    this.get_pat = res.data
                 })
-            }
+            },
+            setPaginate: function (i) {
+                if (this.current == 1) {
+                    return i < this.paginate;
+                }
+                else {
+                    return (i >= (this.paginate * (this.current - 1)) && i < (this.current * this.paginate));
+                }
+            },
+            updateCurrent: function (i) {
+                this.current = i;
 
-        },
-        setPaginate: function (i) {
-            if (this.current == 1) {
-                return i < this.paginate;
-            }
-            else {
-                return (i >= (this.paginate * (this.current - 1)) && i < (this.current * this.paginate));
-            }
-        },
-        updateCurrent: function (i) {
-            this.current = i;
-
-        },
-        return_one: function(on_num){
-            if(on_num != undefined){
-                const parts = on_num.toString().split('.');
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                return parts.join('.');
-            }  
-        },
-        reset_content(){
-            this.title = '';
-            this.contents = '';
-        },
-        set_noticeDetail(seq_no){
-            this.mod_seq_no = seq_no;
-            this.$http.post(this.$server+'/admin/getNoticeDetail',
-            {
-                seq_no : seq_no,
-            }
-            ,{headers : {
-                auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-            }
-            }).then((res) => {
-                console.log(res.data);
-                this.mod_admin_id = res.data.admin_id;
-                this.mod_title = res.data.title;
-                this.mod_contents = String(res.data.contents).replace(/,+/g,'\n');
-                this.mod_write_date = res.data.write_date;
-            });
-        },
-        register_notice(){
-            if(!this.title){
-                alert("제목을 입력하세요.");
-                return false;
-            }
-            if(!this.contents){
-                alert("내용을 입력하세요.");
-                return false;
-            }
-            var result = confirm("공지를 등록하시겠습니까?");
-            if(result){
-                this.$http.post(this.$server+'/admin/setNoticeInsert',
+            },
+            set_yes: function(){
+                const d = new Date();
+                const b = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                var pastDate = b.getDate() - 1;
+                b.setDate(pastDate);
+                const b_year = b.getFullYear(); // 년
+                const b_month = (b.getMonth()+1);   // 월
+                const b_day = b.getDate();
+                this.sea_date_start = b_year+'-'+b_month.toString().padStart(2,'0')+'-'+b_day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_today: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_weak: function(){
+                const d = new Date();
+                const b = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                var pastDate = b.getDate() - 7;
+                b.setDate(pastDate);
+                const b_year = b.getFullYear(); // 년
+                const b_month = (b.getMonth()+1);   // 월
+                const b_day = b.getDate();
+                this.sea_date_start = b_year+'-'+b_month.toString().padStart(2,'0')+'-'+b_day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_month: function(){
+                const d = new Date();
+                const b = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                var pastDate = b.getMonth() - 1;
+                b.setDate(pastDate);
+                const b_year = b.getFullYear(); // 년
+                const b_month = (b.getMonth());   // 월
+                const b_day = b.getDate();
+                this.sea_date_start = b_year+'-'+b_month.toString().padStart(2,'0')+'-'+b_day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            set_year: function(){
+                const d = new Date();
+                const year = d.getFullYear(); // 년
+                const month = (d.getMonth()+1);   // 월
+                const day = d.getDate();
+                this.sea_date_start = year+'-'+month.toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+                this.sea_date_end = year+'-'+(month-1).toString().padStart(2,'0')+'-'+day.toString().padStart(2,'0')
+            },
+            return_date(date){
+                var today = new Date(date);
+                today.setHours(today.getHours() + 9);
+                return today.toISOString().replace('T', ' ').substring(0, 19);
+            },
+            makeExcelFile5 () {
+                const workBook = Xlsx.utils.book_new()
+                const workSheet = Xlsx.utils.json_to_sheet(this.get_payresult)
+                Xlsx.utils.book_append_sheet(workBook, workSheet, '매출')
+                Xlsx.writeFile(workBook, 'output.xlsx')
+            },
+            setReviseInfo(seq_no,index){
+                this.revise.index = index;
+                this.$http.post(this.$server+'/admin/getMembershipDetail',
                 {
-                    admin_id : this.writter,
-                    title : this.title,
-                    contents : this.contents,
-
+                    seq_no : seq_no,
                 }
                 ,{headers : {
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                 }
                 }).then((res) => {
-                    console.log(res.data);
-                    if(res.data.result_code == "Y"){
-                        alert("공지가 등록되었습니다.");
-                        location.reload();
-                        $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
-                        $('body').removeClass('layer-opens');
-                        return false;
-                    }
+                    console.log(res.data)
+                    this.get_memdetail = res.data;
+                    this.revise.mem_no = this.get_memdetail.mem_no;
+                    this.revise.car_no = this.get_memdetail.car_no;
+                    this.revise.prod_name = this.get_memdetail.prod_name;
+                    this.revise.use_status = this.get_memdetail.use_status;
+                    this.revise.is_brush = this.get_memdetail.is_brush;
+                    this.revise.pay_fee = this.get_memdetail.pay_fee;
+                    this.revise.pay_date = this.get_memdetail.pay_date;
+                    this.revise.seq_no = seq_no;
                 });
-            }
-        },
-        mod_notice(){
-            if(!this.mod_title){
-                alert("제목을 입력하세요.");
-                return false;
-            }
-            if(!this.mod_contents){
-                alert("내용을 입력하세요.");
-                return false;
-            }
-            var result = confirm("공지를 수정하시겠습니까?");
-            if(result){
-                this.$http.post(this.$server+'/admin/setNoticeUpdate',
-                {
-                    admin_id : this.mod_admin_id,
-                    title : this.mod_title,
-                    contents : this.mod_contents,
-                    seq_no : this.mod_seq_no,
+                
+            },
+            mem_Update(){
+                if(this.revise.use_status == "MUS"){
+                    alert("이용상태를 선택해주세요.");
+                    return false;
+                }
+                var result = confirm("수정하시겠습니까?");
+                if(result){
 
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                }
-                }).then((res) => {
-                    console.log(res.data);
-                    if(res.data.result_code == "Y"){
-                        alert("수정되었습니다.");
-                        location.reload();
-                        $('.layer_notice_modify').removeClass('is-open').addClass('is-hidden');
-                        $('body').removeClass('layer-opens');
-                        return false;
+            
+                    this.$http.post(this.$server+'/admin/setMembershipUpdate',
+                    {
+                        use_status : this.revise.use_status,
+                        is_brush : this.revise.is_brush,
+                        seq_no : this.revise.seq_no
+
                     }
-                });
-            }
-        },
-        delete_notice(){
-            var result = confirm("공지를 삭제하시겠습니까?");
-            if(result){
-                this.$http.post(this.$server+'/admin/setNoticeDelete',
-                {
-                    seq_no : this.mod_seq_no,
-                }
-                ,{headers : {
-                    auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
-                }
-                }).then((res) => {
-                    if(res.data.result_code =="Y"){
-                        alert("삭제되었습니다.");
-                        location.reload();
-                        $('.layer_notice_modify').removeClass('is-open').addClass('is-hidden');
-                        $('body').removeClass('layer-opens');
-                        return false;
+                    ,{headers : {
+                        auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
-                });
+                    }).then((res) => {
+                        console.log(res.data);
+                        if(res.data.result_code == "Y"){
+                            alert("멤버쉽정보 수정이 완료되었습니다.");
+                            for(var i =0;i<this.get_wtt.length;i++){
+                                if(this.get_wtt[i].code == this.revise.use_status)
+                                    this.revise.s_name = this.get_wtt[i].code_name;
+                            }
+                            this.get_payresult[this.revise.index].use_status = this.revise.s_name;
+                            this.get_payresult[this.revise.index].is_brush = this.revise.is_brush;
+                            $('.layer_member_modify').removeClass('is-open').addClass('is-hidden');
+                            $('body').removeClass('layer-opens');
+                            return false;
+                        }
+                    });
+                }
             }
         }
-
     }
-}
+
 </script>

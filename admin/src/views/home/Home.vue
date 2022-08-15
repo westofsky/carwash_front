@@ -20,8 +20,11 @@
                     <a href="javascript:void(0);">고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
-                        <li><router-link to = "/Customer03">공지사항</router-link></li>
+                        <li><router-link to = "/Customer02">Fleet차량관리</router-link></li>
+                        <li><router-link to = "/Customer03">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer04">멤버쉽구독결제</router-link></li>
+                        <li><router-link to = "/Customer05">멤버쉽알림톡발송</router-link></li>
+                        <li><router-link to = "/Customer06">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
@@ -111,7 +114,7 @@
                                         </router-link>
                                     </a>
                                 </div>
-                                <router-link to="/Customer03"><button type="button" class="btn_more" >더보기</button></router-link>
+                                <router-link to="/Customer06"><button type="button" class="btn_more" >더보기</button></router-link>
                             </div>
                         </div>
                     </div>

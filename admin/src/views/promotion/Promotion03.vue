@@ -20,8 +20,11 @@
                     <a href="javascript:void(0);">고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
-                        <li><router-link to = "/Customer03">공지사항</router-link></li>
+                        <li><router-link to = "/Customer02">Fleet차량관리</router-link></li>
+                        <li><router-link to = "/Customer03">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer04">멤버쉽구독결제</router-link></li>
+                        <li><router-link to = "/Customer05">멤버쉽알림톡발송</router-link></li>
+                        <li><router-link to = "/Customer06">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub is-current">
@@ -179,8 +182,17 @@ import * as Xlsx from 'xlsx'
         },
         created(){
             this.get_select();
-            // this.set_yes();
-            // this.get_search();
+            var now = new Date();
+            var oneMonthAfter = new Date(now.setMonth(now.getMonth() + 1 ));
+            var year = oneMonthAfter.getFullYear();
+            var month = ('0' + (oneMonthAfter.getMonth() + 1)).slice(-2);
+            var day = ('0' + oneMonthAfter.getDate()).slice(-2);
+            var oneMonthAfter = year + '-' + month  + '-' + day;
+            this.car_enddate = oneMonthAfter;
+            this.dis_enddate = oneMonthAfter;
+            this.serv_enddate = oneMonthAfter;
+            this.gift_enddate = oneMonthAfter;
+            
         },
         methods : {
             async car_search(){
@@ -194,12 +206,11 @@ import * as Xlsx from 'xlsx'
                     alert("매수가 잘못되었습니다.");
                     return false;
                 }
-                if(today > select_date){
+                if(today > select_date || this.car_enddate.length==0){
                     alert("유효기간이 잘못되었습니다.");
                     return false;
                 }
                 const dat_fin = [];
-                console.log(this.car_code)
                 for (let index = 0; index < this.car_count; index++) {
                     await this.$http.post(this.$server+'/admin/setPublishCoupon',
                     {
@@ -228,19 +239,23 @@ import * as Xlsx from 'xlsx'
             async cop_search(){
                 var today = new Date();
                 var select_date = new Date(this.dis_enddate);
-                if(this.dis_percent <= 0){
+                if(this.dis_percent < 0){
                     alert("할인율이 잘못되었습니다.");
                     return false;
                 }
-                if(this.dis_won<= 0){
+                if(this.dis_won< 0){
                     alert("할인금액이 잘못되었습니다.");
+                    return false;
+                }
+                if(this.dis_percent == 0 && this.dis_won == 0){
+                    alert("할인율 혹은 할인금액을 설정해주세요.");
                     return false;
                 }
                 if(this.dis_count<= 0){
                     alert("매수가 잘못되었습니다.");
                     return false;
                 }
-                if(today > select_date){
+                if(today > select_date || this.dis_enddate.length==0){
                     alert("유효기간이 잘못되었습니다.");
                     return false;
                 }
@@ -279,7 +294,7 @@ import * as Xlsx from 'xlsx'
                     alert("매수가 잘못되었습니다.");
                     return false;
                 }
-                if(today > select_date){
+                if(today > select_date || this.serv_enddate.length==0){
                     alert("유효기간이 잘못되었습니다.");
                     return false;
                 }
@@ -318,7 +333,7 @@ import * as Xlsx from 'xlsx'
                     alert("매수가 잘못되었습니다.");
                     return false;
                 }
-                if(today > select_date){
+                if(today > select_date || this.gift_enddate.length==0){
                     alert("유효기간이 잘못되었습니다.");
                     return false;
                 }

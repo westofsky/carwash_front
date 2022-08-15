@@ -5,6 +5,9 @@ import Home from '../views/home/Home';
 import Customer01 from '../views/customer/Customer01';
 import Customer02 from '../views/customer/Customer02';
 import Customer03 from '../views/customer/Customer03';
+import Customer04 from '../views/customer/Customer04';
+import Customer05 from '../views/customer/Customer05';
+import Customer06 from '../views/customer/Customer06';
 import Equ01 from '../views/equipment/Equ01';
 import Equ02 from '../views/equipment/Equ02';
 import Equ03 from '../views/equipment/Equ03';
@@ -71,6 +74,21 @@ const routes = [
   {
     path: '/Customer03',
     component: Customer03,
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/Customer04',
+    component: Customer04,
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/Customer05',
+    component: Customer05,
+    beforeEnter : requireAuth()
+  },
+  {
+    path: '/Customer06',
+    component: Customer06,
     beforeEnter : requireAuth()
   },
   {

@@ -20,8 +20,11 @@
                     <a>고객관리</a>
                     <ul class="sub_menu">
                         <li><router-link to = "/Customer01">회원조회</router-link></li>
-                        <li><router-link to = "/Customer02">멤버쉽조회</router-link></li>
-                        <li><router-link to = "/Customer03">공지사항</router-link></li>
+                        <li><router-link to = "/Customer02">Fleet차량관리</router-link></li>
+                        <li><router-link to = "/Customer03">멤버쉽조회</router-link></li>
+                        <li><router-link to = "/Customer04">멤버쉽구독결제</router-link></li>
+                        <li><router-link to = "/Customer05">멤버쉽알림톡발송</router-link></li>
+                        <li><router-link to = "/Customer06">공지사항</router-link></li>
                     </ul>
                 </li>
                 <li class="promotion is-sub">
@@ -88,12 +91,12 @@
                                         </select>
                                     </div>
                                     <div class="select_box MR30">
-                                        <label for="approve">1회권 메뉴</label>
-                                        <select name="" id="approve" v-model="see_prod">
-                                            
+                                        <label for="">1회권 메뉴</label>
+                                        <select v-model="see_prod">
+                            
                                             <option value="0">전체</option>
-                                            <option v-for="(info, index) in get_prod" :key="`o-${index}`" :value="info.prod_code">
-                                                {{info.prod_name}} 
+                                            <option v-for="(info, index) in get_prod" :value="info.prod_code" :selected="index == 1" :key="index">
+                                                {{info.prod_name}}
                                             </option>
                                         </select>
                                     </div>
@@ -111,7 +114,7 @@
                             </div>             
                         </form>
                         <div class="contents_area-table">
-                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{return_one(get_paysum.account_product)}} 건)</font></p>
+                            <p class="contents_area-title">검색결과 <font class="fs14"><span>(</span> 합계 : {{get_paysum.account_product}} 건)</font></p>
                             <!-- <p class="fl_right"><button type="button" class="btn_add btn_red" onclick="layerOpen('.layer_member_signup')">회원등록</button></p> -->
                             <table>
                                 <colgroup>
@@ -293,15 +296,12 @@
         },
         created(){
             this.get_select();
-            // this.get_search();
+            this.get_search();
         },
         methods : {
             get_search(){
                 this.current = 1
                 this.get_payresult = '';
-                console.log(this.see_test)
-                console.log(this.see_prod)
-                console.log(this.see_yn)
                 this.$http.post(this.$server+'/admin/getProdSum',
                 {
                     prod_type : this.see_test,
@@ -326,10 +326,7 @@
                     }
                 }).then((res) => {
                     this.get_payresult = res.data
-                    console.log(this.get_payresult)
-                    console.log(this.get_payresult.length)
                     this.paginate_total = Math.ceil(this.get_payresult.length/this.paginate)
-                    console.log(this.paginate_total)
                 })
 
             },
@@ -362,8 +359,8 @@
                     auth_key :'c83b4631-ff58-43b9-8646-024b12193202'
                     }
                 }).then((res) => {
-                    console.log(res.data)
-                    this.get_prod = res.data
+                    this.get_prod = res.data;
+                    console.log(this.get_prod);
                 })
             },
             setPaginate: function (i) {
