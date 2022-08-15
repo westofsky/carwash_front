@@ -138,7 +138,7 @@
                                             <td>{{ return_date(info.reg_date) }}</td>
                                             <td>{{ info.is_publish }}</td>
                                             <td><input type="text" name="text" size="20" placeholder="쿠폰번호 입력" v-model ="coupon_no01" style="width:100%;"></td>
-                                            <td><a v-if="info.is_publish == 'N'" @click="cop_replace(info.coupon_no)">[교환처리]</a></td>
+                                            <td><a @click="cop_replace(info.coupon_no)">[교환처리]</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
